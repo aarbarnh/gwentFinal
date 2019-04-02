@@ -35,11 +35,14 @@ int main()
 			cin >> playerDeckChoice;
 			if (playerDeckChoice == "northern")
 			{
-				pElfDeck->readCardFile("northUnitDeck.txt");
+				pNorthDeck->readCardFile("northUnitDeck.txt");
+				pNorthDeck->readCardFile("northOtherDeck.txt");
 			}
-
-			vector <Card *> tempDeck = pElfDeck->GetDeck();
-			cout << tempDeck[0]->GetName() << "\n" << tempDeck[0]->GetType() << "\n" << tempDeck[0]->GetEffect() << "\n" << tempDeck[0]->GetAttack() << "\n\n";
+			vector<Card *> tempDeck = pNorthDeck->GetDeck();
+			for (int i = 0; i < tempDeck.size();i++)
+			{
+				cout << tempDeck[i]->GetName() << "\n" << tempDeck[i]->GetType() << "\n" << tempDeck[i]->GetEffect() << "\n" << tempDeck[i]->GetAttack() << "\n\n";
+			}
 		}
 		cout << "\nWhich deck would you like the AI to use?\nDeck choice for AI: "; //player chooses AI deck
 		cin >> aiDeckChoice;

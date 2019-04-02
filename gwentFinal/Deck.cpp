@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <ctime>
 #include <fstream>
+#include <iostream>
 
 
 Deck::Deck()
@@ -38,7 +39,8 @@ void Deck::readCardFile(string file)
 		for (int i = 0; i < nCards; i++)
 		{
 			cardPtr = new Card();
-			inFile >> inString; //get name
+			//getline needed, or something
+			inFile >> inString; //get name 
 			cardPtr->SetName(inString);
 			inFile >> inString; //get type
 			cardPtr->SetType(inString);

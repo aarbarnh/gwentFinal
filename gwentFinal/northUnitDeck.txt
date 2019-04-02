@@ -3,11 +3,11 @@ Geralt
 Melee
 None
 15
-Yennefer of Vengerberg
+Yennefer_of_Vengerberg
 Ranged
 Medic
 7
-Vernon Roche
+Vernon_Roche
 Melee
 None
 10
@@ -15,7 +15,7 @@ Ves
 Melee
 None
 5
-John Natalis
+John_Natalis
 Melee
 None
 10
@@ -27,27 +27,27 @@ Trebuchet
 Siege
 None
 6
-Blue Stripes Commando
+Blue_Stripes_Commando
 Melee
 Bond
 4
-Blue Stripes Commando
+Blue_Stripes_Commando
 Melee 
 Bond
 4
-Kaedweni Siege Expert
+Kaedweni_Siege_Expert
 Siege
 Morale
 1
-Poor F*cking Infantry
+Poor_F*cking_Infantry
 Melee
 Bond
 1
-Poor F*cking Infantry
+Poor_F*cking_Infantry
 Melee
 Bond
 1
-Poor F*cking Infantry
+Poor_F*cking_Infantry
 Melee 
 Bond
 1
