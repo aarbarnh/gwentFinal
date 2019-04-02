@@ -9,7 +9,6 @@ class Card
 public:
 	Card();
 	Card(string name, string type, string effect, int attack);
-	Card(string name, string type, string effect);
 	string GetName();
 	string GetType();
 	string GetEffect();

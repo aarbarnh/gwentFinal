@@ -12,12 +12,6 @@ Card::Card(string name, string type, string effect, int attack)
 	attackValue = attack;
 }
 
-Card::Card(string name,string type, string effect)
-{
-	cardName = name;
-	cardEffect = effect;
-}
-
 void Card::SetName(string name)
 {
 	cardName = name;

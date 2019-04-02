@@ -35,8 +35,7 @@ int main()
 			cin >> playerDeckChoice;
 			if (playerDeckChoice == "northern")
 			{
-				pNorthDeck->readCardFile("northUnitDeck.txt");
-				pNorthDeck->readCardFile("northOtherDeck.txt");
+				pNorthDeck->readCardFile("northDeck.txt");
 			}
 			vector<Card *> tempDeck = pNorthDeck->GetDeck();
 			for (int i = 0; i < tempDeck.size();i++)
