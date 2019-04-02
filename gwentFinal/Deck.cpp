@@ -35,7 +35,7 @@ void Deck::readCardFile(string file)
 	if (inFile.is_open())
 	{
 		inFile >> nCards;
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < nCards; i++)
 		{
 			cardPtr = new Card();
 			inFile >> inString; //get name
