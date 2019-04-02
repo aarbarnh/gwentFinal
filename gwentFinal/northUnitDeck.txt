@@ -1,0 +1,53 @@
+13
+Geralt
+Melee
+None
+15
+Yennefer of Vengerberg
+Ranged
+Medic
+7
+Vernon Roche
+Melee
+None
+10
+Ves
+Melee
+None
+5
+John Natalis
+Melee
+None
+10
+Trebuchet
+Siege
+None
+6
+Trebuchet
+Siege
+None
+6
+Blue Stripes Commando
+Melee
+Bond
+4
+Blue Stripes Commando
+Melee 
+Bond
+4
+Kaedweni Siege Expert
+Siege
+Morale
+1
+Poor F*cking Infantry
+Melee
+Bond
+1
+Poor F*cking Infantry
+Melee
+Bond
+1
+Poor F*cking Infantry
+Melee 
+Bond
+1
