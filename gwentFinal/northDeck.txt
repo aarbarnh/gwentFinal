@@ -64,11 +64,11 @@ Instant
 Kills_strongest_enemy_card_on_the_field.
 0
 Clear_Weather
-Weather
+Instant
 Removes_all_weather_effects.
 0
 Clear_Weather
-Weather
+Instant
 Removes_all_weather_effects.
 0
 Biting_Frost

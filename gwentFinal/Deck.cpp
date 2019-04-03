@@ -2,8 +2,9 @@
 #include <algorithm>
 #include <ctime>
 #include <fstream>
-#include <iostream>
+#include <boost/algorithm/string.hpp>
 
+using namespace boost::algorithm;
 
 Deck::Deck()
 {
@@ -27,7 +28,7 @@ void Deck::ShuffleDeck() //shuffles deck
 void Deck::readCardFile(string file)
 {
 	//read file variables
-	Card * cardPtr;
+	Card * cardPtr; //declare a pointer
 	string inString;
 	int inInt;
 	int nCards;
@@ -38,13 +39,14 @@ void Deck::readCardFile(string file)
 		inFile >> nCards;
 		for (int i = 0; i < nCards; i++)
 		{
-			cardPtr = new Card();
-			//getline needed, or something
+			cardPtr = new Card(); //assign it to new Card
 			inFile >> inString; //get name 
+			inString = replace_all_copy(inString, "_", " "); //use boost to swap _ for a space
 			cardPtr->SetName(inString);
 			inFile >> inString; //get type
 			cardPtr->SetType(inString);
 			inFile >> inString; //get effect
+			inString = replace_all_copy(inString, "_", " "); //use boost to swap _ for a space
 			cardPtr->SetEffect(inString);
 			inFile >> inString; //get attack value
 			inInt = stoi(inString);
