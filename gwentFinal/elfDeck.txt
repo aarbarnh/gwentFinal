@@ -3,79 +3,79 @@ Ciri
 Melee
 None
 15
-Triss_Merigold
+Triss Merigold
 Melee
 None
 7
-Commander's_Horn
+Commander's Horn
 Instant
-Doubles_strength_of_all_units_in_a_row.
+Doubles strength of all units in a row.
 0
-Clear_Weather
+Clear Weather
 Instant
-Removes_all_weather_effects.
+Removes all weather effects.
 0
-Clear_Weather
+Clear Weather
 Instant
-Removes_all_weather_effects.
+Removes all weather effects.
 0
 Scorch
 Instant
-Kills_strongest_enemy_card_on_the_field.
+Kills strongest enemy card on the field.
 0
-Biting_Frost
+Biting Frost
 Weather
-Sets_melee_units_to_1_for_both_players.
+Sets melee units to 1 for both players.
 0
-Impenetrable_Fog
+Impenetrable Fog
 Weather
-Sets_ranged_units_to_1_for_both_players.
+Sets ranged units to 1 for both players.
 0
-Torrential_Rain
+Torrential Rain
 Weather
-Sets_siege_units_to_1_for_both_players.
+Sets siege units to 1 for both players.
 0
 Milva
 Ranged
 Morale
 10
-Ida_Emean
+Ida Emean
 Ranged
 None
 6
-Mahakaman_Defender
+Mahakaman Defender
 Melee
 None
 5
-Mahakaman_Defender
+Mahakaman Defender
 Melee
 None
 5
-Dwarven_Skirmisher
+Dwarven Skirmisher
 Melee
 Muster
 3
-Dwarven_Skirmisher
+Dwarven Skirmisher
 Melee
 Muster
 3
-Dwarven_Skirmisher
+Dwarven Skirmisher
 Melee
 Muster
 3
-Dol_Blathanna_Archer
+Dol Blathanna Archer
 Ranged
 None
 4
-Dol_Blathanna_Archer
+Dol Blathanna Archer
 Ranged
 None
 4
-Havekar_Healer
+Havekar Healer
 Ranged
 Medic
 0
-Dennis_Cranmer
+Dennis Cranmer
 Melee
 None
 6

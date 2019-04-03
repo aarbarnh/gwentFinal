@@ -3,11 +3,11 @@ Geralt
 Melee
 None
 15
-Yennefer_of_Vengerberg
+Yennefer of Vengerberg
 Ranged
 Medic
 7
-Vernon_Roche
+Vernon Roche
 Melee
 None
 10
@@ -15,7 +15,7 @@ Ves
 Melee
 None
 5
-John_Natalis
+John Natalis
 Melee
 None
 10
@@ -27,55 +27,55 @@ Trebuchet
 Siege
 None
 6
-Blue_Stripes_Commando
+Blue Stripes Commando
 Melee
 Bond
 4
-Blue_Stripes_Commando
+Blue Stripes Commando
 Melee 
 Bond
 4
-Kaedweni_Siege_Expert
+Kaedweni Siege Expert
 Siege
 Morale
 1
-Poor_F*cking_Infantry
+Poor F*cking Infantry
 Melee
 Bond
 1
-Poor_F*cking_Infantry
+Poor F*cking Infantry
 Melee
 Bond
 1
-Poor_F*cking_Infantry
+Poor F*cking Infantry
 Melee 
 Bond
 1
-Commander's_Horn
+Commander's Horn
 Instant
-Doubles_strength_of_all_units_in_a_row.
+Doubles strength of all units in a row.
 0
-Commander's_Horn
+Commander's Horn
 Instant
-Doubles_strength_of_all_units_in_a_row.
+Doubles strength of all units in a row.
 0
 Scorch
 Instant
-Kills_strongest_enemy_card_on_the_field.
+Kills strongest enemy card on the field.
 0
-Clear_Weather
+Clear Weather
 Instant
-Removes_all_weather_effects.
+Removes all weather effects.
 0
-Clear_Weather
+Clear Weather
 Instant
-Removes_all_weather_effects.
+Removes all weather effects.
 0
-Biting_Frost
+Biting Frost
 Weather
-Sets_melee_units_to_1_for_both_players.
+Sets melee units to 1 for both players.
 0
-Impenetrable_Fog
+Impenetrable Fog
 Weather
-Sets_ranged_units_to_1_for_both_players.
+Sets ranged units to 1 for both players.
 0

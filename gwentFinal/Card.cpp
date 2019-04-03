@@ -30,6 +30,7 @@ void Card::SetEffect(string effect)
 void Card::SetAttack(int attack)
 {
 	attackValue = attack;
+	attackNorm = attack;
 }
 
 string Card::GetName()
@@ -37,7 +38,7 @@ string Card::GetName()
 	return cardName;
 }
 
-string Card::GetType() //might not need this 
+string Card::GetType() 
 {
 	return cardType;
 }

@@ -86,6 +86,35 @@ void Field::PlayCard(string card)
 	}
 }
 
+vector<Card*> Field::GetHand()
+{
+	return hand;
+}
+
+vector<Card*> Field::GetMelee()
+{
+	return melee;
+}
+
+vector<Card*> Field::GetRanged()
+{
+	return ranged;
+}
+
+vector<Card*> Field::GetSiege()
+{
+	return siege;
+}
+
+vector<Card*> Field::GetWeather()
+{
+	return weather;
+}
+
+vector<Card*> Field::GetDiscard()
+{
+	return discard;
+}
 
 Field::~Field()
 {

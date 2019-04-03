@@ -3,33 +3,33 @@ Villentretenmerth
 Melee
 Scorch
 7
-Clear_Weather
+Clear Weather
 Instant
-Removes_all_weather_effects.
+Removes all weather effects.
 0
-Clear_Weather
+Clear Weather
 Instant
-Removes_all_weather_effects.
+Removes all weather effects.
 0
-Biting_Frost
+Biting Frost
 Weather
-Sets_melee_units_to_1_for_both_players.
+Sets melee units to 1 for both players.
 0
-Biting_Frost
+Biting Frost
 Weather
-Sets_melee_units_to_1_for_both_players.
+Sets melee units to 1 for both players.
 0
-Torrential_Rain
+Torrential Rain
 Weather
-Sets_siege_units_to_1_for_both_players.
+Sets siege units to 1 for both players.
 0
-Impenetrable_Fog
+Impenetrable Fog
 Weather
-Sets_ranged_units_to_1_for_both_players.
+Sets ranged units to 1 for both players.
 0
-Impenetrable_Fog
+Impenetrable Fog
 Weather
-Sets_ranged_units_to_1_for_both_players.
+Sets ranged units to 1 for both players.
 0
 Draug
 Melee
@@ -39,11 +39,11 @@ Leshen
 Ranged
 None
 10
-Earth_Elemental
+Earth Elemental
 Siege
 None
 6
-Earth_Elemental
+Earth Elemental
 Siege
 None
 6

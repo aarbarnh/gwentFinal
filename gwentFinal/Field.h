@@ -17,6 +17,13 @@ public:
 	void rPowAdd();
 	void sPowAdd();
 	void tPowAdd();
+	//getters
+	vector<Card*> GetHand();
+	vector<Card*> GetMelee();
+	vector<Card*> GetRanged();
+	vector<Card*> GetSiege();
+	vector<Card*> GetWeather();
+	vector<Card*> GetDiscard();
 private:
 	int meleePower;
 	int rangedPower;

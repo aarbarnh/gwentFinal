@@ -2,9 +2,6 @@
 #include <algorithm>
 #include <ctime>
 #include <fstream>
-#include <boost/algorithm/string.hpp>
-
-using namespace boost::algorithm;
 
 Deck::Deck()
 {
@@ -36,19 +33,18 @@ void Deck::readCardFile(string file)
 	ifstream inFile(file);
 	if (inFile.is_open())
 	{
-		inFile >> nCards;
+		getline(inFile, inString);
+		nCards = stoi(inString);
 		for (int i = 0; i < nCards; i++)
 		{
 			cardPtr = new Card(); //assign it to new Card
-			inFile >> inString; //get name 
-			inString = replace_all_copy(inString, "_", " "); //use boost to swap _ for a space
+			getline(inFile, inString); //get name
 			cardPtr->SetName(inString);
-			inFile >> inString; //get type
+			getline(inFile,inString); //get type
 			cardPtr->SetType(inString);
-			inFile >> inString; //get effect
-			inString = replace_all_copy(inString, "_", " "); //use boost to swap _ for a space
+			getline(inFile,inString); //get effect
 			cardPtr->SetEffect(inString);
-			inFile >> inString; //get attack value
+			getline(inFile,inString); //get attack value
 			inInt = stoi(inString);
 			cardPtr->SetAttack(inInt);
 			deck.push_back(cardPtr);
