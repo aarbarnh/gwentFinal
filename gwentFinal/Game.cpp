@@ -51,7 +51,7 @@ int main()
 				pElfDeck->ShuffleDeck();
 				correctDeckChoice = true;
 				cout << "\nYour Scoia'tael deck has been built and shuffled...\n\n";
-				//pElfField->DrawCard(pElfDeck->GetDeck()); save for later, don't forget how to format
+				//pElfField->DrawCard(pElfDeck->GetDeck()); //save for later, don't forget how to format
 				//pElfField->ShowHand();
 			}
 			else if (playerDeckChoice == "monster")
