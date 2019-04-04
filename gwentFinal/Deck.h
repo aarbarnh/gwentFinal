@@ -14,7 +14,7 @@ public:
 	void ShuffleDeck();
 	void TakeFrom();
 	//effects
-	void Muster();
+	void Muster(string card);
 	vector<Card *> GetDeck();
 	~Deck();
 private:

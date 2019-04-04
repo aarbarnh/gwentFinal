@@ -285,11 +285,6 @@ void Field::TorrentialRain()
 	}
 }
 
-/*void Field::Muster()
-{
-	//implement later, pointer to deck?
-}*/
-
 void Field::Bond(string card, Card * pCard)
 {
 	int sameCards = 0;
