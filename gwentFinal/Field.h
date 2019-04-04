@@ -12,11 +12,28 @@ public:
 	~Field();
 	void DrawCard(vector<Card*> deck);
 	void ShowHand();
+	void ShowMelee();
+	void ShowRanged();
+	void ShowSiege();
+	void ShowWeather();
+	void ShowDiscard();
 	void PlayCard(string card);
+	void ActivateEffect(string card);
 	void mPowAdd();
 	void rPowAdd();
 	void sPowAdd();
 	void tPowAdd();
+	//effects
+	/*void ClearWeather();
+	void BitingFrost();
+	void ImpenetrableFog();
+	void TorrentialRain();
+	void CommandersHorn();  DO LATER, FIGURE OUT HOW TO GET THE OTHER PLAYERS, CALL TWICE?*/
+	void Medic();
+	void Muster();
+	void Scorch();
+	void Bond();
+	void Morale();
 	//getters
 	vector<Card*> GetHand();
 	vector<Card*> GetMelee();

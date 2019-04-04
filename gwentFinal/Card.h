@@ -1,6 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -18,16 +19,16 @@ public:
 	void SetAttack(int attack);
 	int GetAttack();
 	//card effects
-	void Medic(/*add parameters, discard and string for card?*/);
-	void Muster(/*add parameters*/);
-	void Scorch(/*add parameters*/);
-	void Bond(/*add parameters*/);
-	void Morale(/*add parameters*/);
-	void ClearWeather(/*add parameters*/);
-	void BitingFrost(/*add parameters*/);
-	void ImpenetrableFog(/*add parameters*/);
-	void TorrentialRain(/*add parameters*/);
-	void CommandersHorn(/*add parameters*/);
+	//void Medic(vector<Card*> discard,string card);
+	//void Muster(/*add parameters*/);
+	//void Scorch(/*add parameters*/);
+	//void Bond(/*add parameters*/);
+	//void Morale(/*add parameters*/);
+	//void ClearWeather(/*add parameters*/); MOVED TO FIELD
+	//void BitingFrost(/*add parameters*/);
+	//void ImpenetrableFog(/*add parameters*/);
+	//void TorrentialRain(/*add parameters*/);
+	//void CommandersHorn(/*add parameters*/);
 	~Card();
 private:
 	string cardName;

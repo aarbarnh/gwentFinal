@@ -15,7 +15,7 @@ Deck::Deck(int cards) //reserve the space for deck vector size (20)
 /*void Deck::AddCard(Card card) //function to put all card objects into deck
 {
 	deck.push_back(card);
-}*/
+}might not need*/
 void Deck::ShuffleDeck() //shuffles deck
 {
 	srand(time(0));
