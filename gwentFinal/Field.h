@@ -24,16 +24,16 @@ public:
 	void sPowAdd();
 	void tPowAdd();
 	//effects
-	/*void ClearWeather();
+	void ClearWeather();
 	void BitingFrost();
 	void ImpenetrableFog();
 	void TorrentialRain();
-	void CommandersHorn();  DO LATER, FIGURE OUT HOW TO GET THE OTHER PLAYERS, CALL TWICE?*/
+	void CommandersHorn();  
 	void Medic();
-	void Muster();
+	//void Muster(); might have to go to deck class, can't reach deck easily
 	void Scorch();
-	void Bond();
-	void Morale();
+	void Bond(string card, Card * pCard);
+	void Morale(Card * typeCheck);
 	//getters
 	vector<Card*> GetHand();
 	vector<Card*> GetMelee();
@@ -52,6 +52,9 @@ private:
 	vector<Card *> siege;
 	vector<Card *> discard;
 	vector<Card *> weather;
+	bool bFActivated;
+	bool iFActivated;
+	bool tRActivated;
 };
 
 #endif

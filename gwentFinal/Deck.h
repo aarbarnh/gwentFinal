@@ -10,10 +10,11 @@ class Deck
 public:
 	Deck();
 	Deck(int cards);
-	//void AddCard(Card card);
 	void readCardFile(string file);
 	void ShuffleDeck();
 	void TakeFrom();
+	//effects
+	void Muster();
 	vector<Card *> GetDeck();
 	~Deck();
 private:

@@ -104,21 +104,51 @@ void Field::PlayCard(string card)
 			}
 			else if (hand[i]->GetType() == "Melee")
 			{
-				melee.push_back(hand[i]);
-				ActivateEffect(card);
-				hand.erase(hand.begin() + i);
+				if (bFActivated)
+				{
+					hand[i]->SetAttack(1);
+					melee.push_back(hand[i]);
+					ActivateEffect(card);
+					hand.erase(hand.begin() + i);
+				}
+				else
+				{
+					melee.push_back(hand[i]);
+					ActivateEffect(card);
+					hand.erase(hand.begin() + i);
+				}
 			}
 			else if (hand[i]->GetType() == "Ranged")
 			{
-				ranged.push_back(hand[i]);
-				ActivateEffect(card);
-				hand.erase(hand.begin() + i);
+				if (iFActivated)
+				{
+					hand[i]->SetAttack(1);
+					ranged.push_back(hand[i]);
+					ActivateEffect(card);
+					hand.erase(hand.begin() + i);
+				}
+				else
+				{
+					ranged.push_back(hand[i]);
+					ActivateEffect(card);
+					hand.erase(hand.begin() + i);
+				}
 			}
 			else if (hand[i]->GetType() == "Siege")
 			{
-				siege.push_back(hand[i]);
-				ActivateEffect(card);
-				hand.erase(hand.begin() + i);
+				if (tRActivated)
+				{
+					hand[i]->SetAttack(1);
+					siege.push_back(hand[i]);
+					ActivateEffect(card);
+					hand.erase(hand.begin() + i);
+				}
+				else
+				{
+					siege.push_back(hand[i]);
+					ActivateEffect(card);
+					hand.erase(hand.begin() + i);
+				}
 			}
 			else
 			{
@@ -150,20 +180,159 @@ void Field::Medic()
 				{
 					if (discard[i]->GetType() == "Melee")
 					{
-						//later
+						discard[i]->ResetAttack();
+						melee.push_back(discard[i]);
+						discard.erase(discard.begin() + i);
+						cardInDis = true;
 					}
 					else if (discard[i]->GetType() == "Ranged")
 					{
-						//later
+						discard[i]->ResetAttack();
+						ranged.push_back(discard[i]);
+						discard.erase(discard.begin() + i);
+						cardInDis = true;
 					}
 					else if (discard[i]->GetType() == "Siege")
 					{
-						//later
+						discard[i]->ResetAttack();
+						siege.push_back(discard[i]);
+						discard.erase(discard.begin() + i);
+						cardInDis = true;
 					}
 				}
 			}
 		}
 	}
+}
+
+void Field::ClearWeather()
+{
+	weather.clear();
+	bFActivated = false;
+	iFActivated = false;
+	tRActivated = false;
+	for (int i = 0; i < melee.size(); i++)
+	{
+		melee[i]->ResetAttack();
+	}
+	for (int i = 0; i < ranged.size(); i++)
+	{
+		ranged[i]->ResetAttack();
+	}
+	for (int i = 0; i < siege.size(); i++)
+	{
+		siege[i]->ResetAttack();
+	}
+}
+
+void Field::CommandersHorn()
+{
+	string rowChoice;
+	bool correctChoice = false;
+	while (!correctChoice)
+	{
+		cout << "Commander's Horn was activated!\nWhich row would you like to double all units attack value? (melee, ranged, or siege): ";
+		cin >> rowChoice;
+		if (rowChoice == "melee")
+		{
+			for (int i = 0; i < melee.size(); i++)
+			{
+				melee[i]->DoubleAttack();
+			}
+			correctChoice = true;
+		}
+		else if (rowChoice == "ranged")
+		{
+			for (int i = 0; i < ranged.size(); i++)
+			{
+				ranged[i]->DoubleAttack();
+			}
+		}
+		else if (rowChoice == "siege")
+		{
+			for (int i = 0; i < siege.size(); i++)
+			{
+				siege[i]->DoubleAttack();
+			}
+		}
+	}
+}
+
+void Field::BitingFrost()
+{
+	bFActivated = true;
+	for (int i = 0; i < melee.size(); i++)
+	{
+		melee[i]->SetAttack(1);
+	}
+}
+
+void Field::ImpenetrableFog()
+{
+	iFActivated = true;
+	for (int i = 0; i < ranged.size(); i++)
+	{
+		ranged[i]->SetAttack(1);
+	}
+}
+
+void Field::TorrentialRain()
+{
+	tRActivated = true;
+	for (int i = 0; i < siege.size(); i++)
+	{
+		siege[i]->SetAttack(1);
+	}
+}
+
+/*void Field::Muster()
+{
+	//implement later, pointer to deck?
+}*/
+
+void Field::Bond(string card, Card * pCard)
+{
+	int sameCards = 0;
+	for (int i = 0; i < melee.size(); i++)
+	{
+		if (melee[i]->GetName() == card)
+		{
+			melee[i]->DoubleAttack();
+			sameCards++;
+		}
+	}
+	if (sameCards == 3)
+	{
+		pCard->DoubleAttack();
+		pCard->DoubleAttack();
+	}
+	else if (sameCards == 2)
+	{
+		pCard->DoubleAttack();
+	}
+}
+
+void Field::Morale(Card * typeCheck)
+{
+	if (typeCheck->GetType() == "Ranged")
+	{
+		for (int i = 0; i < ranged.size(); i++)
+		{
+			ranged[i]->IncrementAttack();
+		}
+	}
+	else if (typeCheck->GetType() == "Siege")
+	{
+		for (int i = 0; i < siege.size(); i++)
+		{
+			siege[i]->IncrementAttack();
+		}
+	}
+}
+
+void Field::Scorch()
+{
+	
 }
 
 void Field::ActivateEffect(string card)
@@ -176,50 +345,38 @@ void Field::ActivateEffect(string card)
 			{
 				if (hand[i]->GetName() == "Clear Weather")
 				{
-					//activate clear weather
+					ClearWeather();
 				}
 				else if (hand[i]->GetName() == "Biting Frost")
 				{
-					//activate biting frost
+					BitingFrost();
 				}
 				else if (hand[i]->GetName() == "Impenetrable Fog")
 				{
-					//activate impenetrable fog
+					ImpenetrableFog();
 				}
 				else if (hand[i]->GetName() == "Torrential Rain")
 				{
-					//activate torrential rain 
+					TorrentialRain();
 				}
 				else if (hand[i]->GetName() == "Commander's Horn")
 				{
-					//activate commanders horn
-				}
-				else if (hand[i]->GetName() == "Scorch")
-				{
-					//activate scorch
+					CommandersHorn();
 				}
 			}
 			else
 			{
 				if (hand[i]->GetEffect() == "Medic")
 				{
-					//activate Medic
-				}
-				else if (hand[i]->GetEffect() == "Muster")
-				{
-					//activate Muster
-				}
-				else if (hand[i]->GetEffect() == "Scorch")
-				{
-					//activate scorch
+					Medic();
 				}
 				else if (hand[i]->GetEffect() == "Bond")
 				{
-					//activate scorch
+					Bond(card, hand[i]);
 				}
 				else if (hand[i]->GetEffect() == "Morale")
 				{
-					//activate morale
+					Morale(hand[i]);
 				}
 			}
 		}

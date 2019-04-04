@@ -10,6 +10,22 @@ Card::Card(string name, string type, string effect, int attack)
 	cardType = type;
 	cardEffect = effect;
 	attackValue = attack;
+	attackNorm = attack;
+}
+
+void Card::ResetAttack()
+{
+	attackValue = attackNorm;
+}
+
+void Card::DoubleAttack()
+{
+	attackValue *= 2;
+}
+
+void Card::IncrementAttack()
+{
+	attackValue++;
 }
 
 void Card::SetName(string name)
@@ -30,7 +46,6 @@ void Card::SetEffect(string effect)
 void Card::SetAttack(int attack)
 {
 	attackValue = attack;
-	attackNorm = attack;
 }
 
 string Card::GetName()

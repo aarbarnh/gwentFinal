@@ -18,17 +18,9 @@ public:
 	void SetEffect(string effect);
 	void SetAttack(int attack);
 	int GetAttack();
-	//card effects
-	//void Medic(vector<Card*> discard,string card);
-	//void Muster(/*add parameters*/);
-	//void Scorch(/*add parameters*/);
-	//void Bond(/*add parameters*/);
-	//void Morale(/*add parameters*/);
-	//void ClearWeather(/*add parameters*/); MOVED TO FIELD
-	//void BitingFrost(/*add parameters*/);
-	//void ImpenetrableFog(/*add parameters*/);
-	//void TorrentialRain(/*add parameters*/);
-	//void CommandersHorn(/*add parameters*/);
+	void ResetAttack();
+	void DoubleAttack();
+	void IncrementAttack();
 	~Card();
 private:
 	string cardName;
