@@ -13,8 +13,6 @@ public:
 	void readCardFile(string file);
 	void ShuffleDeck();
 	void TakeFrom();
-	//effects
-	void Muster(string card);
 	vector<Card *> GetDeck();
 	~Deck();
 private:

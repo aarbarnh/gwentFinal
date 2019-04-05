@@ -28,10 +28,10 @@ public:
 	void BitingFrost();
 	void ImpenetrableFog();
 	void TorrentialRain();
-	void CommandersHorn();  
+	void CommandersHorn();
 	void Medic();
-	//void Muster(); might have to go to deck class, can't reach deck easily
-	void Scorch();
+	//make AI version of scorch maybe, maybe just 2player/multi
+	void Scorch(vector<Card*>*mRow,vector<Card*>*rRow,vector<Card*>*sRow,vector<Card*>*tDiscard);
 	void Bond(string card, Card * pCard);
 	void Morale(Card * typeCheck);
 	//getters

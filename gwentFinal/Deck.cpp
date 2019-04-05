@@ -12,11 +12,6 @@ Deck::Deck(int cards) //reserve the space for deck vector size (20)
 	deck.reserve(cards);
 }
 
-void Deck::Muster(string card)
-{
-	//implement later
-}
-
 void Deck::ShuffleDeck() //shuffles deck
 {
 	srand(time(0));

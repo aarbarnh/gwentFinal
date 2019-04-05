@@ -53,15 +53,15 @@ None
 5
 Dwarven Skirmisher
 Melee
-Muster
+None
 3
 Dwarven Skirmisher
 Melee
-Muster
+None
 3
 Dwarven Skirmisher
 Melee
-Muster
+None
 3
 Dol Blathanna Archer
 Ranged

@@ -180,24 +180,54 @@ void Field::Medic()
 				{
 					if (discard[i]->GetType() == "Melee")
 					{
-						discard[i]->ResetAttack();
-						melee.push_back(discard[i]);
-						discard.erase(discard.begin() + i);
-						cardInDis = true;
+						if (bFActivated)
+						{
+							discard[i]->SetAttack(1);
+							melee.push_back(discard[i]);
+							discard.erase(discard.begin() + i);
+							cardInDis = true;
+						}
+						else
+						{
+							discard[i]->ResetAttack();
+							melee.push_back(discard[i]);
+							discard.erase(discard.begin() + i);
+							cardInDis = true;
+						}
 					}
 					else if (discard[i]->GetType() == "Ranged")
 					{
-						discard[i]->ResetAttack();
-						ranged.push_back(discard[i]);
-						discard.erase(discard.begin() + i);
-						cardInDis = true;
+						if (iFActivated)
+						{
+							discard[i]->SetAttack(1);
+							ranged.push_back(discard[i]);
+							discard.erase(discard.begin() + i);
+							cardInDis = true;
+						}
+						else
+						{
+							discard[i]->ResetAttack();
+							ranged.push_back(discard[i]);
+							discard.erase(discard.begin() + i);
+							cardInDis = true;
+						}
 					}
 					else if (discard[i]->GetType() == "Siege")
 					{
-						discard[i]->ResetAttack();
-						siege.push_back(discard[i]);
-						discard.erase(discard.begin() + i);
-						cardInDis = true;
+						if (tRActivated)
+						{
+							discard[i]->SetAttack(1);
+							siege.push_back(discard[i]);
+							discard.erase(discard.begin() + i);
+							cardInDis = true;
+						}
+						else
+						{
+							discard[i]->ResetAttack();
+							siege.push_back(discard[i]);
+							discard.erase(discard.begin() + i);
+							cardInDis = true;
+						}
 					}
 				}
 			}
@@ -325,9 +355,111 @@ void Field::Morale(Card * typeCheck)
 	}
 }
 
-void Field::Scorch()
+void Field::Scorch(vector<Card*>*mRow, vector<Card*>*rRow, vector<Card*>*sRow, vector<Card*>*tDiscard)
 {
-	
+	string scorchChoice;
+	string rowChoice;
+	char yNChoice;
+	bool correctSChoice = false;
+	bool correctRChoice = false;
+	bool yNValid = false;
+	vector<Card*> mTemp = *mRow;
+	vector<Card*> rTemp = *rRow;
+	vector<Card*> sTemp = *sRow;
+	while (!yNValid) //show rows y/n loop with validation, try
+	{
+		try
+		{
+			cout << "Would you like to see the other players zones? ('Y' for yes, 'N' for no): ";
+			cin >> yNChoice;
+			if (yNChoice == 'Y' || yNChoice == 'y')
+			{
+				cout << "Melee row:\n\n";
+				for (int i = 0; i < mTemp.size(); i++)
+				{
+					cout << mTemp[i]->GetName() << "\n";
+					cout << mTemp[i]->GetAttack() << "\n\n";
+				}
+				cout << "Ranged row:\n\n";
+				for (int i = 0; i < rTemp.size(); i++)
+				{
+					cout << rTemp[i]->GetName() << "\n";
+					cout << rTemp[i]->GetAttack() << "\n\n";
+				}
+				cout << "Siege row:\n\n";
+				for (int i = 0; i < sTemp.size(); i++)
+				{
+					cout << sTemp[i]->GetName() << "\n";
+					cout << sTemp[i]->GetAttack() << "\n\n";
+				}
+				yNValid = true;
+			}
+			else if (yNChoice == 'N' || yNChoice == 'n')
+			{
+				yNValid = true;
+			}
+			else
+			{
+				throw "You can only enter 'Y' or 'N'.";
+			}
+		}
+		catch (const char * msg)
+		{
+			cout << msg << "\n\n";
+		}
+
+	}
+	while (!correctRChoice)
+	{
+		cout << "Which row is the card in that you would like to destroy? ('Melee', 'Ranged' or 'Siege'): ";
+		cin >> rowChoice;
+		if (rowChoice == "Melee")
+		{
+			while (!correctSChoice)
+			{
+				cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
+				cin >> scorchChoice;
+				for (int i = 0; i < mTemp.size(); i++)
+				{
+					if (mTemp[i]->GetName() == scorchChoice)
+					{
+						mRow->erase(mRow->begin() + i);
+						tDiscard->push_back(mTemp[i]);
+						correctSChoice = true;
+					}
+				}
+			}
+		}
+		else if (rowChoice == "Ranged")
+		{
+			cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
+			cin >> scorchChoice;
+			for (int i = 0; i < rTemp.size(); i++)
+			{
+				if (rTemp[i]->GetName() == scorchChoice)
+				{
+					rRow->erase(rRow->begin() + i);
+					tDiscard->push_back(rTemp[i]);
+					correctSChoice = true;
+				}
+			}
+		}
+		else if (rowChoice == "Siege")
+		{
+			cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
+			cin >> scorchChoice;
+			for (int i = 0; i < sTemp.size(); i++)
+			{
+				if (mTemp[i]->GetName() == scorchChoice)
+				{
+					sRow->erase(sRow->begin() + i);
+					tDiscard->push_back(sTemp[i]);
+					correctSChoice = true;
+				}
+			}
+		}
+	}
+
 }
 
 void Field::ActivateEffect(string card)
