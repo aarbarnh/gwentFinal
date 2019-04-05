@@ -16,36 +16,43 @@ string CoinFlip();
 int main()
 {
 	srand(time(0)); //seed rand
-	string playerDeckChoice;
-	string aiDeckChoice;
+	string p1DeckChoice;
+	string p2DeckChoice;
 	string flipChoice;
 	string flipResult;
-	int playerWins = 0;
-	int aiWins = 0;
+	int playerOneWins = 0;
+	int playerTwoWins = 0;
 	bool correctDeckChoice = false;
 	bool correctAiChoice = false;
 	bool correctCall = false;
 
 	//three decks for the game, if created in if statement, destroyed outside of scope
 	unique_ptr<Deck> pElfDeck(new Deck(20));
-	unique_ptr<Field> pElfField(new Field());
 	unique_ptr<Deck> pNorthDeck(new Deck(20));
 	unique_ptr<Deck> pMonsterDeck(new Deck(20));
+	//three fields (elf, monster, northern)
+	unique_ptr<Field> pElfField(new Field());
+	unique_ptr<Field> pMonsterField(new Field());
+	unique_ptr<Field> pNorthernField(new Field());
+	//three players (elf, monster, northern)
+	unique_ptr<Field> pElf(new Field());
+	unique_ptr<Field> pMonster(new Field());
+	unique_ptr<Field> pNorthern(new Field());
 
 	do //loop for deck choice
 	{
 		while (!correctDeckChoice)
 		{
-			cout << "Which deck would you like to choose? (Type 'elf' for Scoia'tael, 'northern' for Northern Realms, or 'monster' for Monsters)\nDeck choice: "; //player chooses his/her own deck
-			cin >> playerDeckChoice;
-			if (playerDeckChoice == "northern")
+			cout << "Player One, which deck would you like to choose? (Type 'elf' for Scoia'tael, 'northern' for Northern Realms, or 'monster' for Monsters)\nYour deck choice: "; //player1 chooses his/her own deck
+			cin >> p1DeckChoice;
+			if (p1DeckChoice == "northern")
 			{
 				pNorthDeck->readCardFile("northDeck.txt");
 				pNorthDeck->ShuffleDeck();
 				correctDeckChoice = true;
 				cout << "\nYour Northern Realms deck has been built and shuffled...\n\n";
 			}
-			else if (playerDeckChoice == "elf")
+			else if (p1DeckChoice == "elf")
 			{
 				pElfDeck->readCardFile("elfDeck.txt");
 				pElfDeck->ShuffleDeck();
@@ -54,7 +61,7 @@ int main()
 				//pElfField->DrawCard(pElfDeck->GetDeck()); //save for later, don't forget how to format
 				//pElfField->ShowHand();
 			}
-			else if (playerDeckChoice == "monster")
+			else if (p1DeckChoice == "monster")
 			{
 				pMonsterDeck->readCardFile("monsterDeck.txt");
 				pMonsterDeck->ShuffleDeck();
@@ -68,48 +75,48 @@ int main()
 		}
 		while (!correctAiChoice)
 		{
-			cout << "Which deck would you like the AI to use? You cannot pick the same deck you picked for yourself.\nDeck choice for AI: "; //player chooses AI deck
-			cin >> aiDeckChoice;
-			if (aiDeckChoice == "northern")
+			cout << "Player Two, which deck would you like to use? You cannot pick the same deck as Player One.\nYour deck choice: "; //player2 chooses deck
+			cin >> p2DeckChoice;
+			if (p2DeckChoice == "northern")
 			{
-				if (aiDeckChoice == playerDeckChoice)
+				if (p2DeckChoice == p1DeckChoice)
 				{
-					cout << "\nYou cannot have the same deck as the AI. Please choose again.\n\n";
+					cout << "\nYou cannot have the same deck as Player One. Please choose again.\n\n";
 				}
 				else
 				{
 					pNorthDeck->readCardFile("northDeck.txt");
 					pNorthDeck->ShuffleDeck();
 					correctAiChoice = true;
-					cout << "\nThe AI's Northern Realms deck has been built and shuffled...\n\n";
+					cout << "\nYour Northern Realms deck has been built and shuffled...\n\n";
 				}
 			}
-			else if (aiDeckChoice == "elf")
+			else if (p2DeckChoice == "elf")
 			{
-				if (aiDeckChoice == playerDeckChoice)
+				if (p2DeckChoice == p1DeckChoice)
 				{
-					cout << "You cannot have the same deck as the AI. Please choose again.\n\n";
+					cout << "You cannot have the same deck as Player One. Please choose again.\n\n";
 				}
 				else
 				{
 					pElfDeck->readCardFile("elfDeck.txt");
 					pElfDeck->ShuffleDeck();
 					correctAiChoice = true;
-					cout << "\nThe AI's Scoia'tael deck has been built and shuffled...\n\n";
+					cout << "\nYour Scoia'tael deck has been built and shuffled...\n\n";
 				}
 			}
-			else if (aiDeckChoice == "monster")
+			else if (p2DeckChoice == "monster")
 			{
-				if (aiDeckChoice == playerDeckChoice)
+				if (p2DeckChoice == p1DeckChoice)
 				{
-					cout << "You cannot have the same deck as the AI. Please choose again.\n\n";
+					cout << "You cannot have the same deck as Player One. Please choose again.\n\n";
 				}
 				else
 				{
 					pMonsterDeck->readCardFile("monsterDeck.txt");
 					pMonsterDeck->ShuffleDeck();
 					correctAiChoice = true;
-					cout << "\nThe AI's Monsters deck has been built and shuffled...\n\n";
+					cout << "\nYour Monsters deck has been built and shuffled...\n\n";
 				}
 			}
 			else
@@ -120,7 +127,7 @@ int main()
 
 		while (!correctCall)
 		{
-			cout << "A coin will be flipped to determine who goes and who goes second.\nIf you call it right, you will go first.\n\nWould you like to call heads or tails? (Type 'heads' or 'tails'): ";
+			cout << "A coin will be flipped to determine who goes and who goes second.\nPlayer One will call it. If right Player One will go first, if wrong Player Two will go first.\n\nWould you like to call heads or tails? (Type 'heads' or 'tails'): ";
 			try //make sure player calls only heads or tails 
 			{
 				cin >> flipChoice;
@@ -136,22 +143,135 @@ int main()
 			catch (const char * msg)
 			{
 				cout << "\n" << msg << "\n\n";
-			}	
+			}
 		}
 		flipResult = CoinFlip();
-		if (flipResult == flipChoice)
+		if (flipResult == flipChoice) //p1 goes first
 		{
+			system("pause");
+			system("CLS");
+			cout << "Player One drawing cards..." << "\n\n";
+			//player one drawing
+			if (p1DeckChoice == "elf")
+			{
+				for (int i = 0; i < 11; i++)
+				{
+					pElfField->DrawCard(pElfDeck->GetDeck());
+					pElfDeck->TakeFrom();
+				}
+			}
+			else if (p1DeckChoice == "northern")
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pNorthernField->DrawCard(pNorthDeck->GetDeck());
+					pNorthDeck->TakeFrom();
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
+					pMonsterDeck->TakeFrom();
+				}
+			}
+
+			//player two drawing
+			cout << "Player Two drawing cards..." << "\n\n";
+			if (p2DeckChoice == "elf")
+			{
+				for (int i = 0; i < 11; i++)
+				{
+					pElfField->DrawCard(pElfDeck->GetDeck());
+					pElfDeck->TakeFrom();
+				}
+			}
+			else if (p2DeckChoice == "northern")
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pNorthernField->DrawCard(pNorthDeck->GetDeck());
+					pNorthDeck->TakeFrom();
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
+					pMonsterDeck->TakeFrom();
+				}
+			}
 			do //loop for game (turns, get actions)
 			{
-
-			} while (playerWins < 2 && aiWins < 2);
+				if (p1DeckChoice == "northern")
+				{
+					
+				}
+			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
-		else
+		else //p2 goes first
 		{
+			system("pause");
+			system("cls");
+			//player two drawing
+			cout << "Player Two drawing cards..." << "\n\n";
+			if (p2DeckChoice == "elf")
+			{
+				for (int i = 0; i < 11; i++)
+				{
+					pElfField->DrawCard(pElfDeck->GetDeck());
+					pElfDeck->TakeFrom();
+				}
+			}
+			else if (p2DeckChoice == "northern")
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pNorthernField->DrawCard(pNorthDeck->GetDeck());
+					pNorthDeck->TakeFrom();
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
+					pMonsterDeck->TakeFrom();
+				}
+			}
+			cout << "Player One drawing cards..." << "\n\n";
+			//player one drawing
+			if (p1DeckChoice == "elf")
+			{
+				for (int i = 0; i < 11; i++)
+				{
+					pElfField->DrawCard(pElfDeck->GetDeck());
+					pElfDeck->TakeFrom();
+				}
+			}
+			else if (p1DeckChoice == "northern")
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pNorthernField->DrawCard(pNorthDeck->GetDeck());
+					pNorthDeck->TakeFrom();
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
+					pMonsterDeck->TakeFrom();
+				}
+			}
+
 			do
 			{
 				
-			} while (playerWins < 2 && aiWins < 2);
+			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
 	}
 	while (true);
@@ -164,10 +284,10 @@ string CoinFlip()
 	int flip = rand() % 2 + 1;
 	if (flip == 1)
 	{
-		return "Heads";
+		return "heads";
 	}
 	else
 	{
-		return "Tails";
+		return "tails";
 	}
 }

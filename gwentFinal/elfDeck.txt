@@ -21,7 +21,7 @@ Removes all weather effects.
 0
 Scorch
 Instant
-Kills strongest enemy card on the field.
+Kills one unit on the other player's field (Player choice).
 0
 Biting Frost
 Weather

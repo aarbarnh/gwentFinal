@@ -61,7 +61,7 @@ Doubles strength of all units in a row.
 0
 Scorch
 Instant
-Kills strongest enemy card on the field.
+Kills one unit on the other player's field (Player choice).
 0
 Clear Weather
 Instant
