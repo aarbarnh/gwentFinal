@@ -43,6 +43,7 @@ void Deck::readCardFile(string file)
 			getline(inFile,inString); //get attack value
 			inInt = stoi(inString);
 			cardPtr->SetAttack(inInt);
+			cardPtr->SetAttackNorm(inInt);
 			deck.push_back(cardPtr);
 		}
 	}

@@ -3,18 +3,18 @@ Villentretenmerth
 Melee
 Scorch
 7
+Imlerith
+Melee
+None
+10
 Clear Weather
 Instant
 Removes all weather effects.
 0
-Clear Weather
-Instant
-Removes all weather effects.
-0
-Biting Frost
-Weather
-Sets melee units to 1 for both players.
-0
+Brewess
+Melee
+None
+6
 Biting Frost
 Weather
 Sets melee units to 1 for both players.
@@ -27,54 +27,54 @@ Impenetrable Fog
 Weather
 Sets ranged units to 1 for both players.
 0
-Impenetrable Fog
-Weather
-Sets ranged units to 1 for both players.
-0
-Draug
-Melee
+Fire Elemental
+Siege
 None
-10
+6
+Grave Hag
+Ranged
+None
+5
 Leshen
 Ranged
 None
 10
-Earth Elemental
+Earth Elemental 
 Siege
 None
 6
-Earth Elemental
-Siege
+Plague Maiden
+Melee
 None
-6
+5
 Griffin
 Melee
 None
 5
-Nekker
+Nekker 1
 Melee
+Morale
+2
+Nekker 2
+Melee
+Morale
+2
+Arachas 1
+Melee
+None
+4
+Arachas 2
+Melee
+None
+4
+Endrega
+Ranged
 None
 2
-Nekker
-Melee
+Wyvern
+Ranged
 None
 2
-Arachas
-Melee
-None
-4
-Arachas
-Melee
-None
-4
-Arachas
-Melee
-None
-4
-Forktail
-Melee
-None
-5
 Fiend
 Melee
 None

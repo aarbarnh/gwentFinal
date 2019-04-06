@@ -13,6 +13,11 @@ Card::Card(string name, string type, string effect, int attack)
 	attackNorm = attack;
 }
 
+void Card::SetAttackNorm(int attack)
+{
+	attackNorm = attack;
+}
+
 void Card::ResetAttack()
 {
 	attackValue = attackNorm;

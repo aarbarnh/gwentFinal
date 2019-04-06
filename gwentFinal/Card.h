@@ -17,6 +17,7 @@ public:
 	void SetType(string type);
 	void SetEffect(string effect);
 	void SetAttack(int attack);
+	void SetAttackNorm(int attack);
 	int GetAttack();
 	void ResetAttack();
 	void DoubleAttack();

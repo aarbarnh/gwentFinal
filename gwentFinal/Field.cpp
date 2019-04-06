@@ -98,23 +98,23 @@ void Field::PlayCard(string card)
 		{
 			if (hand[i]->GetType() == "Weather")
 			{
-				weather.push_back(hand[i]);
 				ActivateEffect(card);
+				weather.push_back(hand[i]);
 				hand.erase(hand.begin() + i);
 			}
 			else if (hand[i]->GetType() == "Melee")
 			{
 				if (bFActivated)
 				{
+					ActivateEffect(card);
 					hand[i]->SetAttack(1);
 					melee.push_back(hand[i]);
-					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 				else
 				{
-					melee.push_back(hand[i]);
 					ActivateEffect(card);
+					melee.push_back(hand[i]);
 					hand.erase(hand.begin() + i);
 				}
 			}
@@ -122,15 +122,15 @@ void Field::PlayCard(string card)
 			{
 				if (iFActivated)
 				{
+					ActivateEffect(card);
 					hand[i]->SetAttack(1);
 					ranged.push_back(hand[i]);
-					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 				else
 				{
-					ranged.push_back(hand[i]);
 					ActivateEffect(card);
+					ranged.push_back(hand[i]);
 					hand.erase(hand.begin() + i);
 				}
 			}
@@ -139,14 +139,14 @@ void Field::PlayCard(string card)
 				if (tRActivated)
 				{
 					hand[i]->SetAttack(1);
-					siege.push_back(hand[i]);
 					ActivateEffect(card);
+					siege.push_back(hand[i]);
 					hand.erase(hand.begin() + i);
 				}
 				else
 				{
-					siege.push_back(hand[i]);
 					ActivateEffect(card);
+					siege.push_back(hand[i]);
 					hand.erase(hand.begin() + i);
 				}
 			}
@@ -164,69 +164,73 @@ void Field::Medic()
 {
 	string reviveCard;
 	bool cardInDis = false;
-	while (!cardInDis)
+	if (!discard.empty())
 	{
-		cout << "Medic effect was activated!\nWhich card would you like to bring back from the discard pile? (No weather or instants): ";
-		cin >> reviveCard;
-		for (int i = 0; i < discard.size(); i++)
+		ShowDiscard();
+		while (!cardInDis)
 		{
-			if (discard[i]->GetName() == reviveCard)
+			cout << "Medic effect was activated!\nWhich card would you like to bring back from the discard pile? (No weather or instants): ";
+			cin >> reviveCard;
+			for (int i = 0; i < discard.size(); i++)
 			{
-				if (discard[i]->GetType() == "Weather" || discard[i]->GetType() == "Instant")
+				if (discard[i]->GetName() == reviveCard)
 				{
-					cout << "\nYou cannot bring back a weather or instant card. Please choose one of your unit cards (melee, ranged, or siege).\n\n";
-				}
-				else
-				{
-					if (discard[i]->GetType() == "Melee")
+					if (discard[i]->GetType() == "Weather" || discard[i]->GetType() == "Instant")
 					{
-						if (bFActivated)
-						{
-							discard[i]->SetAttack(1);
-							melee.push_back(discard[i]);
-							discard.erase(discard.begin() + i);
-							cardInDis = true;
-						}
-						else
-						{
-							discard[i]->ResetAttack();
-							melee.push_back(discard[i]);
-							discard.erase(discard.begin() + i);
-							cardInDis = true;
-						}
+						cout << "\nYou cannot bring back a weather or instant card. Please choose one of your unit cards (melee, ranged, or siege).\n\n";
 					}
-					else if (discard[i]->GetType() == "Ranged")
+					else
 					{
-						if (iFActivated)
+						if (discard[i]->GetType() == "Melee")
 						{
-							discard[i]->SetAttack(1);
-							ranged.push_back(discard[i]);
-							discard.erase(discard.begin() + i);
-							cardInDis = true;
+							if (bFActivated)
+							{
+								discard[i]->SetAttack(1);
+								melee.push_back(discard[i]);
+								discard.erase(discard.begin() + i);
+								cardInDis = true;
+							}
+							else
+							{
+								discard[i]->ResetAttack();
+								melee.push_back(discard[i]);
+								discard.erase(discard.begin() + i);
+								cardInDis = true;
+							}
 						}
-						else
+						else if (discard[i]->GetType() == "Ranged")
 						{
-							discard[i]->ResetAttack();
-							ranged.push_back(discard[i]);
-							discard.erase(discard.begin() + i);
-							cardInDis = true;
+							if (iFActivated)
+							{
+								discard[i]->SetAttack(1);
+								ranged.push_back(discard[i]);
+								discard.erase(discard.begin() + i);
+								cardInDis = true;
+							}
+							else
+							{
+								discard[i]->ResetAttack();
+								ranged.push_back(discard[i]);
+								discard.erase(discard.begin() + i);
+								cardInDis = true;
+							}
 						}
-					}
-					else if (discard[i]->GetType() == "Siege")
-					{
-						if (tRActivated)
+						else if (discard[i]->GetType() == "Siege")
 						{
-							discard[i]->SetAttack(1);
-							siege.push_back(discard[i]);
-							discard.erase(discard.begin() + i);
-							cardInDis = true;
-						}
-						else
-						{
-							discard[i]->ResetAttack();
-							siege.push_back(discard[i]);
-							discard.erase(discard.begin() + i);
-							cardInDis = true;
+							if (tRActivated)
+							{
+								discard[i]->SetAttack(1);
+								siege.push_back(discard[i]);
+								discard.erase(discard.begin() + i);
+								cardInDis = true;
+							}
+							else
+							{
+								discard[i]->ResetAttack();
+								siege.push_back(discard[i]);
+								discard.erase(discard.begin() + i);
+								cardInDis = true;
+							}
 						}
 					}
 				}
@@ -277,6 +281,7 @@ void Field::CommandersHorn()
 			{
 				ranged[i]->DoubleAttack();
 			}
+			correctChoice = true;
 		}
 		else if (rowChoice == "siege")
 		{
@@ -284,6 +289,7 @@ void Field::CommandersHorn()
 			{
 				siege[i]->DoubleAttack();
 			}
+			correctChoice = true;
 		}
 	}
 }
@@ -315,31 +321,27 @@ void Field::TorrentialRain()
 	}
 }
 
-void Field::Bond(string card, Card * pCard)
+void Field::Bond(string card)
 {
-	int sameCards = 0;
 	for (int i = 0; i < melee.size(); i++)
 	{
 		if (melee[i]->GetName() == card)
 		{
 			melee[i]->DoubleAttack();
-			sameCards++;
 		}
-	}
-	if (sameCards == 3)
-	{
-		pCard->DoubleAttack();
-		pCard->DoubleAttack();
-	}
-	else if (sameCards == 2)
-	{
-		pCard->DoubleAttack();
 	}
 }
 
 void Field::Morale(Card * typeCheck)
 {
-	if (typeCheck->GetType() == "Ranged")
+	if (typeCheck->GetType() == "Melee")
+	{
+		for (int i = 0; i < melee.size(); i++)
+		{
+			melee[i]->IncrementAttack();
+		}
+	}
+	else if (typeCheck->GetType() == "Ranged")
 	{
 		for (int i = 0; i < ranged.size(); i++)
 		{
@@ -355,7 +357,7 @@ void Field::Morale(Card * typeCheck)
 	}
 }
 
-void Field::Scorch(vector<Card*>*mRow, vector<Card*>*rRow, vector<Card*>*sRow, vector<Card*>*tDiscard)
+string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 {
 	string scorchChoice;
 	string rowChoice;
@@ -363,9 +365,9 @@ void Field::Scorch(vector<Card*>*mRow, vector<Card*>*rRow, vector<Card*>*sRow, v
 	bool correctSChoice = false;
 	bool correctRChoice = false;
 	bool yNValid = false;
-	vector<Card*> mTemp = *mRow;
-	vector<Card*> rTemp = *rRow;
-	vector<Card*> sTemp = *sRow;
+	vector<Card*> mTemp = mRow;
+	vector<Card*> rTemp = rRow;
+	vector<Card*> sTemp = sRow;
 	while (!yNValid) //show rows y/n loop with validation, try
 	{
 		try
@@ -411,55 +413,74 @@ void Field::Scorch(vector<Card*>*mRow, vector<Card*>*rRow, vector<Card*>*sRow, v
 	}
 	while (!correctRChoice)
 	{
-		cout << "Which row is the card in that you would like to destroy? ('Melee', 'Ranged' or 'Siege'): ";
+		cout << "Which row is the card in that you would like to destroy? ('melee', 'ranged' or 'siege'): ";
 		cin >> rowChoice;
-		if (rowChoice == "Melee")
+		if (rowChoice == "melee")
 		{
 			while (!correctSChoice)
 			{
 				cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
-				cin >> scorchChoice;
+				getline(cin, scorchChoice);
 				for (int i = 0; i < mTemp.size(); i++)
 				{
 					if (mTemp[i]->GetName() == scorchChoice)
 					{
-						mRow->erase(mRow->begin() + i);
-						tDiscard->push_back(mTemp[i]);
 						correctSChoice = true;
+						return mTemp[i]->GetName();
 					}
 				}
 			}
 		}
-		else if (rowChoice == "Ranged")
+		else if (rowChoice == "ranged")
 		{
 			cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
-			cin >> scorchChoice;
+			getline(cin, scorchChoice);
 			for (int i = 0; i < rTemp.size(); i++)
 			{
 				if (rTemp[i]->GetName() == scorchChoice)
 				{
-					rRow->erase(rRow->begin() + i);
-					tDiscard->push_back(rTemp[i]);
 					correctSChoice = true;
+					return mTemp[i]->GetName();
 				}
 			}
 		}
-		else if (rowChoice == "Siege")
+		else if (rowChoice == "siege")
 		{
 			cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
-			cin >> scorchChoice;
+			getline(cin, scorchChoice);
 			for (int i = 0; i < sTemp.size(); i++)
 			{
 				if (mTemp[i]->GetName() == scorchChoice)
 				{
-					sRow->erase(sRow->begin() + i);
-					tDiscard->push_back(sTemp[i]);
 					correctSChoice = true;
+					return mTemp[i]->GetName();
 				}
 			}
 		}
 	}
 
+}
+
+void Field::Scorched(string sChoice)
+{
+	for (int i = 0; i < melee.size(); i++)
+	{
+		if (melee[i]->GetName() == sChoice)
+		{
+			discard.push_back(melee[i]);
+			melee.erase(melee.begin() + i);
+		}
+	}
+	for (int i = 0; i < ranged.size(); i++)
+	{
+		discard.push_back(ranged[i]);
+		ranged.erase(ranged.begin() + i);
+	}
+	for (int i = 0; i < siege.size(); i++)
+	{
+		discard.push_back(siege[i]);
+		siege.erase(siege.begin() + i);
+	}
 }
 
 void Field::ActivateEffect(string card)
@@ -499,7 +520,7 @@ void Field::ActivateEffect(string card)
 				}
 				else if (hand[i]->GetEffect() == "Bond")
 				{
-					Bond(card, hand[i]);
+					Bond(card);
 				}
 				else if (hand[i]->GetEffect() == "Morale")
 				{

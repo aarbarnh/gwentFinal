@@ -15,10 +15,10 @@ Clear Weather
 Instant
 Removes all weather effects.
 0
-Clear Weather
-Instant
-Removes all weather effects.
-0
+Iorveth
+Ranged
+None
+10
 Scorch
 Instant
 Kills one unit on the other player's field (Player choice).
@@ -43,31 +43,31 @@ Ida Emean
 Ranged
 None
 6
-Mahakaman Defender
+Mahakaman Defender 1
 Melee
 None
 5
-Mahakaman Defender
+Mahakaman Defender 2 
 Melee
 None
 5
-Dwarven Skirmisher
+Dwarven Skirmisher 1
 Melee
 None
 3
-Dwarven Skirmisher
+Dwarven Skirmisher 2
 Melee
 None
 3
-Dwarven Skirmisher
+Dwarven Skirmisher 3
 Melee
 None
 3
-Dol Blathanna Archer
+Dol Blathanna Archer 1
 Ranged
 None
 4
-Dol Blathanna Archer
+Dol Blathanna Archer 2
 Ranged
 None
 4

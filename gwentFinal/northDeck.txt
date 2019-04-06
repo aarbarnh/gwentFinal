@@ -19,46 +19,46 @@ John Natalis
 Melee
 None
 10
-Trebuchet
+Trebuchet 1
 Siege
 None
 6
-Trebuchet
+Trebuchet 2
 Siege
 None
 6
-Blue Stripes Commando
+Blue Stripes Commando 
 Melee
-Bond
+Morale
 4
-Blue Stripes Commando
-Melee 
-Bond
-4
+Dandelion
+Melee
+Morale
+2
 Kaedweni Siege Expert
 Siege
 Morale
 1
-Poor F*cking Infantry
+Poor F*cking Infantry 1
 Melee
-Bond
+Morale
 1
-Poor F*cking Infantry
+Poor F*cking Infantry 2
 Melee
-Bond
+Morale
 1
-Poor F*cking Infantry
-Melee 
-Bond
+Redanian Foot Soldier
+Melee
+None
 1
 Commander's Horn
 Instant
 Doubles strength of all units in a row.
 0
-Commander's Horn
-Instant
-Doubles strength of all units in a row.
-0
+Catapult
+Siege
+None
+8
 Scorch
 Instant
 Kills one unit on the other player's field (Player choice).
@@ -67,13 +67,13 @@ Clear Weather
 Instant
 Removes all weather effects.
 0
-Clear Weather
-Instant
-Removes all weather effects.
-0
-Biting Frost
+Crinfrid Reavers Dragon Hunter
+Ranged
+None
+5
+Biting Frost 
 Weather
-Sets melee units to 1 for both players.
+Sets melee units to 1 for both players
 0
 Impenetrable Fog
 Weather

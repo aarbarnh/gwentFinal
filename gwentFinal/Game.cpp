@@ -10,6 +10,7 @@ using namespace std;
 //function prototypes
 void StartScreen();
 void HelpScreen();
+bool PlayerPass();
 string CoinFlip();
 
 
@@ -20,11 +21,15 @@ int main()
 	string p2DeckChoice;
 	string flipChoice;
 	string flipResult;
+	string playerOneChoice;
+	string playerTwoChoice;
 	int playerOneWins = 0;
 	int playerTwoWins = 0;
 	bool correctDeckChoice = false;
 	bool correctAiChoice = false;
 	bool correctCall = false;
+	bool p1Pass = false;
+	bool p2Pass = false;
 
 	//three decks for the game, if created in if statement, destroyed outside of scope
 	unique_ptr<Deck> pElfDeck(new Deck(20));
@@ -205,9 +210,786 @@ int main()
 			}
 			do //loop for game (turns, get actions)
 			{
-				if (p1DeckChoice == "northern")
+				if (p1DeckChoice == "northern") //turn dependent on p1 deck choice
 				{
-					
+					bool p1TurnChoice = false;
+					while (!p1TurnChoice && !pNorthernField->GetHand().empty() && !p1Pass)
+					{
+						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerOneChoice;
+						if (playerOneChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pNorthernField->GetHand();
+							cout << "\n";
+							pNorthernField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin,playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pNorthernField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pNorthernField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pNorthernField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p1TurnChoice = true;
+						}
+						else if (playerOneChoice == "hand")
+						{
+							pNorthernField->ShowHand();
+						}
+						else if (playerOneChoice == "melee")
+						{
+							pNorthernField->ShowMelee();
+						}
+						else if (playerOneChoice == "ranged")
+						{
+							pNorthernField->ShowRanged();
+						}
+						else if (playerOneChoice == "siege")
+						{
+							pNorthernField->ShowSiege();
+						}
+						else if (playerOneChoice == "discard")
+						{
+							pNorthernField->ShowDiscard();
+						}
+						else if (playerOneChoice == "weather")
+						{
+							pNorthernField->ShowWeather();
+						}
+						else if (playerOneChoice == "pass")
+						{
+							p1Pass = PlayerPass();
+							if (p1Pass)
+							{
+								p1TurnChoice = true;
+							}
+						}
+						else if (playerOneChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else if (p1DeckChoice == "elf")
+				{
+					bool p1TurnChoice = false;
+					while (!p1TurnChoice && !pElfField->GetHand().empty() && !p1Pass)
+					{
+						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerOneChoice;
+						if (playerOneChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pElfField->GetHand();
+							cout << "\n";
+							pElfField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin,playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "northern")
+											{
+												string tempName = pElfField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pElfField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pElfField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p1TurnChoice = true;
+						}
+						else if (playerOneChoice == "hand")
+						{
+							pElfField->ShowHand();
+						}
+						else if (playerOneChoice == "melee")
+						{
+							pElfField->ShowMelee();
+						}
+						else if (playerOneChoice == "ranged")
+						{
+							pElfField->ShowRanged();
+						}
+						else if (playerOneChoice == "siege")
+						{
+							pElfField->ShowSiege();
+						}
+						else if (playerOneChoice == "discard")
+						{
+							pElfField->ShowDiscard();
+						}
+						else if (playerOneChoice == "weather")
+						{
+							pElfField->ShowWeather();
+						}
+						else if (playerOneChoice == "pass")
+						{
+							p1Pass = PlayerPass();
+							if (p1Pass)
+							{
+								p1TurnChoice = true;
+							}
+						}
+						else if (playerOneChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else
+				{
+					bool p1TurnChoice = false;
+					while (!p1TurnChoice && !pMonsterField->GetHand().empty() && !p1Pass)
+					{
+						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerOneChoice;
+						if (playerOneChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pMonsterField->GetHand();
+							cout << "\n";
+							pMonsterField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pMonsterField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pMonsterField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pNorthernField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pNorthernField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pNorthernField->ClearWeather();
+											}
+										}
+										pMonsterField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p1TurnChoice = true;
+						}
+						else if (playerOneChoice == "hand")
+						{
+							pMonsterField->ShowHand();
+						}
+						else if (playerOneChoice == "melee")
+						{
+							pMonsterField->ShowMelee();
+						}
+						else if (playerOneChoice == "ranged")
+						{
+							pMonsterField->ShowRanged();
+						}
+						else if (playerOneChoice == "siege")
+						{
+							pMonsterField->ShowSiege();
+						}
+						else if (playerOneChoice == "discard")
+						{
+							pMonsterField->ShowDiscard();
+						}
+						else if (playerOneChoice == "weather")
+						{
+							pMonsterField->ShowWeather();
+						}
+						else if (playerOneChoice == "pass")
+						{
+							p1Pass = PlayerPass();
+							if (p1Pass)
+							{
+								p1TurnChoice = true;
+							}
+						}
+						else if (playerOneChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				//turn dependent on p2 deck choice 
+				if (p2DeckChoice == "northern")
+				{
+					bool p2TurnChoice = false;
+					while (!p2TurnChoice && !pNorthernField->GetHand().empty() && !p2Pass)
+					{
+						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerTwoChoice;
+						if (playerTwoChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pNorthernField->GetHand();
+							cout << "\n";
+							pNorthernField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pNorthernField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pNorthernField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pNorthernField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p2TurnChoice = true;
+						}
+						else if (playerTwoChoice == "hand")
+						{
+							pNorthernField->ShowHand();
+						}
+						else if (playerTwoChoice == "melee")
+						{
+							pNorthernField->ShowMelee();
+						}
+						else if (playerTwoChoice == "ranged")
+						{
+							pNorthernField->ShowRanged();
+						}
+						else if (playerTwoChoice == "siege")
+						{
+							pNorthernField->ShowSiege();
+						}
+						else if (playerTwoChoice == "discard")
+						{
+							pNorthernField->ShowDiscard();
+						}
+						else if (playerTwoChoice == "weather")
+						{
+							pNorthernField->ShowWeather();
+						}
+						else if (playerTwoChoice == "pass")
+						{
+							p2Pass = PlayerPass();
+							if (p2Pass)
+							{
+								p2TurnChoice = true;
+							}
+						}
+						else if (playerTwoChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else if (p2DeckChoice == "elf")
+				{
+					bool p2TurnChoice = false;
+					while (!p2TurnChoice && !pElfField->GetHand().empty() && !p2Pass)
+					{
+						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerTwoChoice;
+						if (playerTwoChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pElfField->GetHand();
+							cout << "\n";
+							pElfField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "northern")
+											{
+												string tempName = pElfField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pElfField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pElfField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p2TurnChoice = true;
+						}
+						else if (playerTwoChoice == "hand")
+						{
+							pElfField->ShowHand();
+						}
+						else if (playerTwoChoice == "melee")
+						{
+							pElfField->ShowMelee();
+						}
+						else if (playerTwoChoice == "ranged")
+						{
+							pElfField->ShowRanged();
+						}
+						else if (playerTwoChoice == "siege")
+						{
+							pElfField->ShowSiege();
+						}
+						else if (playerTwoChoice == "discard")
+						{
+							pElfField->ShowDiscard();
+						}
+						else if (playerTwoChoice == "weather")
+						{
+							pElfField->ShowWeather();
+						}
+						else if (playerTwoChoice == "pass")
+						{
+							p2Pass = PlayerPass();
+							if (p2Pass)
+							{
+								p2TurnChoice = true;
+							}
+						}
+						else if (playerTwoChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else
+				{
+					bool p2TurnChoice = false;
+					while (!p2TurnChoice && !pMonsterField->GetHand().empty() && !p2Pass)
+					{
+						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerTwoChoice;
+						if (playerTwoChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pMonsterField->GetHand();
+							cout << "\n";
+							pMonsterField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pMonsterField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pMonsterField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pNorthernField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pNorthernField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pNorthernField->ClearWeather();
+											}
+										}
+										pMonsterField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p2TurnChoice = true;
+						}
+						else if (playerTwoChoice == "hand")
+						{
+							pMonsterField->ShowHand();
+						}
+						else if (playerTwoChoice == "melee")
+						{
+							pMonsterField->ShowMelee();
+						}
+						else if (playerTwoChoice == "ranged")
+						{
+							pMonsterField->ShowRanged();
+						}
+						else if (playerTwoChoice == "siege")
+						{
+							pMonsterField->ShowSiege();
+						}
+						else if (playerTwoChoice == "discard")
+						{
+							pMonsterField->ShowDiscard();
+						}
+						else if (playerTwoChoice == "weather")
+						{
+							pMonsterField->ShowWeather();
+						}
+						else if (playerTwoChoice == "pass")
+						{
+							p2Pass = PlayerPass();
+							if (p2Pass)
+							{
+								p2TurnChoice = true;
+							}
+						}
+						else if (playerTwoChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
 				}
 			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
@@ -270,13 +1052,823 @@ int main()
 
 			do
 			{
-				
+				if (p2DeckChoice == "northern") //turn dependent on p2 deck choice 
+				{
+					bool p2TurnChoice = false;
+					while (!p2TurnChoice && !pNorthernField->GetHand().empty() && !p2Pass)
+					{
+						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerTwoChoice;
+						if (playerTwoChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pNorthernField->GetHand();
+							cout << "\n";
+							pNorthernField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pNorthernField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pNorthernField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pNorthernField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p2TurnChoice = true;
+						}
+						else if (playerTwoChoice == "hand")
+						{
+							pNorthernField->ShowHand();
+						}
+						else if (playerTwoChoice == "melee")
+						{
+							pNorthernField->ShowMelee();
+						}
+						else if (playerTwoChoice == "ranged")
+						{
+							pNorthernField->ShowRanged();
+						}
+						else if (playerTwoChoice == "siege")
+						{
+							pNorthernField->ShowSiege();
+						}
+						else if (playerTwoChoice == "discard")
+						{
+							pNorthernField->ShowDiscard();
+						}
+						else if (playerTwoChoice == "weather")
+						{
+							pNorthernField->ShowWeather();
+						}
+						else if (playerTwoChoice == "pass")
+						{
+							p2Pass = PlayerPass();
+							if (p2Pass)
+							{
+								p2TurnChoice = true;
+							}
+						}
+						else if (playerTwoChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else if (p2DeckChoice == "elf")
+				{
+					bool p2TurnChoice = false;
+					while (!p2TurnChoice && !pElfField->GetHand().empty() && !p2Pass)
+					{
+						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerTwoChoice;
+						if (playerTwoChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pElfField->GetHand();
+							cout << "\n";
+							pElfField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "northern")
+											{
+												string tempName = pElfField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pElfField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pElfField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p2TurnChoice = true;
+						}
+						else if (playerTwoChoice == "hand")
+						{
+							pElfField->ShowHand();
+						}
+						else if (playerTwoChoice == "melee")
+						{
+							pElfField->ShowMelee();
+						}
+						else if (playerTwoChoice == "ranged")
+						{
+							pElfField->ShowRanged();
+						}
+						else if (playerTwoChoice == "siege")
+						{
+							pElfField->ShowSiege();
+						}
+						else if (playerTwoChoice == "discard")
+						{
+							pElfField->ShowDiscard();
+						}
+						else if (playerTwoChoice == "weather")
+						{
+							pElfField->ShowWeather();
+						}
+						else if (playerTwoChoice == "pass")
+						{
+							p2Pass = PlayerPass();
+							if (p2Pass)
+							{
+								p2TurnChoice = true;
+							}
+						}
+						else if (playerTwoChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else
+				{
+					bool p2TurnChoice = false;
+					while (!p2TurnChoice && !pMonsterField->GetHand().empty() && !p2Pass)
+					{
+						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerTwoChoice;
+						if (playerTwoChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pMonsterField->GetHand();
+							cout << "\n";
+							pMonsterField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pMonsterField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pMonsterField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pNorthernField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pNorthernField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pNorthernField->ClearWeather();
+											}
+										}
+										pMonsterField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p2TurnChoice = true;
+						}
+						else if (playerTwoChoice == "hand")
+						{
+							pMonsterField->ShowHand();
+						}
+						else if (playerTwoChoice == "melee")
+						{
+							pMonsterField->ShowMelee();
+						}
+						else if (playerTwoChoice == "ranged")
+						{
+							pMonsterField->ShowRanged();
+						}
+						else if (playerTwoChoice == "siege")
+						{
+							pMonsterField->ShowSiege();
+						}
+						else if (playerTwoChoice == "discard")
+						{
+							pMonsterField->ShowDiscard();
+						}
+						else if (playerTwoChoice == "weather")
+						{
+							pMonsterField->ShowWeather();
+						}
+						else if (playerTwoChoice == "pass")
+						{
+							p2Pass = PlayerPass();
+							if (p2Pass)
+							{
+								p2TurnChoice = true;
+							}
+						}
+						else if (playerTwoChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				//turn dependent on p1 deck choice
+				if (p1DeckChoice == "northern")
+				{
+					bool p1TurnChoice = false;
+					while (!p1TurnChoice && !pNorthernField->GetHand().empty() && !p1Pass)
+					{
+						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerOneChoice;
+						if (playerOneChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pNorthernField->GetHand();
+							cout << "\n";
+							pNorthernField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pNorthernField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pNorthernField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pNorthernField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p1TurnChoice = true;
+						}
+						else if (playerOneChoice == "hand")
+						{
+							pNorthernField->ShowHand();
+						}
+						else if (playerOneChoice == "melee")
+						{
+							pNorthernField->ShowMelee();
+						}
+						else if (playerOneChoice == "ranged")
+						{
+							pNorthernField->ShowRanged();
+						}
+						else if (playerOneChoice == "siege")
+						{
+							pNorthernField->ShowSiege();
+						}
+						else if (playerOneChoice == "discard")
+						{
+							pNorthernField->ShowDiscard();
+						}
+						else if (playerOneChoice == "weather")
+						{
+							pNorthernField->ShowWeather();
+						}
+						else if (playerOneChoice == "pass")
+						{
+							p1Pass = PlayerPass();
+							if (p1Pass)
+							{
+								p1TurnChoice = true;
+							}
+						}
+						else if (playerOneChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else if (p1DeckChoice == "elf")
+				{
+					bool p1TurnChoice = false;
+					while (!p1TurnChoice && !pElfField->GetHand().empty() && !p1Pass)
+					{
+						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerOneChoice;
+						if (playerOneChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pElfField->GetHand();
+							cout << "\n";
+							pElfField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "northern")
+											{
+												string tempName = pElfField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pElfField->Scorch(pMonsterField->GetMelee(), pMonsterField->GetRanged(), pMonsterField->GetSiege());
+												pMonsterField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->BitingFrost();
+											}
+											else
+											{
+												pMonsterField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+											else
+											{
+												pMonsterField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->TorrentialRain();
+											}
+											else
+											{
+												pMonsterField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "northern")
+											{
+												pNorthernField->ClearWeather();
+											}
+											else
+											{
+												pMonsterField->ClearWeather();
+											}
+										}
+										pElfField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p1TurnChoice = true;
+						}
+						else if (playerOneChoice == "hand")
+						{
+							pElfField->ShowHand();
+						}
+						else if (playerOneChoice == "melee")
+						{
+							pElfField->ShowMelee();
+						}
+						else if (playerOneChoice == "ranged")
+						{
+							pElfField->ShowRanged();
+						}
+						else if (playerOneChoice == "siege")
+						{
+							pElfField->ShowSiege();
+						}
+						else if (playerOneChoice == "discard")
+						{
+							pElfField->ShowDiscard();
+						}
+						else if (playerOneChoice == "weather")
+						{
+							pElfField->ShowWeather();
+						}
+						else if (playerOneChoice == "pass")
+						{
+							p1Pass = PlayerPass();
+							if (p1Pass)
+							{
+								p1TurnChoice = true;
+							}
+						}
+						else if (playerOneChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
+				else
+				{
+					bool p1TurnChoice = false;
+					while (!p1TurnChoice && !pMonsterField->GetHand().empty() && !p1Pass)
+					{
+						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
+						cin >> playerOneChoice;
+						if (playerOneChoice == "play")
+						{
+							string playCard;
+							bool rightCard = false;
+							vector<Card*> tempHand = pMonsterField->GetHand();
+							cout << "\n";
+							pMonsterField->ShowHand();
+							while (!rightCard)
+							{
+								cout << "\n\nWhat card would you like play? (Type the name of the card you'd like to play exactly): ";
+								getline(cin, playCard);
+								for (int i = 0; i < tempHand.size(); i++)
+								{
+									if (tempHand[i]->GetName() == playCard)
+									{
+										cout << playCard << " was played!\n\n";
+										if (tempHand[i]->GetName() == "Scorch")
+										{
+											cout << playCard << " was activated!\n\n";
+											if (p2DeckChoice == "elf")
+											{
+												string tempName = pMonsterField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
+												pElfField->Scorched(tempName);
+											}
+											else
+											{
+												string tempName = pMonsterField->Scorch(pNorthernField->GetMelee(), pNorthernField->GetRanged(), pNorthernField->GetSiege());
+												pNorthernField->Scorched(tempName);
+											}
+										}
+										else if (tempHand[i]->GetName() == "Biting Frost")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->BitingFrost();
+											}
+											else
+											{
+												pNorthernField->BitingFrost();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Impenetrable Fog")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ImpenetrableFog();
+											}
+											else
+											{
+												pNorthernField->ImpenetrableFog();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Torrential Rain")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->TorrentialRain();
+											}
+											else
+											{
+												pNorthernField->TorrentialRain();
+											}
+										}
+										else if (tempHand[i]->GetName() == "Clear Weather")
+										{
+											if (p2DeckChoice == "elf")
+											{
+												pElfField->ClearWeather();
+											}
+											else
+											{
+												pNorthernField->ClearWeather();
+											}
+										}
+										pMonsterField->PlayCard(playCard);
+										rightCard = true;
+									}
+								}
+							}
+							p1TurnChoice = true;
+						}
+						else if (playerOneChoice == "hand")
+						{
+							pMonsterField->ShowHand();
+						}
+						else if (playerOneChoice == "melee")
+						{
+							pMonsterField->ShowMelee();
+						}
+						else if (playerOneChoice == "ranged")
+						{
+							pMonsterField->ShowRanged();
+						}
+						else if (playerOneChoice == "siege")
+						{
+							pMonsterField->ShowSiege();
+						}
+						else if (playerOneChoice == "discard")
+						{
+							pMonsterField->ShowDiscard();
+						}
+						else if (playerOneChoice == "weather")
+						{
+							pMonsterField->ShowWeather();
+						}
+						else if (playerOneChoice == "pass")
+						{
+							p1Pass = PlayerPass();
+							if (p1Pass)
+							{
+								p1TurnChoice = true;
+							}
+						}
+						else if (playerOneChoice == "help")
+						{
+							//run help, implement help
+						}
+						else
+						{
+							cout << "\n\nYou did not enter a valid action. If you need a reminder, type 'help'. Choose again.\n\n";
+						}
+					}
+				}
 			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
 	}
 	while (true);
 	system("pause");
 	return 0;
+}
+bool PlayerPass()
+{
+	char yNAnswer;
+	bool yNValid = false;
+	cout << "\nAre you sure you want to pass this round? (Enter 'y' or 'n' for yes or no): ";
+	while (!yNValid)
+	{
+		cin >> yNAnswer;
+		if (yNAnswer == 'y')
+		{
+			cout << "\n\nYou have passed this round. You will not be able to play again until the next round.\n\n";
+			yNValid = true;
+			system("pause");
+			system("cls");
+			return true;
+		}
+		else if (yNAnswer == 'n')
+		{
+			cout << "\n\nYour turn won't be passed.\n\n";
+			yNValid = true;
+			system("pause");
+			system("cls");
+			return false;
+		}
+		else
+		{
+			cout << "\n\nYou can only choose 'y' or 'n', choose again.\n\n";
+		}
+	}
 }
 
 string CoinFlip()

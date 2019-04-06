@@ -30,9 +30,9 @@ public:
 	void TorrentialRain();
 	void CommandersHorn();
 	void Medic();
-	//make AI version of scorch maybe, maybe just 2player/multi
-	void Scorch(vector<Card*>*mRow,vector<Card*>*rRow,vector<Card*>*sRow,vector<Card*>*tDiscard);
-	void Bond(string card, Card * pCard);
+	string Scorch(vector<Card*>mRow,vector<Card*>rRow,vector<Card*>sRow);
+	void Scorched(string sChoice);
+	void Bond(string card);
 	void Morale(Card * typeCheck);
 	//getters
 	vector<Card*> GetHand();
