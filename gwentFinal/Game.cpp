@@ -493,9 +493,9 @@ int main()
 									if (tempHand[i]->GetName() == playCard)
 									{
 										cout << playCard << " was played!\n\n";
-										if (tempHand[i]->GetName() == "Scorch")
+										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
-											cout << playCard << " was activated!\n\n";
+											cout << "Scorch was activated!\n\n";
 											if (p2DeckChoice == "elf")
 											{
 												string tempName = pMonsterField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
@@ -640,7 +640,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Biting Frost")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->BitingFrost();
 											}
@@ -651,7 +651,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Impenetrable Fog")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ImpenetrableFog();
 											}
@@ -662,7 +662,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Torrential Rain")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->TorrentialRain();
 											}
@@ -673,7 +673,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Clear Weather")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ClearWeather();
 											}
@@ -770,7 +770,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Biting Frost")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->BitingFrost();
 											}
@@ -781,7 +781,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Impenetrable Fog")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->ImpenetrableFog();
 											}
@@ -792,7 +792,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Torrential Rain")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->TorrentialRain();
 											}
@@ -803,7 +803,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Clear Weather")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->ClearWeather();
 											}
@@ -884,10 +884,10 @@ int main()
 									if (tempHand[i]->GetName() == playCard)
 									{
 										cout << playCard << " was played!\n\n";
-										if (tempHand[i]->GetName() == "Scorch")
+										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
 											cout << playCard << " was activated!\n\n";
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												string tempName = pMonsterField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
 												pElfField->Scorched(tempName);
@@ -900,7 +900,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Biting Frost")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->BitingFrost();
 											}
@@ -911,7 +911,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Impenetrable Fog")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ImpenetrableFog();
 											}
@@ -922,7 +922,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Torrential Rain")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->TorrentialRain();
 											}
@@ -933,7 +933,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Clear Weather")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ClearWeather();
 											}
@@ -991,6 +991,84 @@ int main()
 						}
 					}
 				}
+				//end of the round, both players pass 
+				if (p1Pass && p2Pass)
+				{
+					int p1RoundTotal = 0;
+					int p2RoundTotal = 0;
+					cout << "Totaling the attack values for both players for the round...\n\nDetermining winner...\n\n";
+					if (p1DeckChoice == "elf") //p1 add up
+					{
+						pElfField->mPowAdd();
+						pElfField->rPowAdd();
+						pElfField->sPowAdd();
+						pElfField->tPowAdd();
+						p1RoundTotal = pElfField->GetTPow();
+					}
+					else if (p1DeckChoice == "northern")
+					{
+						pNorthernField->mPowAdd();
+						pNorthernField->rPowAdd();
+						pNorthernField->sPowAdd();
+						pNorthernField->tPowAdd();
+						p1RoundTotal = pNorthernField->GetTPow();
+					}
+					else
+					{
+						pMonsterField->mPowAdd();
+						pMonsterField->rPowAdd();
+						pMonsterField->sPowAdd();
+						pMonsterField->tPowAdd();
+						p1RoundTotal = pMonsterField->GetTPow();
+					}
+					cout << "Player One Total Attack Value: " << p1RoundTotal << "\n";
+					//p2 add up
+					if (p2DeckChoice == "elf") //p1 add up
+					{
+						pElfField->mPowAdd();
+						pElfField->rPowAdd();
+						pElfField->sPowAdd();
+						pElfField->tPowAdd();
+						p2RoundTotal = pElfField->GetTPow();
+					}
+					else if (p2DeckChoice == "northern")
+					{
+						pNorthernField->mPowAdd();
+						pNorthernField->rPowAdd();
+						pNorthernField->sPowAdd();
+						pNorthernField->tPowAdd();
+						p2RoundTotal = pNorthernField->GetTPow();
+					}
+					else
+					{
+						pMonsterField->mPowAdd();
+						pMonsterField->rPowAdd();
+						pMonsterField->sPowAdd();
+						pMonsterField->tPowAdd();
+						p2RoundTotal = pMonsterField->GetTPow();
+					}
+					cout << "Player Two Total Attack Value: " << p2RoundTotal << "\n\n";
+					//compare attack values, give win
+					if (p1RoundTotal > p2RoundTotal)
+					{
+						playerOneWins++;
+						cout << "Player One wins the round!\n\n";
+					}
+					else if (p1RoundTotal < p2RoundTotal)
+					{
+						playerTwoWins++;
+						cout << "Player Two wins the round!\n\n";
+					}
+					else
+					{
+						playerOneWins++;
+						playerTwoWins++;
+						cout << "The round was a tie! Both players get the round point.\n\n";
+					}
+					p1Pass = false;
+					p2Pass = false;
+				}
+
 			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
 		else //p2 goes first
@@ -1091,7 +1169,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Biting Frost")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->BitingFrost();
 											}
@@ -1102,7 +1180,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Impenetrable Fog")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ImpenetrableFog();
 											}
@@ -1113,7 +1191,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Torrential Rain")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->TorrentialRain();
 											}
@@ -1124,7 +1202,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Clear Weather")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ClearWeather();
 											}
@@ -1221,7 +1299,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Biting Frost")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->BitingFrost();
 											}
@@ -1232,7 +1310,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Impenetrable Fog")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->ImpenetrableFog();
 											}
@@ -1243,7 +1321,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Torrential Rain")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->TorrentialRain();
 											}
@@ -1254,7 +1332,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Clear Weather")
 										{
-											if (p2DeckChoice == "northern")
+											if (p1DeckChoice == "northern")
 											{
 												pNorthernField->ClearWeather();
 											}
@@ -1335,10 +1413,10 @@ int main()
 									if (tempHand[i]->GetName() == playCard)
 									{
 										cout << playCard << " was played!\n\n";
-										if (tempHand[i]->GetName() == "Scorch")
+										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
 											cout << playCard << " was activated!\n\n";
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												string tempName = pMonsterField->Scorch(pElfField->GetMelee(), pElfField->GetRanged(), pElfField->GetSiege());
 												pElfField->Scorched(tempName);
@@ -1351,7 +1429,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Biting Frost")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->BitingFrost();
 											}
@@ -1362,7 +1440,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Impenetrable Fog")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ImpenetrableFog();
 											}
@@ -1373,7 +1451,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Torrential Rain")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->TorrentialRain();
 											}
@@ -1384,7 +1462,7 @@ int main()
 										}
 										else if (tempHand[i]->GetName() == "Clear Weather")
 										{
-											if (p2DeckChoice == "elf")
+											if (p1DeckChoice == "elf")
 											{
 												pElfField->ClearWeather();
 											}
@@ -1726,7 +1804,7 @@ int main()
 									if (tempHand[i]->GetName() == playCard)
 									{
 										cout << playCard << " was played!\n\n";
-										if (tempHand[i]->GetName() == "Scorch")
+										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
 											cout << playCard << " was activated!\n\n";
 											if (p2DeckChoice == "elf")
@@ -1833,8 +1911,87 @@ int main()
 						}
 					}
 				}
+				//end of the round, both players pass 
+				if (p1Pass && p2Pass)
+				{
+					int p1RoundTotal = 0;
+					int p2RoundTotal = 0;
+					cout << "Totaling the attack values for both players for the round...\n\nDetermining winner...\n\n";
+					if (p1DeckChoice == "elf") //p1 add up
+					{
+						pElfField->mPowAdd();
+						pElfField->rPowAdd();
+						pElfField->sPowAdd();
+						pElfField->tPowAdd();
+						p1RoundTotal = pElfField->GetTPow();
+					}
+					else if (p1DeckChoice == "northern")
+					{
+						pNorthernField->mPowAdd();
+						pNorthernField->rPowAdd();
+						pNorthernField->sPowAdd();
+						pNorthernField->tPowAdd();
+						p1RoundTotal = pNorthernField->GetTPow();
+					}
+					else
+					{
+						pMonsterField->mPowAdd();
+						pMonsterField->rPowAdd();
+						pMonsterField->sPowAdd();
+						pMonsterField->tPowAdd();
+						p1RoundTotal = pMonsterField->GetTPow();
+					}
+					cout << "Player One Total Attack Value: " << p1RoundTotal << "\n";
+					//p2 add up
+					if (p2DeckChoice == "elf") //p1 add up
+					{
+						pElfField->mPowAdd();
+						pElfField->rPowAdd();
+						pElfField->sPowAdd();
+						pElfField->tPowAdd();
+						p2RoundTotal = pElfField->GetTPow();
+					}
+					else if (p2DeckChoice == "northern")
+					{
+						pNorthernField->mPowAdd();
+						pNorthernField->rPowAdd();
+						pNorthernField->sPowAdd();
+						pNorthernField->tPowAdd();
+						p2RoundTotal = pNorthernField->GetTPow();
+					}
+					else
+					{
+						pMonsterField->mPowAdd();
+						pMonsterField->rPowAdd();
+						pMonsterField->sPowAdd();
+						pMonsterField->tPowAdd();
+						p2RoundTotal = pMonsterField->GetTPow();
+					}
+					cout << "Player Two Total Attack Value: " << p2RoundTotal << "\n\n";
+					//compare attack values, give win
+					if (p1RoundTotal > p2RoundTotal)
+					{
+						playerOneWins++;
+						cout << "Player One wins the round!\n\n";
+					}
+					else if (p1RoundTotal < p2RoundTotal)
+					{
+						playerTwoWins++;
+						cout << "Player Two wins the round!\n\n";
+					}
+					else
+					{
+						playerOneWins++;
+						playerTwoWins++;
+						cout << "The round was a tie! Both players get the round point.\n\n";
+					}
+					p1Pass = false;
+					p2Pass = false;
+				}
 			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
+		//post game, ask to replay
+
 	}
 	while (true);
 	system("pause");

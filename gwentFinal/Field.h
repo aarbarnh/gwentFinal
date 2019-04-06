@@ -30,6 +30,7 @@ public:
 	void TorrentialRain();
 	void CommandersHorn();
 	void Medic();
+	int GetTPow();
 	string Scorch(vector<Card*>mRow,vector<Card*>rRow,vector<Card*>sRow);
 	void Scorched(string sChoice);
 	void Bond(string card);

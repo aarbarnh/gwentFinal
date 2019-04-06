@@ -357,6 +357,11 @@ void Field::Morale(Card * typeCheck)
 	}
 }
 
+int Field::GetTPow()
+{
+	return totalPower;
+}
+
 string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 {
 	string scorchChoice;
@@ -368,6 +373,7 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 	vector<Card*> mTemp = mRow;
 	vector<Card*> rTemp = rRow;
 	vector<Card*> sTemp = sRow;
+
 	while (!yNValid) //show rows y/n loop with validation, try
 	{
 		try
@@ -440,7 +446,7 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 				if (rTemp[i]->GetName() == scorchChoice)
 				{
 					correctSChoice = true;
-					return mTemp[i]->GetName();
+					return rTemp[i]->GetName();
 				}
 			}
 		}
@@ -450,14 +456,15 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 			getline(cin, scorchChoice);
 			for (int i = 0; i < sTemp.size(); i++)
 			{
-				if (mTemp[i]->GetName() == scorchChoice)
+				if (sTemp[i]->GetName() == scorchChoice)
 				{
 					correctSChoice = true;
-					return mTemp[i]->GetName();
+					return sTemp[i]->GetName();
 				}
 			}
 		}
 	}
+
 
 }
 
@@ -473,13 +480,19 @@ void Field::Scorched(string sChoice)
 	}
 	for (int i = 0; i < ranged.size(); i++)
 	{
-		discard.push_back(ranged[i]);
-		ranged.erase(ranged.begin() + i);
+		if (ranged[i]->GetName() == sChoice)
+		{
+			discard.push_back(ranged[i]);
+			ranged.erase(ranged.begin() + i);
+		}
 	}
 	for (int i = 0; i < siege.size(); i++)
 	{
-		discard.push_back(siege[i]);
-		siege.erase(siege.begin() + i);
+		if (siege[i]->GetName() == sChoice)
+		{
+			discard.push_back(siege[i]);
+			siege.erase(siege.begin() + i);
+		}
 	}
 }
 
