@@ -29,6 +29,7 @@ public:
 	void ImpenetrableFog();
 	void TorrentialRain();
 	void CommandersHorn();
+	void Reset(); //end of round resets!
 	void Medic();
 	int GetTPow();
 	string Scorch(vector<Card*>mRow,vector<Card*>rRow,vector<Card*>sRow);

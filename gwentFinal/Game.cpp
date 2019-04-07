@@ -1,6 +1,7 @@
 #include "Card.h"
 #include "Deck.h"
 #include "Field.h"
+#include "Player.h"
 #include <iostream>
 #include <memory>
 #include <ctime> //for time()
@@ -25,12 +26,16 @@ int main()
 	string playerTwoChoice;
 	int playerOneWins = 0;
 	int playerTwoWins = 0;
+	bool mainGame = true;
 	bool correctDeckChoice = false;
-	bool correctAiChoice = false;
+	bool correctP2Choice = false;
 	bool correctCall = false;
 	bool p1Pass = false;
 	bool p2Pass = false;
-
+	//three player pointers (might have too many pointers)
+	unique_ptr<Player> monsterPlayer(new Player("Free Commander's Horn"));
+	unique_ptr<Player> northernPlayer(new Player("Draw one card if you won the round."));
+	unique_ptr<Player> elfPlayer(new Player("Draw one extra card at the start of the game."));
 	//three decks for the game, if created in if statement, destroyed outside of scope
 	unique_ptr<Deck> pElfDeck(new Deck(20));
 	unique_ptr<Deck> pNorthDeck(new Deck(20));
@@ -70,6 +75,7 @@ int main()
 			{
 				pMonsterDeck->readCardFile("monsterDeck.txt");
 				pMonsterDeck->ShuffleDeck();
+				monsterPlayer->SetMonsterAbil(true);
 				correctDeckChoice = true;
 				cout << "\nYour Monsters deck has been built and shuffled...\n\n";
 			}
@@ -78,7 +84,7 @@ int main()
 				cout << "\nThe only three decks that you can choose from are Scoia'tael, Northern Realms, or Monsters.\nUse 'elf' for Scoia'tael, 'northern' for Northern Realms, and 'monster' for Monsters.\n\n";
 			}
 		}
-		while (!correctAiChoice)
+		while (!correctP2Choice)
 		{
 			cout << "Player Two, which deck would you like to use? You cannot pick the same deck as Player One.\nYour deck choice: "; //player2 chooses deck
 			cin >> p2DeckChoice;
@@ -92,7 +98,7 @@ int main()
 				{
 					pNorthDeck->readCardFile("northDeck.txt");
 					pNorthDeck->ShuffleDeck();
-					correctAiChoice = true;
+					correctP2Choice = true;
 					cout << "\nYour Northern Realms deck has been built and shuffled...\n\n";
 				}
 			}
@@ -106,7 +112,7 @@ int main()
 				{
 					pElfDeck->readCardFile("elfDeck.txt");
 					pElfDeck->ShuffleDeck();
-					correctAiChoice = true;
+					correctP2Choice = true;
 					cout << "\nYour Scoia'tael deck has been built and shuffled...\n\n";
 				}
 			}
@@ -120,7 +126,7 @@ int main()
 				{
 					pMonsterDeck->readCardFile("monsterDeck.txt");
 					pMonsterDeck->ShuffleDeck();
-					correctAiChoice = true;
+					correctP2Choice = true;
 					cout << "\nYour Monsters deck has been built and shuffled...\n\n";
 				}
 			}
@@ -232,7 +238,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -297,6 +303,8 @@ int main()
 								}
 							}
 							p1TurnChoice = true;
+							system("pause");
+							system("cls");
 						}
 						else if (playerOneChoice == "hand")
 						{
@@ -321,6 +329,10 @@ int main()
 						else if (playerOneChoice == "weather")
 						{
 							pNorthernField->ShowWeather();
+						}
+						else if (playerOneChoice == "ability")
+						{
+							cout << "Northern Realms ability: " << northernPlayer->GetAbility() << "\n\n";
 						}
 						else if (playerOneChoice == "pass")
 						{
@@ -362,7 +374,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" <<  playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -423,6 +435,8 @@ int main()
 										}
 										pElfField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -451,6 +465,10 @@ int main()
 						else if (playerOneChoice == "weather")
 						{
 							pElfField->ShowWeather();
+						}
+						else if (playerOneChoice == "ability")
+						{
+							cout << "Scoia'tael ability: " << elfPlayer->GetAbility() << "\n\n";
 						}
 						else if (playerOneChoice == "pass")
 						{
@@ -492,7 +510,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
 											cout << "Scorch was activated!\n\n";
@@ -553,6 +571,8 @@ int main()
 										}
 										pMonsterField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -581,6 +601,35 @@ int main()
 						else if (playerOneChoice == "weather")
 						{
 							pMonsterField->ShowWeather();
+						}
+						else if (playerOneChoice == "ability")
+						{
+							cout << "Monster ability: " << monsterPlayer->GetAbility() << "\n\n";
+							char abilUse;
+							bool useValid = false;
+							if (monsterPlayer->GetMonsterAbil())
+							{
+								while (!useValid)
+								{
+									cout << "Would you like to use your ability now? ('Y' or 'N'): ";
+									cin >> abilUse;
+									if (abilUse == 'Y' || abilUse == 'y')
+									{
+										pMonsterField->CommandersHorn();
+										monsterPlayer->SetMonsterAbil(false);
+										useValid = true;
+									}
+									else if (abilUse == 'N' || abilUse == 'n')
+									{
+										cout << "\n\nYour ability was not used.\n\n";
+										useValid = true;
+									}
+									else
+									{
+										cout << "\n\nYou can only enter 'Y' or 'N'. Choose again.\n\n";
+									}
+								}
+							}
 						}
 						else if (playerOneChoice == "pass")
 						{
@@ -623,7 +672,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -684,6 +733,8 @@ int main()
 										}
 										pNorthernField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -721,6 +772,10 @@ int main()
 								p2TurnChoice = true;
 							}
 						}
+						else if (playerTwoChoice == "ability")
+						{
+							cout << "Northern Realms ability: " << northernPlayer->GetAbility() << "\n\n";
+						}
 						else if (playerTwoChoice == "help")
 						{
 							//run help, implement help
@@ -753,7 +808,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -814,6 +869,8 @@ int main()
 										}
 										pElfField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -842,6 +899,10 @@ int main()
 						else if (playerTwoChoice == "weather")
 						{
 							pElfField->ShowWeather();
+						}
+						else if (playerTwoChoice == "ability")
+						{
+							cout << "Scoia'tael ability: " << elfPlayer->GetAbility() << "\n\n";
 						}
 						else if (playerTwoChoice == "pass")
 						{
@@ -883,7 +944,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -944,6 +1005,8 @@ int main()
 										}
 										pMonsterField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -972,6 +1035,35 @@ int main()
 						else if (playerTwoChoice == "weather")
 						{
 							pMonsterField->ShowWeather();
+						}
+						else if (playerTwoChoice == "ability")
+						{
+							cout << "Monster ability: " << monsterPlayer->GetAbility() << "\n\n";
+							char abilUse;
+							bool useValid = false;
+							if (monsterPlayer->GetMonsterAbil())
+							{
+								while (!useValid)
+								{
+									cout << "Would you like to use your ability now? ('Y' or 'N'): ";
+									cin >> abilUse;
+									if (abilUse == 'Y' || abilUse == 'y')
+									{
+										pMonsterField->CommandersHorn();
+										monsterPlayer->SetMonsterAbil(false);
+										useValid = true;
+									}
+									else if (abilUse == 'N' || abilUse == 'n')
+									{
+										cout << "\n\nYour ability was not used.\n\n";
+										useValid = true;
+									}
+									else
+									{
+										cout << "\n\nYou can only enter 'Y' or 'N'. Choose again.\n\n";
+									}
+								}
+							}
 						}
 						else if (playerTwoChoice == "pass")
 						{
@@ -1053,17 +1145,97 @@ int main()
 					{
 						playerOneWins++;
 						cout << "Player One wins the round!\n\n";
+						if (p1DeckChoice == "northern") //allow northern to draw one card because of win
+						{
+							cout << "As Northern Realms, Player One gets to draw one card for the round win.\n\n";
+							pNorthernField->DrawCard(pNorthDeck->GetDeck());
+							pNorthDeck->TakeFrom();
+							pNorthernField->Reset(); 
+						}
+						else if (p1DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
+
+						if (p2DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p2DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
 					}
 					else if (p1RoundTotal < p2RoundTotal)
 					{
 						playerTwoWins++;
 						cout << "Player Two wins the round!\n\n";
+						if (p2DeckChoice == "northern")
+						{
+							cout << "As Northern Realms, Player Two gets to draw one card for the round win.\n\n";
+							pNorthernField->DrawCard(pNorthDeck->GetDeck());
+							pNorthDeck->TakeFrom();
+							pNorthernField->Reset();
+						}
+						else if (p2DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
+
+						if (p1DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p1DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
 					}
 					else
 					{
 						playerOneWins++;
 						playerTwoWins++;
 						cout << "The round was a tie! Both players get the round point.\n\n";
+						if (p1DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p1DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
+						if (p2DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p2DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
 					}
 					p1Pass = false;
 					p2Pass = false;
@@ -1152,7 +1324,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -1213,6 +1385,8 @@ int main()
 										}
 										pNorthernField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -1241,6 +1415,10 @@ int main()
 						else if (playerTwoChoice == "weather")
 						{
 							pNorthernField->ShowWeather();
+						}
+						else if (playerTwoChoice == "ability")
+						{
+							cout << "Northern Realms ability" << northernPlayer->GetAbility() << "\n\n";
 						}
 						else if (playerTwoChoice == "pass")
 						{
@@ -1282,7 +1460,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -1343,6 +1521,8 @@ int main()
 										}
 										pElfField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -1371,6 +1551,10 @@ int main()
 						else if (playerTwoChoice == "weather")
 						{
 							pElfField->ShowWeather();
+						}
+						else if (playerTwoChoice == "ability")
+						{
+							cout << "Scoia'tael ability: " << elfPlayer->GetAbility() << "\n\n";
 						}
 						else if (playerTwoChoice == "pass")
 						{
@@ -1412,7 +1596,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -1473,6 +1657,8 @@ int main()
 										}
 										pMonsterField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -1501,6 +1687,35 @@ int main()
 						else if (playerTwoChoice == "weather")
 						{
 							pMonsterField->ShowWeather();
+						}
+						else if (playerTwoChoice == "ability")
+						{
+							cout << "Monster ability: " << monsterPlayer->GetAbility() << "\n\n";
+							char abilUse;
+							bool useValid = false;
+							if (monsterPlayer->GetMonsterAbil())
+							{
+								while (!useValid)
+								{
+									cout << "Would you like to use your ability now? ('Y' or 'N'): ";
+									cin >> abilUse;
+									if (abilUse == 'Y' || abilUse == 'y')
+									{
+										pMonsterField->CommandersHorn();
+										monsterPlayer->SetMonsterAbil(false);
+										useValid = true;
+									}
+									else if (abilUse == 'N' || abilUse == 'n')
+									{
+										cout << "\n\nYour ability was not used.\n\n";
+										useValid = true;
+									}
+									else
+									{
+										cout << "\n\nYou can only enter 'Y' or 'N'. Choose again.\n\n";
+									}
+								}
+							}
 						}
 						else if (playerTwoChoice == "pass")
 						{
@@ -1543,7 +1758,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -1604,6 +1819,8 @@ int main()
 										}
 										pNorthernField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -1632,6 +1849,10 @@ int main()
 						else if (playerOneChoice == "weather")
 						{
 							pNorthernField->ShowWeather();
+						}
+						else if (playerOneChoice == "ability")
+						{
+							cout << "Northern realms ability: " << northernPlayer->GetAbility() << "\n\n";
 						}
 						else if (playerOneChoice == "pass")
 						{
@@ -1673,7 +1894,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -1734,6 +1955,8 @@ int main()
 										}
 										pElfField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -1762,6 +1985,10 @@ int main()
 						else if (playerOneChoice == "weather")
 						{
 							pElfField->ShowWeather();
+						}
+						else if (playerOneChoice == "ability")
+						{
+							cout << "Scoia'tael ability: " << elfPlayer->GetAbility() << "\n\n";
 						}
 						else if (playerOneChoice == "pass")
 						{
@@ -1803,7 +2030,7 @@ int main()
 								{
 									if (tempHand[i]->GetName() == playCard)
 									{
-										cout << playCard << " was played!\n\n";
+										cout << "\n" << playCard << " was played!\n\n";
 										if (tempHand[i]->GetName() == "Scorch" || tempHand[i]->GetName() == "Villentretenmerth")
 										{
 											cout << playCard << " was activated!\n\n";
@@ -1864,6 +2091,8 @@ int main()
 										}
 										pMonsterField->PlayCard(playCard);
 										rightCard = true;
+										system("pause");
+										system("cls");
 									}
 								}
 							}
@@ -1893,6 +2122,35 @@ int main()
 						{
 							pMonsterField->ShowWeather();
 						}
+						else if (playerOneChoice == "ability")
+						{
+							cout << "Monster ability: " << monsterPlayer->GetAbility() << "\n\n";
+							char abilUse;
+							bool useValid = false;
+							if (monsterPlayer->GetMonsterAbil())
+							{
+								while (!useValid)
+								{
+									cout << "Would you like to use your ability now? ('Y' or 'N'): ";
+									cin >> abilUse;
+									if (abilUse == 'Y' || abilUse == 'y')
+									{
+										pMonsterField->CommandersHorn();
+										monsterPlayer->SetMonsterAbil(false);
+										useValid = true;
+									}
+									else if (abilUse == 'N' || abilUse == 'n')
+									{
+										cout << "\n\nYour ability was not used.\n\n";
+										useValid = true;
+									}
+									else
+									{
+										cout << "\n\nYou can only enter 'Y' or 'N'. Choose again.\n\n";
+									}
+								}
+							}
+						}
 						else if (playerOneChoice == "pass")
 						{
 							p1Pass = PlayerPass();
@@ -1900,6 +2158,10 @@ int main()
 							{
 								p1TurnChoice = true;
 							}
+						}
+						else if (playerOneChoice == "ability")
+						{
+							
 						}
 						else if (playerOneChoice == "help")
 						{
@@ -1973,17 +2235,96 @@ int main()
 					{
 						playerOneWins++;
 						cout << "Player One wins the round!\n\n";
+						if (p1DeckChoice == "northern")
+						{
+							cout << "As Northern Realms, Player One gets to draw one card for the round win.\n\n";
+							pNorthernField->DrawCard(pNorthDeck->GetDeck());
+							pNorthDeck->TakeFrom();
+							pNorthernField->Reset();
+						}
+						else if (p1DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
+
+						if (p2DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p2DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
 					}
 					else if (p1RoundTotal < p2RoundTotal)
 					{
 						playerTwoWins++;
 						cout << "Player Two wins the round!\n\n";
+						if(p2DeckChoice == "northern")
+						{
+							cout << "As Northern Realms, Player Two gets to draw one card for the round win.\n\n";
+							pNorthernField->DrawCard(pNorthDeck->GetDeck());
+							pNorthDeck->TakeFrom();
+						}
+						else if (p2DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
+
+						if (p1DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p1DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
 					}
 					else
 					{
 						playerOneWins++;
 						playerTwoWins++;
 						cout << "The round was a tie! Both players get the round point.\n\n";
+						if (p1DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p1DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
+						if (p2DeckChoice == "northern")
+						{
+							pNorthernField->Reset();
+						}
+						else if (p2DeckChoice == "elf")
+						{
+							pElfField->Reset();
+						}
+						else
+						{
+							pMonsterField->Reset();
+						}
 					}
 					p1Pass = false;
 					p2Pass = false;
@@ -1991,9 +2332,52 @@ int main()
 			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
 		//post game, ask to replay
-
-	}
-	while (true);
+		if (playerOneWins > playerTwoWins)
+		{
+			cout << "Player One has won at Gwent against Player Two!\n\n";
+			system("pause");
+		}
+		else if (playerTwoWins > playerOneWins)
+		{
+			cout << "Player Two has won at Gwent against Player One!\n\n";
+			system("pause");
+		}
+		else
+		{
+			cout << "Player One and Player Two have tied at Gwent!\n\n";
+			system("pause");
+		}
+		system("cls");
+		bool playAgain = false;
+		while (!playAgain)
+		{
+			char againChoice;
+			try
+			{
+				cout << "Would you like to play Gwent again?\n\n";
+				cin >> againChoice;
+				if (againChoice == 'Y' || againChoice == 'y')
+				{
+					playAgain = true;
+				}
+				else if (againChoice == 'N' || againChoice == 'n')
+				{
+					playAgain = true;
+					mainGame = false;
+				}
+				else
+				{
+					throw "You can only enter 'Y' or 'N'. Choose again.";
+				}
+			}
+			catch (const char * msg)
+			{
+				cout << msg << "\n\n";
+			}
+		}
+	}while (mainGame);
+	system("cls");
+	cout << "Thank you for playing my C++ II Gwent Final! :)\n\n";
 	system("pause");
 	return 0;
 }

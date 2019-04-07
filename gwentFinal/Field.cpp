@@ -36,6 +36,34 @@ void Field::tPowAdd()
 	totalPower = meleePower + rangedPower + siegePower;
 }
 
+void Field::Reset()
+{
+	for (int i = 0; i < melee.size(); i++) //push to discard for all rows
+	{
+		discard.push_back(melee[i]);
+	}
+	for (int i = 0; i < ranged.size(); i++)
+	{
+		discard.push_back(ranged[i]);
+	}
+	for (int i = 0; i < siege.size(); i++)
+	{
+		discard.push_back(siege[i]);
+	}
+	for (int i = 0; i < weather.size(); i++)
+	{
+		discard.push_back(weather[i]);
+	}
+	melee.clear(); //clear all rows
+	ranged.clear();
+	siege.clear();
+	weather.clear();
+	//reset weather bools
+	bFActivated = false;
+	iFActivated = false;
+	tRActivated = false;
+}
+
 void Field::DrawCard(vector<Card*> deck)
 {
 	vector<Card*> tempDeck = deck;
@@ -44,49 +72,91 @@ void Field::DrawCard(vector<Card*> deck)
 
 void Field::ShowHand()
 {
-	for (int i = 0; i < hand.size(); i++)
+	if (hand.empty())
 	{
-		cout << hand[i]->GetName() << "\n" << hand[i]->GetType() << "\n" << hand[i]->GetEffect() << "\n" << hand[i]->GetAttack() << "\n\n";
+		cout << "\nHand is empty.\n\n";
+	}
+	else
+	{
+		for (int i = 0; i < hand.size(); i++)
+		{
+			cout << "\n" << hand[i]->GetName() << "\n" << hand[i]->GetType() << "\n" << hand[i]->GetEffect() << "\n" << hand[i]->GetAttack() << "\n\n";
+		}
 	}
 }
 
 void Field::ShowMelee()
 {
-	for (int i = 0; i < melee.size(); i++)
+	if (melee.empty())
 	{
-		cout << melee[i]->GetName() << "\n" << melee[i]->GetType() << "\n" << melee[i]->GetEffect() << "\n" << melee[i]->GetAttack() << "\n\n";
+		cout << "\nMelee row is empty.\n\n";
+	}
+	else
+	{
+		for (int i = 0; i < melee.size(); i++)
+		{
+			cout << "\n" << melee[i]->GetName() << "\n" << melee[i]->GetType() << "\n" << melee[i]->GetEffect() << "\n" << melee[i]->GetAttack() << "\n\n";
+		}
 	}
 }
 
 void Field::ShowRanged()
 {
-	for (int i = 0; i < ranged.size(); i++)
+	if (ranged.empty())
 	{
-		cout << ranged[i]->GetName() << "\n" << ranged[i]->GetType() << "\n" << ranged[i]->GetEffect() << "\n" << ranged[i]->GetAttack() << "\n\n";
+		cout << "\nRanged row is empty.\n\n";
+	}
+	else
+	{
+		for (int i = 0; i < ranged.size(); i++)
+		{
+			cout << "\n" << ranged[i]->GetName() << "\n" << ranged[i]->GetType() << "\n" << ranged[i]->GetEffect() << "\n" << ranged[i]->GetAttack() << "\n\n";
+		}
 	}
 }
 
 void Field::ShowSiege()
 {
-	for (int i = 0; i < siege.size(); i++)
+	if (siege.empty())
 	{
-		cout << siege[i]->GetName() << "\n" << siege[i]->GetType() << "\n" << siege[i]->GetEffect() << "\n" << siege[i]->GetAttack() << "\n\n";
+		cout << "\nSiege row is empty.\n\n";
+	}
+	else
+	{
+		for (int i = 0; i < siege.size(); i++)
+		{
+			cout << "\n" << siege[i]->GetName() << "\n" << siege[i]->GetType() << "\n" << siege[i]->GetEffect() << "\n" << siege[i]->GetAttack() << "\n\n";
+		}
 	}
 }
 
 void Field::ShowDiscard()
 {
-	for (int i = 0; i < discard.size(); i++)
+	if (discard.empty())
 	{
-		cout << discard[i]->GetName() << "\n" << discard[i]->GetType() << "\n" << discard[i]->GetEffect() << "\n" << discard[i]->GetAttack() << "\n\n";
+		cout << "\nDiscard pile is empty.\n\n";
+	}
+	else
+	{
+		for (int i = 0; i < discard.size(); i++)
+		{
+			cout << "\n" << discard[i]->GetName() << "\n" << discard[i]->GetType() << "\n" << discard[i]->GetEffect() << "\n" << discard[i]->GetAttack() << "\n\n";
+		}
 	}
 }
 
 void Field::ShowWeather()
 {
-	for (int i = 0; i < weather.size(); i++)
+	if (weather.empty())
 	{
-		cout << weather[i]->GetName() << "\n" << weather[i]->GetType() << "\n" << weather[i]->GetEffect() << "\n" << weather[i]->GetAttack() << "\n\n";
+		cout << "\nNo weather cards in effect.\n\n";
+	}
+	else
+	{
+		for (int i = 0; i < weather.size(); i++)
+		{
+			cout << "\n" << weather[i]->GetName() << "\n" << weather[i]->GetType() << "\n" << weather[i]->GetEffect() << "\n" << weather[i]->GetAttack() << "\n\n";
+		}
 	}
 }
 
@@ -170,7 +240,7 @@ void Field::Medic()
 		while (!cardInDis)
 		{
 			cout << "Medic effect was activated!\nWhich card would you like to bring back from the discard pile? (No weather or instants): ";
-			cin >> reviveCard;
+			getline(cin, reviveCard);
 			for (int i = 0; i < discard.size(); i++)
 			{
 				if (discard[i]->GetName() == reviveCard)
