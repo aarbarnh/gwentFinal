@@ -1,6 +1,6 @@
 #include "Field.h"
 #include <iostream>
-//#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -197,8 +197,8 @@ void Field::PlayCard(string card)
 				if (bFActivated)
 				{
 					hand[i]->SetAttack(1);
-					ActivateEffect(card);
 					melee.push_back(hand[i]);
+					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 				else
@@ -362,7 +362,8 @@ void Field::CommandersHorn()
 	{
 		cout << "Commander's Horn was activated!\nWhich row would you like to double all units attack value? (melee, ranged, or siege): ";
 		getline(cin,rowChoice);
-		if (rowChoice == "melee")
+		boost::algorithm::to_upper(rowChoice); //make the player's choice uppercase
+		if (rowChoice == "MELEE")
 		{
 			for (int i = 0; i < melee.size(); i++)
 			{
@@ -370,7 +371,7 @@ void Field::CommandersHorn()
 			}
 			correctChoice = true;
 		}
-		else if (rowChoice == "ranged")
+		else if (rowChoice == "RANGED")
 		{
 			for (int i = 0; i < ranged.size(); i++)
 			{
@@ -378,7 +379,7 @@ void Field::CommandersHorn()
 			}
 			correctChoice = true;
 		}
-		else if (rowChoice == "siege")
+		else if (rowChoice == "SIEGE")
 		{
 			for (int i = 0; i < siege.size(); i++)
 			{
@@ -387,6 +388,9 @@ void Field::CommandersHorn()
 			correctChoice = true;
 		}
 	}
+	cout << "\n";
+	system("pause");
+	system("cls");
 }
 
 void Field::BitingFrost()
@@ -418,24 +422,20 @@ void Field::TorrentialRain()
 
 void Field::Bond(string card)
 {
+	string paramName = boost::algorithm::trim_left_copy_if(card, boost::is_digit()); //get rid of the 1/2 (digits) out of the name
 	for (int i = 0; i < melee.size(); i++)
 	{
-		if (melee[i]->GetName() == card)
+		string cardName = boost::algorithm::trim_left_copy_if(melee[i]->GetName(), boost::is_digit()); //get rid of the 1/2 (digits) out of the name
+		if (cardName == paramName)
 		{
-			if (melee[i]->GetEffect() == "Bond")
-			{
-				bondDoubles++;
-			}
+			bondDoubles++;
 		}
 	}
 	if (bondDoubles > 1)
 	{
 		for (int i = 0; i < melee.size(); i++)
 		{
-			if (melee[i]->GetEffect() == "Bond")
-			{
-				melee[i]->DoubleAttack();
-			}
+			melee[i]->DoubleAttack();
 		}
 	}
 }
@@ -529,7 +529,8 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 	{
 		cout << "Which row is the card in that you would like to destroy? ('melee', 'ranged' or 'siege'): ";
 		getline(cin,rowChoice);
-		if (rowChoice == "melee")
+		boost::algorithm::to_upper(rowChoice);
+		if (rowChoice == "MELEE")
 		{
 			while (!correctSChoice)
 			{
@@ -545,7 +546,7 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 				}
 			}
 		}
-		else if (rowChoice == "ranged")
+		else if (rowChoice == "RANGED")
 		{
 			cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
 			getline(cin, scorchChoice);
@@ -558,7 +559,7 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 				}
 			}
 		}
-		else if (rowChoice == "siege")
+		else if (rowChoice == "SIEGE")
 		{
 			cout << "\nWhich card in this row would you like to destroy? (Spell out the name exactly as shown above): ";
 			getline(cin, scorchChoice);
