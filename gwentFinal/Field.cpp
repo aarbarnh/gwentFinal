@@ -196,15 +196,15 @@ void Field::PlayCard(string card)
 			{
 				if (bFActivated)
 				{
-					ActivateEffect(card);
 					hand[i]->SetAttack(1);
+					ActivateEffect(card);
 					melee.push_back(hand[i]);
 					hand.erase(hand.begin() + i);
 				}
 				else
 				{
-					ActivateEffect(card);
 					melee.push_back(hand[i]);
+					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 			}
@@ -212,15 +212,15 @@ void Field::PlayCard(string card)
 			{
 				if (iFActivated)
 				{
-					ActivateEffect(card);
 					hand[i]->SetAttack(1);
 					ranged.push_back(hand[i]);
+					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 				else
 				{
-					ActivateEffect(card);
 					ranged.push_back(hand[i]);
+					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 			}
@@ -229,14 +229,14 @@ void Field::PlayCard(string card)
 				if (tRActivated)
 				{
 					hand[i]->SetAttack(1);
-					ActivateEffect(card);
 					siege.push_back(hand[i]);
+					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 				else
 				{
-					ActivateEffect(card);
 					siege.push_back(hand[i]);
+					ActivateEffect(card);
 					hand.erase(hand.begin() + i);
 				}
 			}

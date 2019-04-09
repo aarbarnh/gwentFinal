@@ -1106,7 +1106,7 @@ int main()
 						pNorthernField->tPowAdd();
 						p1RoundTotal = pNorthernField->GetTPow();
 					}
-					else if (p2DeckChoice == "monster")
+					else if (p1DeckChoice == "monster")
 					{
 						pMonsterField->mPowAdd();
 						pMonsterField->rPowAdd();
@@ -2206,7 +2206,7 @@ int main()
 						pNorthernField->tPowAdd();
 						p1RoundTotal = pNorthernField->GetTPow();
 					}
-					else if (p2DeckChoice == "monster")
+					else if (p1DeckChoice == "monster")
 					{
 						pMonsterField->mPowAdd();
 						pMonsterField->rPowAdd();
