@@ -50,6 +50,10 @@ void Deck::readCardFile(string file)
 	inFile.close();
 }
 
+void Deck::ResetDeck()
+{
+	deck.clear();
+}
 
 void Deck::TakeFrom() //subtracts top card, when player draws
 {

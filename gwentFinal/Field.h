@@ -30,6 +30,8 @@ public:
 	void TorrentialRain();
 	void CommandersHorn();
 	void Reset(); //end of round resets!
+	void ClearAll(); //end of round clear rows
+	void ResetPower(); //end of round power reset, wont affect new rounds
 	void Medic();
 	int GetTPow();
 	string Scorch(vector<Card*>mRow,vector<Card*>rRow,vector<Card*>sRow);
@@ -48,6 +50,7 @@ private:
 	int rangedPower;
 	int siegePower;
 	int totalPower;
+	int bondDoubles;
 	vector<Card *> hand;
 	vector<Card *> melee;
 	vector<Card *> ranged;

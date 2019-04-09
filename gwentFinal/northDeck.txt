@@ -41,11 +41,11 @@ Morale
 1
 Poor F*cking Infantry 1
 Melee
-Morale
+Bond
 1
 Poor F*cking Infantry 2
 Melee
-Morale
+Bond
 1
 Redanian Foot Soldier
 Melee

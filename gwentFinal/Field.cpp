@@ -1,5 +1,6 @@
 #include "Field.h"
 #include <iostream>
+//#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -62,6 +63,25 @@ void Field::Reset()
 	bFActivated = false;
 	iFActivated = false;
 	tRActivated = false;
+}
+
+void Field::ResetPower()
+{
+	meleePower = 0;
+	rangedPower = 0;
+	siegePower = 0;
+	totalPower = 0;
+	bondDoubles = 0;
+}
+
+void Field::ClearAll()
+{
+	hand.clear();
+	melee.clear();
+	ranged.clear();
+	siege.clear();
+	weather.clear();
+	discard.clear();
 }
 
 void Field::DrawCard(vector<Card*> deck)
@@ -239,7 +259,8 @@ void Field::Medic()
 		ShowDiscard();
 		while (!cardInDis)
 		{
-			cout << "Medic effect was activated!\nWhich card would you like to bring back from the discard pile? (No weather or instants): ";
+			cout << "\nMedic effect was activated!\n\n";
+			cout << "Which card would you like to bring back from the discard pile? (No weather or instants): ";
 			getline(cin, reviveCard);
 			for (int i = 0; i < discard.size(); i++)
 			{
@@ -247,7 +268,7 @@ void Field::Medic()
 				{
 					if (discard[i]->GetType() == "Weather" || discard[i]->GetType() == "Instant")
 					{
-						cout << "\nYou cannot bring back a weather or instant card. Please choose one of your unit cards (melee, ranged, or siege).\n\n";
+						cout << "\n\nYou cannot bring back a weather or instant card. Please choose one of your unit cards (melee, ranged, or siege).\n";
 					}
 					else
 					{
@@ -311,6 +332,10 @@ void Field::Medic()
 
 void Field::ClearWeather()
 {
+	for (int i = 0; i < weather.size(); i++)
+	{
+		discard.push_back(weather[i]);
+	}
 	weather.clear();
 	bFActivated = false;
 	iFActivated = false;
@@ -336,7 +361,7 @@ void Field::CommandersHorn()
 	while (!correctChoice)
 	{
 		cout << "Commander's Horn was activated!\nWhich row would you like to double all units attack value? (melee, ranged, or siege): ";
-		cin >> rowChoice;
+		getline(cin,rowChoice);
 		if (rowChoice == "melee")
 		{
 			for (int i = 0; i < melee.size(); i++)
@@ -397,7 +422,20 @@ void Field::Bond(string card)
 	{
 		if (melee[i]->GetName() == card)
 		{
-			melee[i]->DoubleAttack();
+			if (melee[i]->GetEffect() == "Bond")
+			{
+				bondDoubles++;
+			}
+		}
+	}
+	if (bondDoubles > 1)
+	{
+		for (int i = 0; i < melee.size(); i++)
+		{
+			if (melee[i]->GetEffect() == "Bond")
+			{
+				melee[i]->DoubleAttack();
+			}
 		}
 	}
 }
@@ -452,7 +490,7 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 			cin >> yNChoice;
 			if (yNChoice == 'Y' || yNChoice == 'y')
 			{
-				cout << "Melee row:\n\n";
+				cout << "\nMelee row:\n\n";
 				for (int i = 0; i < mTemp.size(); i++)
 				{
 					cout << mTemp[i]->GetName() << "\n";
@@ -490,7 +528,7 @@ string Field::Scorch(vector<Card*>mRow, vector<Card*>rRow, vector<Card*>sRow)
 	while (!correctRChoice)
 	{
 		cout << "Which row is the card in that you would like to destroy? ('melee', 'ranged' or 'siege'): ";
-		cin >> rowChoice;
+		getline(cin,rowChoice);
 		if (rowChoice == "melee")
 		{
 			while (!correctSChoice)

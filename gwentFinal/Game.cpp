@@ -11,12 +11,14 @@ using namespace std;
 //function prototypes
 void StartScreen();
 void HelpScreen();
+void PrintCrown(int wins);
 bool PlayerPass();
 string CoinFlip();
 
 
 int main()
 {
+	system("color 0C"); //change background and text colors
 	srand(time(0)); //seed rand
 	string p1DeckChoice;
 	string p2DeckChoice;
@@ -24,12 +26,7 @@ int main()
 	string flipResult;
 	string playerOneChoice;
 	string playerTwoChoice;
-	int playerOneWins = 0;
-	int playerTwoWins = 0;
 	bool mainGame = true;
-	bool correctDeckChoice = false;
-	bool correctP2Choice = false;
-	bool correctCall = false;
 	bool p1Pass = false;
 	bool p2Pass = false;
 	//three player pointers (might have too many pointers)
@@ -49,12 +46,16 @@ int main()
 	unique_ptr<Field> pMonster(new Field());
 	unique_ptr<Field> pNorthern(new Field());
 
+	StartScreen();
 	do //loop for deck choice
 	{
+		int playerOneWins = 0;
+		int playerTwoWins = 0;
+		bool correctDeckChoice = false;
 		while (!correctDeckChoice)
 		{
 			cout << "Player One, which deck would you like to choose? (Type 'elf' for Scoia'tael, 'northern' for Northern Realms, or 'monster' for Monsters)\nYour deck choice: "; //player1 chooses his/her own deck
-			cin >> p1DeckChoice;
+			getline(cin,p1DeckChoice);
 			if (p1DeckChoice == "northern")
 			{
 				pNorthDeck->readCardFile("northDeck.txt");
@@ -68,8 +69,6 @@ int main()
 				pElfDeck->ShuffleDeck();
 				correctDeckChoice = true;
 				cout << "\nYour Scoia'tael deck has been built and shuffled...\n\n";
-				//pElfField->DrawCard(pElfDeck->GetDeck()); //save for later, don't forget how to format
-				//pElfField->ShowHand();
 			}
 			else if (p1DeckChoice == "monster")
 			{
@@ -84,10 +83,11 @@ int main()
 				cout << "\nThe only three decks that you can choose from are Scoia'tael, Northern Realms, or Monsters.\nUse 'elf' for Scoia'tael, 'northern' for Northern Realms, and 'monster' for Monsters.\n\n";
 			}
 		}
+		bool correctP2Choice = false;
 		while (!correctP2Choice)
 		{
 			cout << "Player Two, which deck would you like to use? You cannot pick the same deck as Player One.\nYour deck choice: "; //player2 chooses deck
-			cin >> p2DeckChoice;
+			getline(cin,p2DeckChoice);
 			if (p2DeckChoice == "northern")
 			{
 				if (p2DeckChoice == p1DeckChoice)
@@ -135,13 +135,13 @@ int main()
 				cout << "\nThe only three decks that you can choose from are Scoia'tael, Northern Realms, or Monsters.\nUse 'elf' for Scoia'tael, 'northern' for Northern Realms, and 'monster' for Monsters.\n\n";
 			}
 		}
-
+		bool correctCall = false;
 		while (!correctCall)
 		{
 			cout << "A coin will be flipped to determine who goes and who goes second.\nPlayer One will call it. If right Player One will go first, if wrong Player Two will go first.\n\nWould you like to call heads or tails? (Type 'heads' or 'tails'): ";
 			try //make sure player calls only heads or tails 
 			{
-				cin >> flipChoice;
+				getline(cin,flipChoice);
 				if (flipChoice == "heads" || flipChoice == "tails")
 				{
 					correctCall = true;
@@ -159,6 +159,7 @@ int main()
 		flipResult = CoinFlip();
 		if (flipResult == flipChoice) //p1 goes first
 		{
+			cout << "\nPlayer One has called the flip, Player One goes first!\n\n";
 			system("pause");
 			system("CLS");
 			cout << "Player One drawing cards..." << "\n\n";
@@ -222,7 +223,7 @@ int main()
 					while (!p1TurnChoice && !pNorthernField->GetHand().empty() && !p1Pass)
 					{
 						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerOneChoice;
+						getline(cin,playerOneChoice);
 						if (playerOneChoice == "play")
 						{
 							string playCard;
@@ -344,7 +345,7 @@ int main()
 						}
 						else if (playerOneChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -358,7 +359,7 @@ int main()
 					while (!p1TurnChoice && !pElfField->GetHand().empty() && !p1Pass)
 					{
 						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerOneChoice;
+						getline(cin,playerOneChoice);
 						if (playerOneChoice == "play")
 						{
 							string playCard;
@@ -480,7 +481,7 @@ int main()
 						}
 						else if (playerOneChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -494,7 +495,7 @@ int main()
 					while (!p1TurnChoice && !pMonsterField->GetHand().empty() && !p1Pass)
 					{
 						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerOneChoice;
+						getline(cin,playerOneChoice);
 						if (playerOneChoice == "play")
 						{
 							string playCard;
@@ -641,7 +642,7 @@ int main()
 						}
 						else if (playerOneChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -656,7 +657,7 @@ int main()
 					while (!p2TurnChoice && !pNorthernField->GetHand().empty() && !p2Pass)
 					{
 						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerTwoChoice;
+						getline(cin,playerTwoChoice);
 						if (playerTwoChoice == "play")
 						{
 							string playCard;
@@ -778,7 +779,7 @@ int main()
 						}
 						else if (playerTwoChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -792,7 +793,7 @@ int main()
 					while (!p2TurnChoice && !pElfField->GetHand().empty() && !p2Pass)
 					{
 						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerTwoChoice;
+						getline(cin,playerTwoChoice);
 						if (playerTwoChoice == "play")
 						{
 							string playCard;
@@ -914,7 +915,7 @@ int main()
 						}
 						else if (playerTwoChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -928,7 +929,7 @@ int main()
 					while (!p2TurnChoice && !pMonsterField->GetHand().empty() && !p2Pass)
 					{
 						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerTwoChoice;
+						getline(cin,playerTwoChoice);
 						if (playerTwoChoice == "play")
 						{
 							string playCard;
@@ -1075,7 +1076,7 @@ int main()
 						}
 						else if (playerTwoChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -1105,7 +1106,7 @@ int main()
 						pNorthernField->tPowAdd();
 						p1RoundTotal = pNorthernField->GetTPow();
 					}
-					else
+					else if (p2DeckChoice == "monster")
 					{
 						pMonsterField->mPowAdd();
 						pMonsterField->rPowAdd();
@@ -1131,7 +1132,7 @@ int main()
 						pNorthernField->tPowAdd();
 						p2RoundTotal = pNorthernField->GetTPow();
 					}
-					else
+					else if (p2DeckChoice == "monster")
 					{
 						pMonsterField->mPowAdd();
 						pMonsterField->rPowAdd();
@@ -1145,9 +1146,10 @@ int main()
 					{
 						playerOneWins++;
 						cout << "Player One wins the round!\n\n";
+						PrintCrown(playerOneWins);
 						if (p1DeckChoice == "northern") //allow northern to draw one card because of win
 						{
-							cout << "As Northern Realms, Player One gets to draw one card for the round win.\n\n";
+							cout << "\n\nAs Northern Realms, Player One gets to draw one card for the round win.\n\n";
 							pNorthernField->DrawCard(pNorthDeck->GetDeck());
 							pNorthDeck->TakeFrom();
 							pNorthernField->Reset(); 
@@ -1173,14 +1175,18 @@ int main()
 						{
 							pMonsterField->Reset();
 						}
+						pNorthernField->ResetPower();
+						pElfField->ResetPower();
+						pMonsterField->ResetPower();
 					}
 					else if (p1RoundTotal < p2RoundTotal)
 					{
 						playerTwoWins++;
 						cout << "Player Two wins the round!\n\n";
+						PrintCrown(playerTwoWins);
 						if (p2DeckChoice == "northern")
 						{
-							cout << "As Northern Realms, Player Two gets to draw one card for the round win.\n\n";
+							cout << "\n\nAs Northern Realms, Player Two gets to draw one card for the round win.\n\n";
 							pNorthernField->DrawCard(pNorthDeck->GetDeck());
 							pNorthDeck->TakeFrom();
 							pNorthernField->Reset();
@@ -1206,6 +1212,9 @@ int main()
 						{
 							pMonsterField->Reset();
 						}
+						pNorthernField->ResetPower();
+						pElfField->ResetPower();
+						pMonsterField->ResetPower();
 					}
 					else
 					{
@@ -1236,15 +1245,21 @@ int main()
 						{
 							pMonsterField->Reset();
 						}
+						pNorthernField->ResetPower();
+						pElfField->ResetPower();
+						pMonsterField->ResetPower();
 					}
 					p1Pass = false;
 					p2Pass = false;
+					system("pause");
+					system("cls");
 				}
 
 			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
 		else //p2 goes first
 		{
+			cout << "\nPlayer Two has called the flip, Player Two goes first!\n\n";
 			system("pause");
 			system("cls");
 			//player two drawing
@@ -1308,7 +1323,7 @@ int main()
 					while (!p2TurnChoice && !pNorthernField->GetHand().empty() && !p2Pass)
 					{
 						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerTwoChoice;
+						getline(cin,playerTwoChoice);
 						if (playerTwoChoice == "play")
 						{
 							string playCard;
@@ -1430,7 +1445,7 @@ int main()
 						}
 						else if (playerTwoChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -1444,7 +1459,7 @@ int main()
 					while (!p2TurnChoice && !pElfField->GetHand().empty() && !p2Pass)
 					{
 						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerTwoChoice;
+						getline(cin,playerTwoChoice);
 						if (playerTwoChoice == "play")
 						{
 							string playCard;
@@ -1566,7 +1581,7 @@ int main()
 						}
 						else if (playerTwoChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -1580,7 +1595,7 @@ int main()
 					while (!p2TurnChoice && !pMonsterField->GetHand().empty() && !p2Pass)
 					{
 						cout << "What would you like to do, Player Two? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerTwoChoice;
+						getline(cin,playerTwoChoice);
 						if (playerTwoChoice == "play")
 						{
 							string playCard;
@@ -1727,7 +1742,7 @@ int main()
 						}
 						else if (playerTwoChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -1742,7 +1757,7 @@ int main()
 					while (!p1TurnChoice && !pNorthernField->GetHand().empty() && !p1Pass)
 					{
 						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerOneChoice;
+						getline(cin,playerOneChoice);
 						if (playerOneChoice == "play")
 						{
 							string playCard;
@@ -1864,7 +1879,7 @@ int main()
 						}
 						else if (playerOneChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -1878,7 +1893,7 @@ int main()
 					while (!p1TurnChoice && !pElfField->GetHand().empty() && !p1Pass)
 					{
 						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerOneChoice;
+						getline(cin,playerOneChoice);
 						if (playerOneChoice == "play")
 						{
 							string playCard;
@@ -2000,7 +2015,7 @@ int main()
 						}
 						else if (playerOneChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -2014,7 +2029,7 @@ int main()
 					while (!p1TurnChoice && !pMonsterField->GetHand().empty() && !p1Pass)
 					{
 						cout << "What would you like to do, Player One? (Type one word lowercase actions, 'help' if you need a list of the actions): ";
-						cin >> playerOneChoice;
+						getline(cin,playerOneChoice);
 						if (playerOneChoice == "play")
 						{
 							string playCard;
@@ -2159,13 +2174,9 @@ int main()
 								p1TurnChoice = true;
 							}
 						}
-						else if (playerOneChoice == "ability")
-						{
-							
-						}
 						else if (playerOneChoice == "help")
 						{
-							//run help, implement help
+							HelpScreen();
 						}
 						else
 						{
@@ -2195,7 +2206,7 @@ int main()
 						pNorthernField->tPowAdd();
 						p1RoundTotal = pNorthernField->GetTPow();
 					}
-					else
+					else if (p2DeckChoice == "monster")
 					{
 						pMonsterField->mPowAdd();
 						pMonsterField->rPowAdd();
@@ -2221,7 +2232,7 @@ int main()
 						pNorthernField->tPowAdd();
 						p2RoundTotal = pNorthernField->GetTPow();
 					}
-					else
+					else if (p2DeckChoice == "monster")
 					{
 						pMonsterField->mPowAdd();
 						pMonsterField->rPowAdd();
@@ -2235,9 +2246,10 @@ int main()
 					{
 						playerOneWins++;
 						cout << "Player One wins the round!\n\n";
+						PrintCrown(playerOneWins);
 						if (p1DeckChoice == "northern")
 						{
-							cout << "As Northern Realms, Player One gets to draw one card for the round win.\n\n";
+							cout << "\n\nAs Northern Realms, Player One gets to draw one card for the round win.\n\n";
 							pNorthernField->DrawCard(pNorthDeck->GetDeck());
 							pNorthDeck->TakeFrom();
 							pNorthernField->Reset();
@@ -2263,14 +2275,18 @@ int main()
 						{
 							pMonsterField->Reset();
 						}
+						pNorthernField->ResetPower();
+						pElfField->ResetPower();
+						pMonsterField->ResetPower();
 					}
 					else if (p1RoundTotal < p2RoundTotal)
 					{
 						playerTwoWins++;
 						cout << "Player Two wins the round!\n\n";
+						PrintCrown(playerTwoWins);
 						if(p2DeckChoice == "northern")
 						{
-							cout << "As Northern Realms, Player Two gets to draw one card for the round win.\n\n";
+							cout << "\n\nAs Northern Realms, Player Two gets to draw one card for the round win.\n\n";
 							pNorthernField->DrawCard(pNorthDeck->GetDeck());
 							pNorthDeck->TakeFrom();
 						}
@@ -2295,6 +2311,9 @@ int main()
 						{
 							pMonsterField->Reset();
 						}
+						pNorthernField->ResetPower();
+						pElfField->ResetPower();
+						pMonsterField->ResetPower();
 					}
 					else
 					{
@@ -2325,9 +2344,14 @@ int main()
 						{
 							pMonsterField->Reset();
 						}
+						pNorthernField->ResetPower();
+						pElfField->ResetPower();
+						pMonsterField->ResetPower();
 					}
 					p1Pass = false;
 					p2Pass = false;
+					system("pause");
+					system("cls");
 				}
 			} while (playerOneWins < 2 && playerTwoWins < 2);
 		}
@@ -2335,11 +2359,91 @@ int main()
 		if (playerOneWins > playerTwoWins)
 		{
 			cout << "Player One has won at Gwent against Player Two!\n\n";
+			cout << R"(                                           & @.                                          
+                                         %,#,(,%.                                        
+                                       %*,,%#./.#%.                                      
+                                     %*,((/(% #./,#%.                                    
+                                  *%/*((((/.%.%,(//,#(*                                  
+                                 %*.(/(//((*%(/,///*/,#%.                                
+                               %*,///(((///(*%.*,///(((,%%.                              
+                             %*,((((/////((/,# #./(/////(,%%.                            
+/*                         %/,/(((((/////(///%*%./////*////.%%*                        *(
+//#.                     &,.(#((((((//(//(/((/%*,*////*/////(.#&                     .(*&
+/,.%#.                   %*/((((/////(//////*,# ,.//(///////((/@                   .(//*&
+(,((.##                  %*///*/(//////////&@%#,#./*//(///((/(*@                 .(/*(#,&
+(,(#((.##*               %*/(/////****///&%   %##./////((((/(//@               *///#(((,&
+(,(((((/.##              %*///******//,  %(   ,.,/////((//*//@             .(*/((((((*&
+/.#(((((#(.##            %******,***.%#  %, (     &%**/***/**//@           .(*/////////,&
+/,##((#((///.(#          %*/*******%#  %,...(   ,%  &&.********@         .(*//(/((//(*/,&
+/./#(/(//(////.(#,       %******,%(  %,...,&&   # ,&  (&,,*****@       *(,((///*/**////,&
+/.//**/**//(((#(./(,     %**,*,#(  %,...,%/%&   #...*#. (&*,,**@     */.*/(///****/****,&
+/./*,,***,/*/((/**.(%    %**.%#  %, ...%(,/%&  .@&*...*&  %&,**@   .(,/(///*/**,****///.&
+/.*/*/**/*/**///,,#&.    %,#(  %,....%(,.*/%@  %(@,...,&  %&(&    .@*//**/**,,,,,,,*,.&
+/.**/,**/**,*//,.%(      &(  %,.,.*%/...,//%@  @&%**(%*.,.,&  *%      ((**,*,,***,,,***.%
+/.,,***/*,,*/,,,.%(      %  /#.,..@@///*/%@ .@%%%&&@@..../(  %      ((,(//*,,,,*,,,,*.&
+/ ,,,***,,,,,,,*.%(      %*%  %(....@@&(/**%@ #&%%&@@,.../&  #.@      ((,//,,,*,,.*,,,*.&
+/.,,,,,**,,,,,,,,%(      %..*%  %/....@@%(%@( @%&@@....*&  #, /&      (/,,**//***,,*,,,.%
+/.,,,,,,,,,......%&%%    %..,.*%  %/....&@@( @&@@....*&  %..**/&    %%&(,******,,,,,,,,.%
+/.,,,..,.,,.,. .....*(   %.,,...*#  /(....& &@@....((  %,.,*//(&   %/..,,..,/*,..,,,,,,.&
+/.*,,,,,. ...........*   %.,,,....*/. /(.., #..../( .#,.,,,,*,/&   # .......... ,,,,,*,.&
+/.**..,,,............,#  %,,,,,,,,,.*(  %/..*,.*&  #..,,.,,,,,/&  %/............,....,*.%
+&(.,,,,,,,.,,.........*  %,*,,,,...,,.,(  %/.,&  (.,,,,,**,,,,/&  ( ...................(%
+  @%.,,,,.,..,,.,,..,.*% %,,,,,,,,,...,.,(    .(.,,,..,,,,,,,,/& &*..................#&  
+    @#.................* &..,,,,,..........# #................*&.(    .............#&    
+     ,%%%%%%%%%%%%%%%%%%##%%%%%%%%%%%%%%%%%%*.%%%%%%%%%%%%%%%%%%#%%%%%%%%%%%%%%%%%%.     
+     %**************************************/ .***********************************/*     
+   (*.,,,,,,,,,,,,,,,,,,..,,,.,,.,,,,,,,,,,./( (,,,,,,,,,,,,,,,,,,,,,,,,,,,**,,,***,/.   
+ ./..........................................#  %*...............................,,,.*#  
+..............................................   ....................................... 
+     %***************************************# %**********************************//     
+   (,.**,*///**,,,,,***,,,,,**,,,,,,,,,.,**%# #%,,,,,,,,,,,,,,,,,*****,,,,*,,,,,,,,*(.   
+ ,*.,,*,,,,,,,,,,,,,.,,,,,,,,,,,,,,,,,,,,&&   &.,,,....,,,,,,,,,,,**,,,,,,,,,,,,,,,,,(#  )";
+			cout << "\n\n";
 			system("pause");
 		}
 		else if (playerTwoWins > playerOneWins)
 		{
 			cout << "Player Two has won at Gwent against Player One!\n\n";
+			cout << R"(                                           & @.                                          
+                                         %,#,(,%.                                        
+                                       %*,,%#./.#%.                                      
+                                     %*,((/(% #./,#%.                                    
+                                  *%/*((((/.%.%,(//,#(*                                  
+                                 %*.(/(//((*%(/,///*/,#%.                                
+                               %*,///(((///(*%.*,///(((,%%.                              
+                             %*,((((/////((/,# #./(/////(,%%.                            
+/*                         %/,/(((((/////(///%*%./////*////.%%*                        *(
+//#.                     &,.(#((((((//(//(/((/%*,*////*/////(.#&                     .(*&
+/,.%#.                   %*/((((/////(//////*,# ,.//(///////((/@                   .(//*&
+(,((.##                  %*///*/(//////////&@%#,#./*//(///((/(*@                 .(/*(#,&
+(,(#((.##*               %*/(/////****///&%   %##./////((((/(//@               *///#(((,&
+(,(((((/.##              %*///******//,  %(   ,.,/////((//*//@             .(*/((((((*&
+/.#(((((#(.##            %******,***.%#  %, (     &%**/***/**//@           .(*/////////,&
+/,##((#((///.(#          %*/*******%#  %,...(   ,%  &&.********@         .(*//(/((//(*/,&
+/./#(/(//(////.(#,       %******,%(  %,...,&&   # ,&  (&,,*****@       *(,((///*/**////,&
+/.//**/**//(((#(./(,     %**,*,#(  %,...,%/%&   #...*#. (&*,,**@     */.*/(///****/****,&
+/./*,,***,/*/((/**.(%    %**.%#  %, ...%(,/%&  .@&*...*&  %&,**@   .(,/(///*/**,****///.&
+/.*/*/**/*/**///,,#&.    %,#(  %,....%(,.*/%@  %(@,...,&  %&(&    .@*//**/**,,,,,,,*,.&
+/.**/,**/**,*//,.%(      &(  %,.,.*%/...,//%@  @&%**(%*.,.,&  *%      ((**,*,,***,,,***.%
+/.,,***/*,,*/,,,.%(      %  /#.,..@@///*/%@ .@%%%&&@@..../(  %      ((,(//*,,,,*,,,,*.&
+/ ,,,***,,,,,,,*.%(      %*%  %(....@@&(/**%@ #&%%&@@,.../&  #.@      ((,//,,,*,,.*,,,*.&
+/.,,,,,**,,,,,,,,%(      %..*%  %/....@@%(%@( @%&@@....*&  #, /&      (/,,**//***,,*,,,.%
+/.,,,,,,,,,......%&%%    %..,.*%  %/....&@@( @&@@....*&  %..**/&    %%&(,******,,,,,,,,.%
+/.,,,..,.,,.,. .....*(   %.,,...*#  /(....& &@@....((  %,.,*//(&   %/..,,..,/*,..,,,,,,.&
+/.*,,,,,. ...........*   %.,,,....*/. /(.., #..../( .#,.,,,,*,/&   # .......... ,,,,,*,.&
+/.**..,,,............,#  %,,,,,,,,,.*(  %/..*,.*&  #..,,.,,,,,/&  %/............,....,*.%
+&(.,,,,,,,.,,.........*  %,*,,,,...,,.,(  %/.,&  (.,,,,,**,,,,/&  ( ...................(%
+  @%.,,,,.,..,,.,,..,.*% %,,,,,,,,,...,.,(    .(.,,,..,,,,,,,,/& &*..................#&  
+    @#.................* &..,,,,,..........# #................*&.(    .............#&    
+     ,%%%%%%%%%%%%%%%%%%##%%%%%%%%%%%%%%%%%%*.%%%%%%%%%%%%%%%%%%#%%%%%%%%%%%%%%%%%%.     
+     %**************************************/ .***********************************/*     
+   (*.,,,,,,,,,,,,,,,,,,..,,,.,,.,,,,,,,,,,./( (,,,,,,,,,,,,,,,,,,,,,,,,,,,**,,,***,/.   
+ ./..........................................#  %*...............................,,,.*#  
+..............................................   ....................................... 
+     %***************************************# %**********************************//     
+   (,.**,*///**,,,,,***,,,,,**,,,,,,,,,.,**%# #%,,,,,,,,,,,,,,,,,*****,,,,*,,,,,,,,*(.   
+ ,*.,,*,,,,,,,,,,,,,.,,,,,,,,,,,,,,,,,,,,&&   &.,,,....,,,,,,,,,,,**,,,,,,,,,,,,,,,,,(#  )";
+			cout << "\n\n";
 			system("pause");
 		}
 		else
@@ -2351,16 +2455,27 @@ int main()
 		bool playAgain = false;
 		while (!playAgain)
 		{
-			char againChoice;
+			string againChoice;
 			try
 			{
-				cout << "Would you like to play Gwent again?\n\n";
-				cin >> againChoice;
-				if (againChoice == 'Y' || againChoice == 'y')
+				cout << "Would you like to play Gwent again? ('Y' for yes and 'N' for no): ";
+				getline(cin,againChoice);
+				if (againChoice == "Y" || againChoice == "y")
 				{
 					playAgain = true;
+					pNorthernField->ClearAll(); //reset all northern
+					pNorthernField->ResetPower();
+					pNorthDeck->ResetDeck();
+					pElfField->ClearAll(); //reset all elf
+					pElfField->ResetPower();
+					pElfDeck->ResetDeck();
+					pMonsterField->ClearAll(); //reset all monster
+					pMonsterField->ResetPower();
+					pMonsterDeck->ResetDeck();
+					system("pause");
+					system("cls");
 				}
-				else if (againChoice == 'N' || againChoice == 'n')
+				else if (againChoice == "N" || againChoice == "n")
 				{
 					playAgain = true;
 					mainGame = false;
@@ -2372,7 +2487,7 @@ int main()
 			}
 			catch (const char * msg)
 			{
-				cout << msg << "\n\n";
+				cout << "\n\n" << msg << "\n\n";
 			}
 		}
 	}while (mainGame);
@@ -2383,23 +2498,23 @@ int main()
 }
 bool PlayerPass()
 {
-	char yNAnswer;
+	string yNAnswer;
 	bool yNValid = false;
-	cout << "\nAre you sure you want to pass this round? (Enter 'y' or 'n' for yes or no): ";
 	while (!yNValid)
 	{
-		cin >> yNAnswer;
-		if (yNAnswer == 'y')
+		cout << "\nAre you sure you want to pass this round? (Enter 'y' or 'n' for yes or no): ";
+		getline(cin,yNAnswer);
+		if (yNAnswer == "y")
 		{
-			cout << "\n\nYou have passed this round. You will not be able to play again until the next round.\n\n";
+			cout << "\nYou have passed this round. You will not be able to play again until the next round.\n\n";
 			yNValid = true;
 			system("pause");
 			system("cls");
 			return true;
 		}
-		else if (yNAnswer == 'n')
+		else if (yNAnswer == "n")
 		{
-			cout << "\n\nYour turn won't be passed.\n\n";
+			cout << "\nYour turn won't be passed.\n\n";
 			yNValid = true;
 			system("pause");
 			system("cls");
@@ -2407,7 +2522,7 @@ bool PlayerPass()
 		}
 		else
 		{
-			cout << "\n\nYou can only choose 'y' or 'n', choose again.\n\n";
+			cout << "\nYou can only choose 'y' or 'n', choose again.\n";
 		}
 	}
 }
@@ -2417,10 +2532,282 @@ string CoinFlip()
 	int flip = rand() % 2 + 1;
 	if (flip == 1)
 	{
+		cout << "\n";
+		cout << R"(                                    .,,,....,...,,,.    .                                
+                             .*,*(((/*,.......,.,,,*/(((,,. ..                           
+                      .../(#(, .,,.......... ......*.(/...,*(/*, ..                      
+                   .,.%%#,....*, ,. .......*,.....,,,*,#....,. *#(..,.                   
+                 ,.(&%. .......,,. .(..../((/((...,./,,,.....*/.. *#* ,,                 
+               ,./@/../*......../(#*...    .,.      ..,(.....,.(*/(,.((.,,               
+            .,.,....../. ........  .,./,*... ., ...*.. ..././......, .#..*             
+           *.%@....... ..(,......, ...  ,,.* .,,,,,,..,.   ..........,,/.*#.,,           
+         *.#@,./,. . .(,.......,        ....,#*.,*,, .,  /**..........,,.,.*/.*.         
+        * %(... .,/.*/...  .  *      .... .../,,. .,,..  ...,....../,/......,#.*/        
+       *.%/......  , .    .  *.   .,,,.   . ,,*,,**,. .,. .,,.,...............#.,/       
+      *,@, .     . ...  .  .*    .,,....,.,.* ....,..*.,,**,,**................(*,/      
+     /.@.    . . .        ...   ..,...,,.,.,/***.,(***.,,.     ,.. ............./.*(     
+    /.#*                   .&%@*......,/,,*/ ,/**//*#.//((*** ..,   .............( ,,    
+   .,,&   . .         .    *  *##*.      ../*//,*((*/**,(##,#.,,/      ..........,,.(    
+   *.&,                  ...,,,. .      ,,*,,,,,*..,. . .,,,*/#/,          ..... ./.*/   
+  ,,(&        .         ..    ..     ...,. .   ..*,..,,.. .   .*        .      . .,*,#.  
+  ,.&(                  *       .....,.,,,,.*/,...,*,**. ,.,.. .*., .              *.(/  
+  ..#.                .,     *  ...,,....,**..,/((%#**,.(...*.. ....               ,.(#  
+ ..,/.                .%@,(*. . ......,,*,,    %(/#&%(*,/,..,.. *                ../%  
+ ..*,                    ..   ,...      .*//(/&%* .. ..//%###/,,***                ../&  
+ . *,                    .,//,             .,/.    .(*,*     .,*.     .            ..(%  
+ ...*             ..     .,,.,,...      ..*((,    ..   **,....,....                ..(%  
+  ../.               . .  ,. .........,*///,............/(/,,.(... ..              *,%#  
+  *,/*             . . .../#%@%####(/*,.... . ........   ./*. *.......          . ,,*&,  
+  .*./              .........,/%%(//*,,..      ...... ....,**,**..    .         . *.#(   
+   *../              .. ..... . ...*/          .....   ....*/*//.,,   ,..        ..,@.   
+    *,,.  .,. .,,/*.**.,*.,. *.,....,.      ....         ...(,**,,#, .*.*,*      **%/    
+    .(,*  ./,*/,******,,,..(#.**,...,,      ....    ...      ,(%,.,.. * ,.      *,&&     
+      (,*, . ..,*,,*..,,/.,,*......../,,.  .,.........         *  , ,,/.       ,,%#      
+      .(*,,  ..*,,//*(*(/*/*/........./,..,*,,,,.,..            .  ..(.       ,/&%       
+       .((.*   . ....................,.,,//*,....  ......       .,,,**      ,,/@%        
+         *#,,, ..  . ................,..,,.        .........*%@@,.*/, .    ,*&&.         
+          .%#.*. .      ............                ....*(@@@*.....      ,.#@%           
+            *%(./.         .......,.    ..........,*#@@@##,......      ../@&.            
+              .%#,,,  .     . ..  ,.,(%%@@@@@&%##(*,.,......... .    .,(@%,              
+                ,#%,.*.    .. .. ,..., , ,...,   .., /, . .....   ..,&&%.                
+                   ##%,.*.   .. ...... . ,... .  /.., /..,.     .,(&%/                   
+                      ,(/(*..,.       ../......./.....,/.   .*(#%#,                      
+                         .*(//(,. .,.                . .,*(/(#(                          
+                              ,(,***,//*,,,,,,,,*(/**/,(#/.                            )";
+		cout << "\n";
 		return "heads";
 	}
 	else
 	{
+		cout << "\n";
+	cout << R"(                                     ..,....,,,,...                                      
+                              .,..    ..........,,...  .,,                               
+                         .,.  .,/(//*,..,...*.....,,/**,... .,.                          
+                     .,. ./#/..../,,,*....,,../....../*,,. ,/*,. .,                      
+                  .*. ,(#...(...,.........,..,.,.,.*.,..*.*,/*.*/,. ,,                   
+                ** ./#..,,.*...,//,,,(,........,....(**/.,((,..  ,*/*..*                 
+              ,* .&*..*,....,,,(...****,.,,,*,,,,,**.,..,/... ./,*.. /*..*.              
+            /..*#.   ....,(...*,...,,./*/,//,*./(**/*.//.....*.,*. .. ..(../             
+          ,* ,%.*,.,*,..,.    .**(...,*.,. .,,,*.. ,..,(,   .  ./*/*. .,**(.,/           
+        .( ,%.,*  *..(   .. ..*......./*(,,..*/*(,/,....,*..,, .  ...*, ,/,,/.*.         
+       ,/ */./*./../. ...*,*,./.......        ,*.........,.,.,,*.   .*./*,..,#.*/        
+      .( */./..,,*,  ..,,,,,*..,......%##&%#/*,#........,...,,,*.,....*,.  .,.(..(       
+     ,( #,,**.  .  ,.**/,,.,... ,........*,,.,*//.......  .,.,.****//,..(/,.*/./*.(      
+    ,# (..  ...* .** .. .,,,...,  ...... * . ...,,...   .,**,*,/  *  *  ..,*   .*,*(     
+    /,,/. .*,,/  ,*  * ., ., , ,.*.       . ...       ,..,,, .,..* *. *  ., .,(. /.*,    
+   /. %..,..**  ., ./ ,, ,,..., ,,.*/,.. . ....,....,*.,,.*. **,, , .  *  .,  ....,.#    
+  *#.,,. ., .. .*..* ,, ,,,,.,, ,,,.,,****,,*.*.,,*/(/*, .*./,,.,,., .. , ...*  ,*,,*/   
+  (*.#..  .(,  ,. / .,.,,  .. (, .,.,..,,,,...,.,***/** .*.*,   ,., . ., . ,,/    .,.%.  
+ ./.*#   ..*. .* , .,,,.,,  ,. ,*.* .*,*,,,,.,.,,,,,, , *,**  .,  *,,.  ,.,,,.     ,.#/  
+ **.#,/*,,(.,,*./.,.    ,**  ,,,.,.*.. ..  ..,.,.  .,.,./. ,. ..*, .  ,,*****. *#. ..(#  
+ /,.#.     ,.**, ,  .    .//.,/ *..*, ,*,..,*,,,,..,/,,*, ,, .,*,. .  ...  .**,    ..(%  
+ (,.#      ,.  , ,  .  . *.(,  , / .*,,*,.**//**,,.,/(... ,, ,(,.,  .  , ...,       ./&  
+ (*.#.     ,.  , .  .  ,..(  /.*. ,  .,**,**(*,**,,*(,,.. *,/*.... .........*.  .  ..#%  
+ */,(,     ,,  . .  . ...**    *// .,,./,,,//,**/*,,%,.,  ##.  ,.....  .....*    . ..#%  
+ ,(,*(     ,,...    . . ,#..    ..(**..*///////**/%/(*.,(/.. .. ,....,....../  ..  ,,%#  
+  %*.#      /. . * ,. .,*....     .   .*(.((,..,,*/%(*...........,, , //...,* .....**&,  
+  (%*.,   . ,...  * ., **..           ,* */..*, ,,./.     ..,.......#*.....*. ... *,##   
+  .%(,(   . .,... .,(,,*. . ..  ,,.,,,,,*,,.,*.(,,/../.. ...,,.**.*(. ,....*......**&.   
+   .%/./ .  .,... ,  .(....,,//(//((////(*((*#(**(****//##////* ,.*(/*/*.,./ ..../*%(    
+    /%/*, ...*,*,(#,,**,. *    ..,*...... .. ,... .. */... .,...,*../*..*,.(....*,%&     
+     ,%(*/ ..*.(/.     . (( / .   /....  ,,/(*/#((,.......,.*  (..   ..........*,%%      
+      /&(./ ....        ...,*.(..(... . ,,,..   ../.  ,...(*.#///,.,/,.,....../(&&       
+       /%#,(  .  .,.,*,..,((#*(/.. ,, ** ,,....*.*..,.*././#...,..*.,*..,//#,*#@&        
+        .%#(,,..* ..*..*,,/,  .,*,.**/,,,   ../. .,,*/*//*. ,*.....,.  ,.*,*(%@,         
+          (%%*,,/../ ./.. .../***../ *..,///(, . ./,..*,.*.,......*.(((,,%&&           
+           ,#**.#...  *.  ...///.   (#........//  ....../(..,*.....,/.*&&&,            
+             .##%#..*,(. *,....   ,((*.............*(..  ..*,...*..(,,/&%&*              
+                %&(%*,.(.*,....*(//.. .    .  ...,... .*.,,,*...(,.,#&&@,                
+                  *&/#%*..,*(.,*...(..../,(./,.,..,**.*....*.(,.,#@%%#                   
+                     ,%&/#%/, .*.,,...,.,,. //.... ..#,.., .*%&&/                      
+                        .(%%,(&(/,.,. .,*/*((,./,... ..(#%&%#&%,                         
+                             *#%#&,/(%%%(#(///(((%%%///&&%/.                             
+                                     .,*/(###(#//,.                                      )";
+		cout << "\n";
 		return "tails";
+	}
+}
+
+void HelpScreen()
+{
+	cout << "\nHelp: Action list\n\n";
+	cout << "'player': Displays hand then prompts player for choice of card to play.\n'melee': Shows the player's melee row.\n'ranged': Shows the player's ranged row\n'siege': Shows the player's siege row\n'weather': Shows the player's active weather cards\n'discard': Shows the player's discard pile\n";
+	cout << "'hand': Shows the player's hand.\n'ability': Shows the player's ability and, if playing with the Monster deck, activates the ability.\n'pass': Pass on the round for that player, cannot play again till next round starts.\n\nRemember when typing in the name of your card to play, spell it out exactly as shown.\n\n";
+}
+
+void StartScreen()
+{
+	cout << R"(                                                                                                                                                                                   
+                                                                                       *///,                                                                                       
+                                                                                     ,/((*//(,                                                                                     
+                                                                         ,.        */((//(////(*        .,                                                                         
+                                                                         /(/      *((///((**//((/      //*                                                                         
+                                                                         /((/.    *////((***/(((/    ./((*                                                                         
+                                                                         /(((//*  ***//,*,.*//*// .*/////*                                                                         
+                                                                         */**/(*/ */*,,((*/(,*/(/,(//***//                                                                         
+                                                                         *****,*, ****%//*#%%*/*, //**,,**                                                                         
+             ,**************************///*****                         *,,,,,** ,,*/,/##%/**,*/.///*,,*/                         .***,,,*,,,,,,,,,,,,,,,,,,,,**************.     
+           .//(%#((#######(#####(##(##(##%%(/#/                          **,,,..,***,,*/*,*/,,,*//.....,*/                          .(//(#((((#(#(((((((((#########%&%%%%#%#/.     
+         ,/#(**(#////*****************(%%#(#*                            .//,,,,,*/***,****,,**/(*,,,,,/,                             ,(((###/*///////////////////////////#&(.     
+       ./%#**///////////////////////%%%%(%/.                              .*,,,,,,,,*,,,*,*,,,,,,,,,,,,.                                ,#(#%%%/////////////////////((/(((%&(.     
+     ./##,*/*%&&&&&&&&&&&&&&&&//#&%%(#*                                .,,*************,,************,,                                 .#((%&&&&&&&&&(////%&&&&&&&%/(((%&(.     
+     .((/////&%#######%######*%@&%(%#,                                  *//(/*********/*/******/*****(*                                   ,#(###%%%#%%//((/%&%#%#(/(((&&(.     
+     ./((////&%%(%*          *#%&%#%,     ,***********    ,**********,   .***********     ***********************.,**********.         .**********/,%/(#//(((%%/*#/#((((((&&(.     
+     ./((((//&&%(#*          /%%(%(       ,(########(%,   //(####%##(/   ./#(####(((/.  ,(#%#%####%%&%%####%%%#(/.((#%##%##((.         (/(((((###((,%/(#//(((%%/*#/##(((%&%#,      
+     ./(((((/&*#*          /#%,         ,((/,,,*#%#%,   /((/,,,*%%*/   .*(/,,,,(%(*,,//(,,,,,,,,,,,,,,,,,,,*#&(.((#/*,,*#&(.         (//(/***,#%(,%(##(((((%%/*#*##(%&.        
+     ./(((((/&*#,          .,           ,((////(%%#%,   /(((///(%%//   ./(/////#%(*,*(/,//////////(((/((((((&%/.(/#/((((%@#*,        (//((/(((%%/.%/(#(((((%%/*#*##%%(*          
+     ./(((((/&*#,          .*(#((((((((#*((//(/(%%,   *(((((/(%#*/   .*//////#&(*,*#(////(%%%%%%%%%%%%%%%#&%/.//#//((((%//*.     (/(((((((%%/,%*(#((##(%%/*#*##(.            
+     ./(#(((/@*#,        .*(#*,,,*,*(%(#*((((((#&&(%,   *(((((((,/   .*/(///(%&/*,*((//(/#(#(#####((##((#(/,//#((((((((&@#/**    (//(#(((#/,#*/##(##(%%/*#/(*              
+     ./(((((/@*#,       ,/#(,/(((((%&%/#*((((((#&&(%,   */(#(((#&(,/   .,/(((((%&/*,,((/(((%&(*. .       ..     //#((((((((((%@%/**. (//(#((#(%%/.#*/%#(###%%/*#*                
+     ./((((((@@#/#,     */#/*/(((((((%&%/#*((((((#@@(%,   ,/##(((#@(,/   .,/#((((&&/,,*(#((((%(##((##(((((#(/   /*##(###%%######&%/**(//##(###&%/.#//######%%/,                  
+     .(((((((@&(*#,   *((##&@@@&%((((%&%/#*((#(((#@@/%,   */###((#@(,/   .*/#((((&@/*,,(#((#((/////////////(/   /*##(###%@@%#####%@%/*//######%%/,#*/%##%%#&%/,                  
+     .(#%((((@@(,#, .**********#%((##%&%/#*((#(##%@@/#,   /(###((#@(,/   ,**#(#(#&&/***(###################%/   /,######%&/%@&%#####@&/,(#####&%*.#*/%##%%%&%/,                  
+     ./(#((((@@#*(,           ,(%(###&&%/#,*##(###&@///   */####(#@%,/.  .*/#####&&(/*(######%&&&&&&&&&&&&&&&/*   /,###%%#%&/*/%@@%##%%%@&%%##%#&%*,#*/%##%%%&%/,                  
+     ./(%##((@@(,(,           ,(%####&&%*(.**%%###%@&*/(/.*/#%####%@(*/*..**%####&&/***(%%%##%&////////////////   /,%%#%%%&&(,,///&@%%%%%%&%%%%%&%*,(,*%%%%%%&%/,                  
+     .*(####(@@%*(*           ,(%####&&%*#..*####%@&(,*/*/#%###%#&@%/,*/*/%%%%#%&***//%##%%%@(*/                /*##%%%%&&/.  ./*(@@%%%%%%%%%%&%*,(**#%%%%%&%/,                  
+      ,/#####&@&(*#(          ,(%##%#&@%/(. **(&%%%%#%&%##*/#%%%%%%%%%&%#(*/%%%%%%&(/.,*#&%%%%&@%*,****           /*%#%%%%&&/.    ,(*(@&%%%%%%%%&%*,#*/%%%%%&@#/,                  
+      .*#%###%&@@(**((,       ,(%#%%%&@%/(.  ./(&&%%%%%##%##%%%%%%%%%%%%%%%%%%%%#%%/*. */&&%%%%%&&%(//*,*//*,.    /*%%%&%%&&(.      ///%@%%%%%%%&%*,#*/%%%&&%&%/,                  
+       .*%%##%##%&%#/***/((.  ,(%#%%%&@%*(.    .*/#@&%%%%%%%%%%%%%&@&%%%%%%%%%%%#%%/*.  ,*#&%#%%%%%%%##(((/(/**,*,/,&%%%&%@&(.       .(*(&&%%%&%@%*,(,*#%%&&%&%/,                  
+        .(%&%%%%%%%####(/**/((/(%#%%%&@%*(.      .**(&@&&%%%%%%%%%@%#&@&%%%%%%%%%%&/*.   ,*(&@&%%%%%%%%%%%%##(((*,*,&%%%&%@&/.        */,%&%%&&%@%*,(**%%%&&%*,                  
+         ./(%&%%%%%%%%#####(*,*(%%%%%&@%*(.         .*/*/&@&&%%%%%@(,///#&&&%%%%%&&/*.     .*//%&&&%%%%%%%%%%%,,*,&%%&&&@&/.         /,/%%%&&%@%*,(*/%%%&&&*,                  
+            ,/#@@&%%%%%%%%%####%%%%%%&@%*/.              .***#@@&%@(,*  .,**#&@@%&@/*.         .,**/(%&@&&%%&&&(,,*,&%#%%&@&/.         /,,#%%&&%@%*,/,/%%%&&&*,                  
+              ./*(&@&%%%%&&&&%%#%%%&%&@#,/.                  ,*,(%@(.*      .***#&&/,.              .,*,,*(%&@&(,,*,#%%%%#%#*,         /,,(######/,,/,*%%%&&&*,                  
+                  .,**/&@@&&&&&&&&&&&&@#,/.                       .*,*           .,**.                      ..,//,                                  /,*%%%&&&*,                  
+                       ,**(&@@&&&&&%%&@#,*.                                                                                                         /,*%%%&&&*,                  
+                           .*,*%@@&&&@@#,*.                                                                                                         *,*%&&&%%#*,,                  
+                               .,*/%&@@#,*.                                                                                                         *,,***,,*,,*,                  
+                                   ..,**,*.                                                                                                                                        
+                                        ..                                                                                                                                         
+                                                                                                                                                                                   
+                                                                                                                                                                                 )";
+	cout << "\n\nWelcome to Gwent!\n\nA C++ II Final by Aaron Barnhart\n\n";
+	cout << "Gwent is a card game with a max of three rounds. The first player to win two rounds is the winner!\n\n";
+	cout << "Basic rules:\n1. You start with a ten card hand (unless playing as the Scoia'tael in which you get eleven).\n2. You can only play one card per turn.\n3. Each card can be played in either the melee row, ranged row, siege row, or weather row.\n";
+	cout << "4. No cards are draw after the initial draw so use your cards wisely (unless playing as the Northern Realms in which you draw one card on round win).\n5. You can pass out of a round at anytime. This means you will not be able to play until the next round.\n6. Once both players pass the round is over.\n";
+	cout << "7. To determine the winner of the round the total attack value will be determined for each player by adding up the attack values of all cards in all rows.\n\nCare for a round of Gwent?\n\n";
+	system("pause");
+	system("cls");
+}
+
+void PrintCrown(int wins)
+{
+	if (wins == 1)
+	{
+		cout << R"(                                                             .#      
+                                                           .%,#      
+                                                         .#*.(#.     
+                                                       .%*,,/,%(     
+                                                     .%**,/(/.##     
+                                                   .%*,*((((/**#     
+                                                 .%***((((((//.%*    
+                                                #**./(((/((//(,%#    
+                                             .%*,,(((((//*/////(#    
+                                           .#*,./((/((((//////(,#.   
+                                         .%**,/(/((/(////((((//,%/   
+,                                      .#**,//(((((////(///////*##   
+%,*                                  .%/*,(//(((((((///////(///(*#*  
+%,#/*                               (*,,(##(((((((((///(//((//((,%#  
+&/ .#(*                             (/.(((((((((///////////(//((*%#  
+&(*(,*#(*                           (/./(//////////////////(/*,(,(#. 
+&(*(((,.%(*                         (/.////*/////////*/(*////&%@#(#/ 
+&(*((###,*%(*                       (/.////////////*/****/,&%#.  (## 
+&(*((/(#((.*##*                     (/./(((////*/**/////,%%#.  .   % 
+&(*((((##(((**#(*                   //.**///****,****/*%##.  #//     
+&/*(((((((#/#(*,%(*                 //.********,*,**.%##.  */, (     
+&/*(((((###(#(((*,#(*               //.***,**,,,*,*%##   #/..,.(     
+&(*#((((/(/(((((//*,(#*             //.*********.%#(   */, ....#     
+&/,/##((/(///((//*//*,((*           */.*******,##*   #*,.....%&&.    
+&/,((/////**//((/((///*,#(*         */.**,**.##(   */,.....(%#&&.    
+&/,/(/*,***,,**(///(#(//*.((*       */.***,%(*   #*,.....%%(*(%&.    
+&/,/**,,,/***,*/*/(##//****,##*     **.,.((*   */,.....(%(*,*(%&.    
+%*.,*/*********/***/(/*,,,(%%.      **.#(,   #*,.....##(*,.,/(%@     
+%*.***//,*//*,,,,***//**/%&.        ,,(.   #/,.,...(#/,,...//(%@     
+%*.**,*,***//***,*****,,(&/         ,*   */,.,,..(%#*.....*//(%@     
+%*.,,,*,,*//**,****,,,*,(&*         ,   ,%/.,,../@@@%#////**/(%@     
+&,.,,,*,,*/****,,**,,,,,(%,         #**   #(/.,...%@@&%(///**/#@     
+%,.,,,,,,,,,,,,,,,,,,,,,(%*         (*,/(   *%/...../@@&%((**#&@     
+%,.,,,,,,,*,*,,.,,,,,,,,(&/         (,. ,**   #%*.....%@@&%(#&@*     
+&,.,,,,,,,,,,,,,,,..,..,/%(         (, ,..,*(   *#*...../@@&&@%      
+&*.,,.,,,,,,,,.,,...,,,.,*,,,,,     /, ..,,.,**   #%*...../&@%       
+&*.,,,,..,,,,,,,...  ...,....*(     /,.,,,.,..,/#   *#*.....(        
+&*.*,,,,,,,,,,. ..............,,    /, ,,........*#   ##*.....       
+%,,****,,...,......,..........,(    **.,,,,,,.....,/(   *#/../       
+%*,*,.,,,,,,,,,................,,   **.,,,,,,,,,,,,.,*(.  *#*/       
+#%/.,,,,,,,,,,,.,,...,.........,(.  */.*,,,,*,....,,...*/.  *%*      
+ .&&(,,,,,,,,,,,,..,..,,........*(  **.,,..,,,,,,,...,...//.         
+   .&%*.,,,,.,,,.,.,,.,,...,.,..*(  **.,,,,,,,,,,,.,.,,,,..*/        
+     .&%(........................,# ,* .,,.,,,,,..............(      
+       .&%%%%%%&%%%%%%%&%%&%%%%%&&%.,%&&&&&&&&&&&&&&&&&&&&&&&&%,     
+                                                                     
+       */,,,...................................................*.    
+     */*.,,,,,,,,,,,,,,,,,,,,,,,,,..,,,,,,,,,,.,,,,,,,,,,..,,,./#    
+    #*.,,,,,,,,,,,,,,,,,,,,,,,,,,,..,,,,,.,,,,...,,,,,.,,,,.,,,,#    
+  #**///////////////*////////*////////*///////**////////////*///,*   
+ ,,,,*********/////////(((((((((##((((((((((/////////*********,,,,   
+        .,,,,,,,,********///////((((((((((((//////********,,,,,,,,   
+      *%,.................................................... ,(%    
+     #,.,***,*/////**,,*,,,,,****,,,,,,,,**,,,,,,,,,,,,,.,,*.%%/     
+   **.,/*/*/**/****,***,,,,,,*,,,*,,,,,,,**,,*,,***,,,,,,*,#&(       
+ ,/,#&&&&&&&&&&%&%%%%%%%&%#%%%%%%%%%%%%%%&&%%%%%%%%%%%%%#((&*      )";
+	}
+	else
+	{
+		cout << R"(    (/                                                               
+    ,##.                                                             
+     #.#(*                                                           
+     // .##*                                                         
+     .(.*,/##.                                                       
+      #,,((*,#(*                                                     
+      #*.(///,,##*                                                   
+      (*./*////,/##.                                                 
+      .*,*//////(/*#(*                                               
+       (,,/////((/(,*%#*                                             
+       #*./(/(((/(///,(%#.                                           
+       //./////(/////((*,%(*                                         
+       ,#.*//////////////.,%#*                                    .(&
+        #,,///((/*///(*//((,(%#                                  (/*@
+        /,.*/(/((////////((((.@*                              .(*,,#@
+        .*.*///(//(/////(((((,@*                            .(/,,(*#@
+         (.,*//*//////(((((#(,@*                           (//,((#,#@
+         #..////*//////(((#((,@/                        .(/,/((((#*#@
+         /..**/*//((((((/((/(,@(                      .(/,*(##((((,#@
+         .,.**///(//((//////(,@(                     (/*,((#((((((,#@
+          *&%,**////////(////,@#                   (***(##(/(/((((,#@
+            .&&,********/////,@#                .(*.*////((//*////,#@
+          #.  .&&*******/***/.               (/,*//((/(((//((//(,#@
+         *.,#   *&&,,*******/.@#             (/,*((/*///**///(///(,#@
+         ( ..*#.  .&&/,,,****.&(          .(*.*(((/*/*///*/*/*///*,#@
+         #.....*#.  .&&(,,*,*.&(         (*,,//(/(//*//***//****//,#@
+        .@%,....,*#   *&&*,,*.&/       (*,*//////*///***,*****/(((.#@
+        #@#%@*.....*#.   &,.&/     ,%/,/(((/*//*/***,*,,**,,,**(.#@
+       .&&%((&@,.....*#.   &%*       #@#,//***//***,,,,,,,,,,*,,.#@
+       *@&%%*/(&%,....,*#   ,%#*         #%*,//**,*,,,***,,,,,,,,*.#@
+       %@%%%/..,(&&,..,,.*#.   .         .#/,/(***,,,,,,*,,,,,,,**.(@
+       @&%%%%%&&@@%....../&.   .          %(,((/(/*,,,,,,*,,,,,,,*.(@
+      *@&%#%%&@@%,.....*&.   (,*          %(,*//,,,***,,,.,,,,,,**.(@
+      %&%%&&@@%......(%.   (..%*          %(,,,*,,*,,****,,*,,,,,,.(&
+     ,@&%&@@&.....,(&.  .(,..,%/         .%(.,***////**,****,,,,,,.(&
+    /@&&@@&,....,/&.  .(. .,,.&/         ,#/*/**////*,*,,,,**,,,,,.(&
+   ,@@@@@,.....*&/   (...,,**.&(      #...,/.*/**//*****,,,,,..,,,.(&
+   &@@&.....,(&.  ./. ,,,,*//,     %( ,.,,.,,...//*,,..,,,,,,,,,.#@
+   #&,.....*&.  *#. .,,,,,,,,.%#    /%*.................,.,..,,,,,.#@
+   *,....*&/   #...,,,..,,,,,.%#    %( ..,............... .,,,*.,,.#&
+   .*,./&.  **. ,,,,,,,....,,.%(   *#,.........................,**.#&
+    /,%.  *(...,,,,,,**,,,,,,.%(  .%/.............................*/&
+    &/  .(.....,,,,,,,,,,,,**.#/  ##,...........................,%&/ 
+      *,..,.......,,,,,,,,,.,.&* .%/........................../&&.   
+    .(..,,,.,,...,,,*,,*,,,,,.#* %(,........................(%&.     
+     (#%%%%%%%%%%%&&&&&&&&%%&&(, %(###%%%%%%%%%&%%%%%#%#%%%.       
+                                                                     
+       (***************************************************(.        
+       //..,,,,,,,,,,,,,,,,,,,..,,,.,,,,,,,,,,,,,,,,,,,,,,,,((       
+        ,,..,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,***,,*,*,,****,./(.    
+         (*,.............................................,,,,,.**(   
+          ##%%%%&&&&&&&&&&&&&&&&&&&&&&&&&&&&&@&&&&&&&&&&&&&&&&&&&%%, 
+                                                                     
+       %(......,,,,.,,,,,,,,,,,.,,,,,,,,,,,,,,,,,,,,,,,,,,,/#        
+      .%#.,,,,,,,,,,,,,,,,,,,,,,,,********,,,,,,,,**,,,,,,,,((*      
+      %%,,,,,,,,,,,,,,,,,,,,,,,,,,**///**,,,,,,*,,,,,,,,,,,**,%#.    
+     ,%*,,,,,,.....,,,*,,,,,,,,,,,,,,,,,***,,,,,,,,,,,,,,,,,,,,/(#   )";
 	}
 }

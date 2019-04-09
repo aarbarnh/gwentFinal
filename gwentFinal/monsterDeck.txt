@@ -53,11 +53,11 @@ None
 5
 Nekker 1
 Melee
-Morale
+Bond
 2
 Nekker 2
 Melee
-Morale
+Bond
 2
 Arachas 1
 Melee
