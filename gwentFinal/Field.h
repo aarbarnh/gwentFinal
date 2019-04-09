@@ -50,7 +50,7 @@ private:
 	int rangedPower;
 	int siegePower;
 	int totalPower;
-	int bondDoubles;
+	int bondDoubles = 0;
 	vector<Card *> hand;
 	vector<Card *> melee;
 	vector<Card *> ranged;
