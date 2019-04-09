@@ -1,6 +1,6 @@
 #include "Field.h"
 #include <iostream>
-#include <boost/algorithm/string.hpp>
+//#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -418,20 +418,24 @@ void Field::TorrentialRain()
 
 void Field::Bond(string card)
 {
-	string paramName = boost::algorithm::trim_left_copy_if(card, boost::is_digit()); //get rid of the 1/2 (digits) out of the name
 	for (int i = 0; i < melee.size(); i++)
 	{
-		string cardName = boost::algorithm::trim_left_copy_if(melee[i]->GetName(), boost::is_digit()); //get rid of the 1/2 (digits) out of the name
-		if (cardName == paramName)
+		if (melee[i]->GetName() == card)
 		{
-			bondDoubles++;
+			if (melee[i]->GetEffect() == "Bond")
+			{
+				bondDoubles++;
+			}
 		}
 	}
 	if (bondDoubles > 1)
 	{
 		for (int i = 0; i < melee.size(); i++)
 		{
-			melee[i]->DoubleAttack();
+			if (melee[i]->GetEffect() == "Bond")
+			{
+				melee[i]->DoubleAttack();
+			}
 		}
 	}
 }
