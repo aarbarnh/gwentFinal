@@ -5,16 +5,16 @@
 
 using namespace std;
 
-class Deck
+class Deck //deck class
 {
 public:
 	Deck();
-	Deck(int cards);
-	void readCardFile(string file);
-	void ShuffleDeck();
-	void TakeFrom();
-	void ResetDeck();
-	vector<Card *> GetDeck();
+	Deck(int cards); //deck constructor to reserve spacec
+	void readCardFile(string file); //file i/o function to read in cards 
+	void ShuffleDeck(); //randomize deck
+	void TakeFrom(); //take from, after draw
+	void ResetDeck(); //reset
+	vector<Card *> GetDeck(); //getter
 	~Deck();
 private:
 	vector<Card *> deck;

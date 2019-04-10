@@ -9,16 +9,19 @@ class Card
 {
 public:
 	Card();
-	Card(string name, string type, string effect, int attack);
+	Card(string name, string type, string effect, int attack); //constructor to initialize values
+	//getters
 	string GetName();
 	string GetType();
 	string GetEffect();
+	int GetAttack();
+	//setters
 	void SetName(string name);
 	void SetType(string type);
 	void SetEffect(string effect);
 	void SetAttack(int attack);
 	void SetAttackNorm(int attack);
-	int GetAttack();
+	//functions for card effects
 	void ResetAttack();
 	void DoubleAttack();
 	void IncrementAttack();

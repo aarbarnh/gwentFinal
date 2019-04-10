@@ -18,7 +18,7 @@ void Deck::ShuffleDeck() //shuffles deck
 	random_shuffle(deck.begin(), deck.end());
 }
 
-void Deck::readCardFile(string file)
+void Deck::readCardFile(string file) //read from file, construct decks
 {
 	//read file variables
 	Card * cardPtr; //declare a pointer
@@ -47,10 +47,10 @@ void Deck::readCardFile(string file)
 			deck.push_back(cardPtr);
 		}
 	}
-	inFile.close();
+	inFile.close(); //close file
 }
 
-void Deck::ResetDeck()
+void Deck::ResetDeck() //reset deck at end of game
 {
 	deck.clear();
 }
