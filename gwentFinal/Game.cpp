@@ -10,7 +10,8 @@
 using namespace std;
 
 //function prototypes
-void StartScreen();
+void StartScreen(bool *ptrBool);
+void ShowBasicRules();
 void HelpScreen();
 void PrintCrown(int wins);
 bool PlayerPass();
@@ -47,8 +48,8 @@ int main()
 	unique_ptr<Field> pMonster(new Field());
 	unique_ptr<Field> pNorthern(new Field());
 
-	StartScreen();
-	do //loop for deck choice
+	StartScreen(&mainGame);
+	while (mainGame) //loop for entire game
 	{
 		int playerOneWins = 0;
 		int playerTwoWins = 0;
@@ -2535,7 +2536,7 @@ int main()
 				cout << "\n" << msg << "\n\n";
 			}
 		}
-	}while (mainGame);
+	}
 	system("cls");
 	cout << "Thank you for playing my C++ II Gwent Final! :)\n\n";
 	cout << R"(                                         @%%@                                *,,/****(&                                                                      
@@ -2736,7 +2737,7 @@ void HelpScreen()
 	cout << "'hand': Shows the player's hand.\n'ability': Shows the player's ability and, if playing with the Monster deck, activates the ability.\n'pass': Pass on the round for that player, cannot play again till next round starts.\n\nRemember when typing in the name of your card to play, spell it out exactly as shown.\n\n";
 }
 
-void StartScreen()
+void StartScreen(bool *ptrBool) //description and title, also menu options (play, rules, and quit)
 {
 	cout << R"(                                                                                                                                                                                   
                                                                                        *///,                                                                                       
@@ -2782,15 +2783,59 @@ void StartScreen()
                                                                                                                                                                                    
                                                                                                                                                                                  )";
 	cout << "\n\nWelcome to Gwent!\n\nA C++ II Final by Aaron Barnhart\n\n";
-	cout << "Gwent is a card game with a max of three rounds. The first player to win two rounds is the winner!\n\n";
-	cout << "Basic rules:\n1. You start with a ten card hand (unless playing as the Scoia'tael in which you get eleven).\n2. You can only play one card per turn.\n3. Each card can be played in either the melee row, ranged row, siege row, or weather row.\n";
-	cout << "4. No cards are draw after the initial draw so use your cards wisely (unless playing as the Northern Realms in which you draw one card on round win).\n5. You can pass out of a round at anytime. This means you will not be able to play until the next round.\n6. Once both players pass the round is over.\n";
-	cout << "7. To determine the winner of the round the total attack value will be determined for each player by adding up the attack values of all cards in all rows.\n\nCare for a round of Gwent?\n\n";
+	cout << "Gwent is a card game played in the video game 'The Witcher 3: Wild Hunt'\nCD Projekt Red owns the rights to 'The Witcher' video game series and the card game 'Gwent', I thought it would just be fun to make it into a text-based card game for the final.\n\n";
+	cout << "Care for a round of Gwent ? \n\n";
+
+	bool mainMenu = true;
+	while (mainMenu)
+	{
+		try
+		{
+			string menuString;
+			int menuInt;
+			cout << "1. Play Gwent\n2. Show Rules\n3. Quit\n\nWhat would you like to do? (Enter the number shown in the menu): ";
+			getline(cin, menuString);
+			menuInt = stoi(menuString); //test if string is an int, catch exception
+			if (menuInt < 1 || menuInt > 3) //catch out of range menu number
+			{
+				throw "You entered a number out of range of the menu. Only enter 1,2, or 3.\n";
+			}
+			switch (menuInt) //switch statement for menu choice
+			{
+			case 1: //if menuInt is 1
+				mainMenu = false;
+				break;
+			case 2: //if menuInt is 2
+				ShowBasicRules();
+				break;
+			case 3: //if menuInt is 3
+				mainMenu = false;
+				*ptrBool = false;
+				break;
+			}
+		}
+		catch (const char * msg) //oor string msg exception
+		{
+			cout << "\n\n" << msg << endl;
+		}
+		catch (exception& e) //stoi exception
+		{
+			cout << "\n\nException occured: " << e.what() << "\n\n";
+		}
+	}
 	system("pause");
 	system("cls");
 }
 
-void PrintCrown(int wins)
+void ShowBasicRules() //shows basic rules
+{
+	cout << "Gwent is a card game with a max of three rounds. The first player to win two rounds is the winner!\n\n";
+	cout << "Basic rules:\n1. You start with a ten card hand (unless playing as the Scoia'tael in which you get eleven).\n2. You can only play one card per turn.\n3. Each card can be played in either the melee row, ranged row, siege row, or weather row.\n";
+	cout << "4. No cards are draw after the initial draw so use your cards wisely (unless playing as the Northern Realms in which you draw one card on round win).\n5. You can pass out of a round at anytime. This means you will not be able to play until the next round.\n6. Once both players pass the round is over.\n";
+	cout << "7. To determine the winner of the round the total attack value will be determined for each player by adding up the attack values of all cards in all rows.\n8. All actions for the game are single words like 'play' and 'pass'. To play a card though it must be spelled exactly as shown. If you ever need help or a reminder of the actions, type 'help'.\n\n";
+}
+
+void PrintCrown(int wins) //prints half crowns depending on win 1 or 2
 {
 	if (wins == 1)
 	{
