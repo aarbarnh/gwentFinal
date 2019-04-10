@@ -175,6 +175,7 @@ int main()
 					pElfField->DrawCard(pElfDeck->GetDeck());
 					pElfDeck->TakeFrom();
 				}
+				pElfField->SortHand();
 			}
 			else if (p1DeckChoice == "NORTHERN")
 			{
@@ -183,6 +184,7 @@ int main()
 					pNorthernField->DrawCard(pNorthDeck->GetDeck());
 					pNorthDeck->TakeFrom();
 				}
+				pNorthernField->SortHand();
 			}
 			else
 			{
@@ -191,6 +193,7 @@ int main()
 					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
 					pMonsterDeck->TakeFrom();
 				}
+				pMonsterField->SortHand();
 			}
 
 			//player two drawing
@@ -202,6 +205,7 @@ int main()
 					pElfField->DrawCard(pElfDeck->GetDeck());
 					pElfDeck->TakeFrom();
 				}
+				pElfField->SortHand();
 			}
 			else if (p2DeckChoice == "NORTHERN")
 			{
@@ -210,6 +214,7 @@ int main()
 					pNorthernField->DrawCard(pNorthDeck->GetDeck());
 					pNorthDeck->TakeFrom();
 				}
+				pNorthernField->SortHand();
 			}
 			else
 			{
@@ -218,6 +223,7 @@ int main()
 					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
 					pMonsterDeck->TakeFrom();
 				}
+				pMonsterField->SortHand();
 			}
 			do //loop for game (turns, get actions)
 			{
@@ -1161,9 +1167,12 @@ int main()
 						PrintCrown(playerOneWins);
 						if (p1DeckChoice == "NORTHERN") //allow northern to draw one card because of win
 						{
-							cout << "\n\nAs Northern Realms, Player One gets to draw one card for the round win.\n\n";
-							pNorthernField->DrawCard(pNorthDeck->GetDeck());
-							pNorthDeck->TakeFrom();
+							if (playerOneWins < 2)
+							{
+								cout << "\n\nAs Northern Realms, Player One gets to draw one card for the round win.\n\n";
+								pNorthernField->DrawCard(pNorthDeck->GetDeck());
+								pNorthDeck->TakeFrom();
+							}
 							pNorthernField->Reset(); 
 						}
 						else if (p1DeckChoice == "ELF")
@@ -1198,9 +1207,12 @@ int main()
 						PrintCrown(playerTwoWins);
 						if (p2DeckChoice == "NORTHERN")
 						{
-							cout << "\n\nAs Northern Realms, Player Two gets to draw one card for the round win.\n\n";
-							pNorthernField->DrawCard(pNorthDeck->GetDeck());
-							pNorthDeck->TakeFrom();
+							if (playerTwoWins < 2)
+							{
+								cout << "\n\nAs Northern Realms, Player Two gets to draw one card for the round win.\n\n";
+								pNorthernField->DrawCard(pNorthDeck->GetDeck());
+								pNorthDeck->TakeFrom();
+							}
 							pNorthernField->Reset();
 						}
 						else if (p2DeckChoice == "ELF")
@@ -1283,6 +1295,7 @@ int main()
 					pElfField->DrawCard(pElfDeck->GetDeck());
 					pElfDeck->TakeFrom();
 				}
+				pElfField->SortHand();
 			}
 			else if (p2DeckChoice == "NORTHERN")
 			{
@@ -1291,6 +1304,7 @@ int main()
 					pNorthernField->DrawCard(pNorthDeck->GetDeck());
 					pNorthDeck->TakeFrom();
 				}
+				pNorthernField->SortHand();
 			}
 			else
 			{
@@ -1299,6 +1313,7 @@ int main()
 					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
 					pMonsterDeck->TakeFrom();
 				}
+				pMonsterField->SortHand();
 			}
 			cout << "Player One drawing cards..." << "\n\n";
 			//player one drawing
@@ -1309,6 +1324,7 @@ int main()
 					pElfField->DrawCard(pElfDeck->GetDeck());
 					pElfDeck->TakeFrom();
 				}
+				pElfField->SortHand();
 			}
 			else if (p1DeckChoice == "NORTHERN")
 			{
@@ -1317,6 +1333,7 @@ int main()
 					pNorthernField->DrawCard(pNorthDeck->GetDeck());
 					pNorthDeck->TakeFrom();
 				}
+				pNorthernField->SortHand();
 			}
 			else
 			{
@@ -1325,6 +1342,7 @@ int main()
 					pMonsterField->DrawCard(pMonsterDeck->GetDeck());
 					pMonsterDeck->TakeFrom();
 				}
+				pMonsterField->SortHand();
 			}
 
 			do
@@ -2269,9 +2287,12 @@ int main()
 						PrintCrown(playerOneWins);
 						if (p1DeckChoice == "NORTHERN")
 						{
-							cout << "\n\nAs Northern Realms, Player One gets to draw one card for the round win.\n\n";
-							pNorthernField->DrawCard(pNorthDeck->GetDeck());
-							pNorthDeck->TakeFrom();
+							if (playerOneWins < 2)
+							{
+								cout << "\n\nAs Northern Realms, Player One gets to draw one card for the round win.\n\n";
+								pNorthernField->DrawCard(pNorthDeck->GetDeck());
+								pNorthDeck->TakeFrom();
+							}
 							pNorthernField->Reset();
 						}
 						else if (p1DeckChoice == "ELF")
@@ -2306,9 +2327,13 @@ int main()
 						PrintCrown(playerTwoWins);
 						if(p2DeckChoice == "NORTHERN")
 						{
-							cout << "\n\nAs Northern Realms, Player Two gets to draw one card for the round win.\n\n";
-							pNorthernField->DrawCard(pNorthDeck->GetDeck());
-							pNorthDeck->TakeFrom();
+							if (playerTwoWins < 2)
+							{
+								cout << "\n\nAs Northern Realms, Player Two gets to draw one card for the round win.\n\n";
+								pNorthernField->DrawCard(pNorthDeck->GetDeck());
+								pNorthDeck->TakeFrom();
+							}
+							pNorthernField->Reset();
 						}
 						else if (p2DeckChoice == "ELF")
 						{
@@ -2507,12 +2532,68 @@ int main()
 			}
 			catch (const char * msg)
 			{
-				cout << "\n\n" << msg << "\n\n";
+				cout << "\n" << msg << "\n\n";
 			}
 		}
 	}while (mainGame);
 	system("cls");
 	cout << "Thank you for playing my C++ II Gwent Final! :)\n\n";
+	cout << R"(                                         @%%@                                *,,/****(&                                                                      
+                                        &&&@@@                          &(/******,////,,*****//(@                                                              
+                                         @@@@@&                      (,..,,,,,,,**,///*,**//**,****                                                            
+                                          @@@@@&                  #**,,,,,,..,**,,*,*//***,,**,******%                                                         
+                   @                      &@@@@@&                 *,,,,,,,,***,**,****///***///////***%                                                        
+               %%&&&%%@                    @@@@@@%               ,,,,,****////////**/(///////(####(((//                                                        
+              %%&&@&@@&                     @@@@@@&             /*,,***/////////////(((//(((#########((                                                        
+              &@@@@@@@@                      @@@@@@            @///(**////************////(////(((((##((                                                       
+               @&@@@@@@                      &@&* (#           /*////////*,,,,,,,,***********//#((((##((&                                                      
+                 %@@&&&@                     &@@,*%%%@       /*//////*****,,,,,,********/**/(#/(((###(((                                                     
+                    &&&%&                      &&&&&&&%&&    @(**//**/***,*,,,,,**********/////##(((###(((                                                     
+                     &%&%%                     @%#((&@@@&    #/***//**/*****//*,,,****////////((%(((##((#                                                      
+                      &&&&&@                    @@@@@@@@     #///***//*****,,,,,,,,,****////////((((((((                                                       
+                       &&&&&                      @@@@@@@    (/((((//*/**,**/(((/***/////((///(((%#%%#((#                                                      
+                        &@@@@                     @@@@@@@@   //(((//*//***/#%%&&&&&@@@&&%%##%&&@@@@&&&((                                                       
+                         &@@@&&                    @@@@@@@@  /##((////***/(#%&&&&%&@@@&&%(#%@@@&&%%@&%##&                                                      
+                          %&@&&&                    @@@@@@@@&/#(/(//((**,,**(##%%&&%%%#(/,*(&&%%%&&(((##                                                     
+                          (&&&%%&&@                  @@@@@@@#/(((#(#///**,,,,*//((((**//*,*(#####%&%##((##                                                     
+                            %%##@@@@                  @@@@@@(#(((//(/((/*******////***/**,,/#%###%%%#((#                                                     
+                            @@@@@@&@@                 @@@@@&((//(/(//(((/////((///**,**/***/#%%%%%%%%%#((                                                      
+                             %&@@@@@@                  @@@@&//////**/(((((((///*/**/((*,*,,/((%&%%%##%((/(                                                     
+                              &@@@@@@@                  @&&(****//(((((((((///**//(#//#(***(#%%%%%%##%((((                                                     
+                                @@@@@@@@                 ##/(**///(((#((((((////(//((((((%&&&%%&&%%%#%(((((                                                    
+                                 @@&&&@@&              @&%##/*//**/(((#####((((((#(((((((####%%%&&&%%#/(/(((#                                                  
+                                  @@&&&&&&          %&&@@(**/***/(//(#%#########/*/##%%%&%##%%%&&%&(/(((((((%%&                                              
+                                   @&&&&&&&        %&&@@&&(////*,*((/(##%%######/////(##%%%%%%&&%&@&((((#%%&%%%&@@@                                          
+                                    @@&&&&&@    @@@@@@%#@(///,,*(&@%//(#%%%######((###%%%%%%&&&&&@@@@(/(&&&&%@&&&&&&&@                                       
+                                      @&&&&%#%@@&&&%&&&@&(////***(%@@@(/((#%&&%%%##((######%%&&&&&@@@@@@&&&%%@&%%&%&&&&&&&&@@                                  
+                                       %%@@&%%%&&@@@@&&&&/(/*/%%&&@@@%(((##%&&%%%######%%&&%%&&@@@@@&%&&%&%&%@%@&&&&&&&&&&&&&@                               
+                                      &%%@%&&@@@@&@&&@&&&&&(((%%&&&&@@@@@@#(###%%&%%%%%##%%%%%&@@@@@@&%&%%&%%%%%&%&&&&&%&&&&&&&&&&@                            
+                                    &&@@&&&&&%&&&&&&&&@&@&&&&%&&%&&&@@@@@@@@@%###%%%%&%%%&&@@@@@@@@&%&%%&@%&%#%%#%@%&%&%&%&&&&&&&&@@                         
+                                   @@@@@&%%%%&%&&&%&&%*(%%%%%%%%&&&@@@@@@@@@@@@@#%%@@@@@@@@@@@@@&%%#%%@#@%@&%%%&%%%&%&&%%&%&&&&&&&&&&&&                      
+                               @@&@@@&&&&&%%%%&%&&&%&%,*(%%&%%%%%&@@@@@@@@@@@@@@@@#%@@@@@@@@@@@@&%%%%%#@%@%&&&&%%%%%&&%&%%%&%&&%&&&&&&&&@                  
+                              &&%&&&&&&&&@&&%&&%%%&%%&///(%&&&&%&&&@@@@@@@@@@@@@@@#&@@@@@@@@@@@%%%%%%%%%@%&&%#%%%#&%@%&%%%&%&&&&&&&&&&&                
+                           @&&&%&%&&%&&%&&&&&%&&&%%%%&**/#%&&%&&&&@@@@@@@@@@@@@@@@%@@@@@@@@@@&%%%%&%&%#&%&%&&%@%@%#&%%#%#%&%&%%%&%&&&&&%@&&&&@             
+                          &&&%&&%&%&&&&@&&&&@&%%%%%%%(//(%&&&&&&@@@@@@@@@@@@@@@@@@&@@@@@@@@@&&&&&&%&%#&%&%&&%&%&&%&%%##%#%%&%&%%%%%@%&&%&&&&&&&@           
+                         &%&&&&&&%&&&&@@@&@%@&&%%%%%%((#%&@&&&&@@@@@@@@@@&&@@&@&@@@@@@%&@@@@&%%&&%#%&%#%%&%%@#&%&@%%###%##&%&%%%&%&%%&&&&&&&%&&        
+                        %%%%&&&&&&&&@&@&@&&&%&%&%%%%%*/(#%&&&@@@@@@@@@@@@@@@@@@@@@@@@@&(@&&&&&@&%%%&&%%&%#&%%&%@%&@%&%%#%##%%&%%#%#&%&%&%&&&%&&&&&@      
+                       &%&&&%&&&&&@&@@&@&@&%&%%%&&%%%*/(#&&@@@@@@%((//*****%@@@@@&@@@&%&&&%&&&&&&@&%%&&&%%&&&%&&&&%&%%###%%#@%&%@%@%&&%&&&&@@@@      
+                      &@&%&&&&@&@@@@@@@&&&&&%&&&&&@%**//(%&&/*,****/(((((((#&@@@@@@@@@&%%%&%##%&&&@&%%%&%%&%&%#&%@&&&%&%%#%&%&%&%%%##@%@&&@&&&@@@@       
+                    @&&&&&%%&&&@@@@@@&@@&&&@@@@@&@@////**,*******/(#%&&&%%&&@@@@@@@&&&&&&&#%%%&&%%%%&&&%%&&&%%&&@%@%&&%%%%%%#&%@&&%#%%%%&&@&@@@&&&&@@        
+                 @@&&&&&&&&%%&&&@@&&&&%&@@@@@@@@@@#***,,,,,***/((###%#%%%%&@@@&@@@@@@@&%&%&&&&&&%%#&%%%&&&@&%%&&&%&@%@&&%%#%##&&@&@%&%%%&&@@@@@@&&@@@&@        
+                 &&&&&&&%&&%&&&@@&&&&@@@@@@@@@@@******,,**/(((((////(#####@@@@@@@@@@@@@@&@@@&%&&%%%&%&&&&@&@&%%%%%%&&%&%%%%%@@&@&&&&&&&@@@@@@@@&&&@@@@       
+               @&&&&&&&&%&&%@%%&@&@&&@@@@@@@@@@@@********/((////***//((#%%%%@@@@@@@@@@@@@@@@&@@&&@&&&@&&&&&&&&&&@&%%&%%&%%%&&@&@&&&&&&&@@@@@@@@&@&&@&@@@@      
+             @&%%&&&&%&&%&%%&&&%&&@@@@@@@@@@@@@@********//////***/(##%&&&&&@&@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&&&&&&&&@&%&&&%&@@&@&@&@@@@@@@@@@@@@@@@@@@@@@@      
+            %%#%%&%%&%%@%%%&&%@%&&@@@@@@@@@@@@@(,**,****/(/////(######(((##%&@@@@@@@@@@@@@@@@@@@@@@@@@@&@&&&&&&&&&&&&@@%%&&&&@@@@@&@@@@@@@@@@@@@@@@&@@@@@@     
+           &@@@@%#%%%#%%&&%@%%%&&@@@@@@@@@@@&,,*,**((/**//(###((#((((#%%%%%&&&%%%#%&@@@@@@@@&@@@@@@@@@@@&&&&&&&&&&&&@@@&&&@&@@@@@@@@@@@@@@@@@@@@@@@@@@@@     
+          &&&&&&&@%&%%%&&%@%%%&&&&&@@@&&@@@/,,**///**/(((##(((((((##%&&&&%&&%%&@&%&%&@@@@@@@@@&@&&@@@@@@&&&&&&&&&&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    
+         @&&&&&&&&%%&%%&&&%&&%%%%%%((%%%@@#,,,,,****/(/(((((((((#%%%%%&&%%%%@&&&@@@&&&%%@@@@@@@@@&&&&&&@@@@@&&&&&&&@&&@@@@@@@@@@@@@@@@@@@&@@@@@@@@@@@@@@@@@@   
+       &&&@&&&&&@%&&%%&&%%@&%#(####%&%%&/,,,,,,,*////((((((#%%%%%%%%#####%%&@@@&@@@&%&@@@@@@@@@@@@&&&@@&&&&&@&&&&&&&&&@@@@@@@@@@@@@@@@&@@@@@@@@@@@@@@@@@&@&&   
+     @&&@@&&&@&&@&%&&&%###(#####(##%&%%&*,,,,***////((((#%%%%%%####(##%%&&@@&@&@&&@@@@@@@@@@@@&@&@@@&&&&&&%&&&&&&&@@@@@@@@@@@@@@@@@@@@@@&@@@@@@@@@@&&@@@   
+    &@&@@&@@@&&@%####%%%###########&&&&&*****///((((#####%%####%%%%%&&&&&@@@@@&&@@@&@@@@@@@@@@@@@@@@&@&@@&&&&%&&%%&&&&@@@@@@@@@@@@@@@@@@&@@@&@@@@@&@&&@@&&&@   
+  @&&@@@&&##%#%#%%###########%%%%&&&&&(/*/////(((###%%%%%&&&&&&&&&&&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&&&&%%%%&@@@@@@@@@@@@@@@@@@@@@@@@@&@@&@@@@&&@@@   
+@@&@@%%#%%%%%%#####%#%%%%%#%#%%%%&&&&&&/(((####%%%%%%%%&&&&&&&&&@@@@@&&@@@@&&%%&%/#@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&&&&&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
+&&@%%%%%%#%%##%%%%%%%%%%%%%%%&%&&&@@@@@%###%%%&&&&&&&&&&&&&&&%/#&&&&@@@@@&@&&%&&&#&@&&@@@@@@@@@@&@@@@@@@@@@@&&&&&&@@@@@@@@@@@@@@@@@@@@@&@@@@@@@@@@@@&@@@@  )";
+	cout << "\n\n";
 	system("pause");
 	return 0;
 }

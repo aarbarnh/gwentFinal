@@ -100,7 +100,14 @@ void Field::ShowHand()
 	{
 		for (int i = 0; i < hand.size(); i++)
 		{
-			cout << "\n" << hand[i]->GetName() << "\n" << hand[i]->GetType() << "\n" << hand[i]->GetEffect() << "\n" << hand[i]->GetAttack() << "\n\n";
+			if (hand[i]->GetType() == "Weather" || hand[i]->GetType() == "Instant")
+			{
+				cout << "\n" << hand[i]->GetName() << "\n" << hand[i]->GetType() << "\n" << hand[i]->GetEffect() << "\n\n";
+			}
+			else 
+			{
+				cout << "\n" << hand[i]->GetName() << "\n" << hand[i]->GetType() << "\n" << hand[i]->GetEffect() << "\n" << hand[i]->GetAttack() << "\n\n";
+			}
 		}
 	}
 }
@@ -160,7 +167,14 @@ void Field::ShowDiscard()
 	{
 		for (int i = 0; i < discard.size(); i++)
 		{
-			cout << "\n" << discard[i]->GetName() << "\n" << discard[i]->GetType() << "\n" << discard[i]->GetEffect() << "\n" << discard[i]->GetAttack() << "\n\n";
+			if (discard[i]->GetType() == "Weather" || discard[i]->GetType() == "Instant")
+			{
+				cout << "\n" << discard[i]->GetName() << "\n" << discard[i]->GetType() << "\n" << discard[i]->GetEffect() << "\n\n";
+			}
+			else
+			{
+				cout << "\n" << discard[i]->GetName() << "\n" << discard[i]->GetType() << "\n" << discard[i]->GetEffect() << "\n" << discard[i]->GetAttack() << "\n\n";
+			}
 		}
 	}
 }
@@ -175,7 +189,7 @@ void Field::ShowWeather()
 	{
 		for (int i = 0; i < weather.size(); i++)
 		{
-			cout << "\n" << weather[i]->GetName() << "\n" << weather[i]->GetType() << "\n" << weather[i]->GetEffect() << "\n" << weather[i]->GetAttack() << "\n\n";
+			cout << "\n" << weather[i]->GetName() << "\n" << weather[i]->GetType() << "\n" << weather[i]->GetEffect() << "\n\n";
 		}
 	}
 }
@@ -389,8 +403,6 @@ void Field::CommandersHorn()
 		}
 	}
 	cout << "\n";
-	system("pause");
-	system("cls");
 }
 
 void Field::BitingFrost()
@@ -461,6 +473,20 @@ void Field::Morale(Card * typeCheck)
 		for (int i = 0; i < siege.size(); i++)
 		{
 			siege[i]->IncrementAttack();
+		}
+	}
+}
+
+void Field::SortHand()
+{
+	for (int i = 0; i < hand.size(); i++) //sorts the hand, tried different numbers but using its own size seems to always work
+	{
+		for (int j = 1; j < hand.size(); j++)
+		{
+			if (hand[j]->GetAttack() > hand[j - 1]->GetAttack())
+			{
+				swap(hand[j], hand[j - 1]);
+			}
 		}
 	}
 }
