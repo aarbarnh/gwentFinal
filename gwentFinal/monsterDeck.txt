@@ -39,7 +39,7 @@ Leshen
 Ranged
 None
 10
-Earth Elemental 
+Earth Elemental
 Siege
 None
 6

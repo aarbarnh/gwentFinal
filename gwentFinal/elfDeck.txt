@@ -47,7 +47,7 @@ Mahakaman Defender 1
 Melee
 None
 5
-Mahakaman Defender 2 
+Mahakaman Defender 2
 Melee
 None
 5

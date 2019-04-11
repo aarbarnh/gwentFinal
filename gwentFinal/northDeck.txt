@@ -27,7 +27,7 @@ Trebuchet 2
 Siege
 None
 6
-Blue Stripes Commando 
+Blue Stripes Commando
 Melee
 Morale
 4
@@ -71,7 +71,7 @@ Crinfrid Reavers Dragon Hunter
 Ranged
 None
 5
-Biting Frost 
+Biting Frost
 Weather
 Sets melee units to 1 for both players
 0
